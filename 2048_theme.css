@@ -1,104 +1,117 @@
 :root {
   /* 基础颜色 */
-  --background: #faf8ef;
-  --foreground: #776e65;
+  --background: #1a1a2e;
+  --foreground: #ffffff;
   
-  /* 品牌主色 */
-  --primary: #edc22e;
+  /* 品牌颜色 */
+  --primary: #f59563;
   --primary-foreground: #ffffff;
   
-  /* 语义化颜色 */
-  --secondary: #8f7a66;
+  /* 语义颜色 */
+  --secondary: #16213e;
   --secondary-foreground: #ffffff;
-  --muted: #eee4da;
-  --muted-foreground: #776e65;
-  --accent: #edcc61;
-  --accent-foreground: #ffffff;
+  --muted: #0f3460;
+  --muted-foreground: #a0a0a0;
+  --accent: #f2b179;
+  --accent-foreground: #1a1a2e;
   
-  /* UI元素颜色 */
-  --destructive: #f67c5f;
+  /* UI元素 */
+  --destructive: #ef4444;
   --destructive-foreground: #ffffff;
-  --border: #bbada0;
-  --input: #bbada0;
-  --ring: #edc22e;
+  --border: #2d3748;
+  --input: #2d3748;
+  --ring: #f59563;
   
   /* 卡片和弹出层 */
-  --card: #bbada0;
-  --card-foreground: #776e65;
-  --popover: #ffffff;
-  --popover-foreground: #776e65;
-  
-  /* 数字方块颜色 */
-  --tile-empty: #cdc1b4;
-  --tile-2: #eee4da;
-  --tile-4: #ede0c8;
-  --tile-8: #f2b179;
-  --tile-16: #f59563;
-  --tile-32: #f67c5f;
-  --tile-64: #f65e3b;
-  --tile-128: #edcf72;
-  --tile-256: #edcc61;
-  --tile-512: #edc850;
-  --tile-1024: #edc53f;
-  --tile-2048: #edc22e;
-  --tile-super: #3c3a32;
-  
-  /* 数字颜色 */
-  --text-light: #776e65;
-  --text-dark: #f9f6f2;
+  --card: #16213e;
+  --card-foreground: #ffffff;
+  --popover: #16213e;
+  --popover-foreground: #ffffff;
   
   /* 图表颜色 */
-  --chart-1: #edc22e;
-  --chart-2: #f67c5f;
-  --chart-3: #f2b179;
-  --chart-4: #edcc61;
-  --chart-5: #8f7a66;
+  --chart-1: #f59563;
+  --chart-2: #f2b179;
+  --chart-3: #f67c5f;
+  --chart-4: #f65e3b;
+  --chart-5: #ffd93d;
   
-  /* 侧边栏颜色 */
-  --sidebar-background: #bbada0;
+  /* 侧边栏 */
+  --sidebar-background: #16213e;
   --sidebar-foreground: #ffffff;
-  --sidebar-primary: #edc22e;
+  --sidebar-primary: #f59563;
   --sidebar-primary-foreground: #ffffff;
-  --sidebar-accent: #8f7a66;
+  --sidebar-accent: #0f3460;
   --sidebar-accent-foreground: #ffffff;
-  --sidebar-border: #a39489;
-  --sidebar-ring: #edc22e;
+  --sidebar-border: #2d3748;
+  --sidebar-ring: #f59563;
+  
+  /* 2048特定颜色 */
+  --tile-empty: #0f3460;
+  --tile-2: #eee4da;
+  --tile-2-text: #776e65;
+  --tile-4: #ede0c8;
+  --tile-4-text: #776e65;
+  --tile-8: #f2b179;
+  --tile-8-text: #f9f6f2;
+  --tile-16: #f59563;
+  --tile-16-text: #f9f6f2;
+  --tile-32: #f67c5f;
+  --tile-32-text: #f9f6f2;
+  --tile-64: #f65e3b;
+  --tile-64-text: #f9f6f2;
+  --tile-128: #edcf72;
+  --tile-128-text: #f9f6f2;
+  --tile-256: #edcc61;
+  --tile-256-text: #f9f6f2;
+  --tile-512: #edc850;
+  --tile-512-text: #f9f6f2;
+  --tile-1024: #edc53f;
+  --tile-1024-text: #f9f6f2;
+  --tile-2048: #edc22e;
+  --tile-2048-text: #f9f6f2;
+  --tile-super: #3c3a32;
+  --tile-super-text: #f9f6f2;
   
   /* 字体 */
-  --font-sans: 'Poppins', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-sans: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   --font-serif: 'Merriweather', Georgia, serif;
-  --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+  --font-mono: 'JetBrains Mono', 'Courier New', monospace;
   
   /* 圆角 */
-  --radius: 12px;
-  --radius-sm: 6px;
-  --radius-md: 12px;
-  --radius-lg: 16px;
-  --radius-xl: 20px;
+  --radius: 0.5rem;
+  --radius-sm: 0.375rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 0.75rem;
+  --radius-xl: 1rem;
   
   /* 间距 */
-  --spacing-xs: 4px;
-  --spacing-sm: 8px;
-  --spacing-md: 16px;
-  --spacing-lg: 24px;
-  --spacing-xl: 32px;
-  --spacing-2xl: 48px;
+  --spacing: 1rem;
+  --spacing-xs: 0.25rem;
+  --spacing-sm: 0.5rem;
+  --spacing-md: 1rem;
+  --spacing-lg: 1.5rem;
+  --spacing-xl: 2rem;
+  --spacing-2xl: 3rem;
   
   /* 阴影 */
-  --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.05);
-  --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.08);
-  --shadow-md: 0 4px 8px rgba(0, 0, 0, 0.1);
-  --shadow-lg: 0 8px 16px rgba(0, 0, 0, 0.12);
-  --shadow-xl: 0 12px 24px rgba(0, 0, 0, 0.15);
-  --shadow-2xl: 0 16px 32px rgba(0, 0, 0, 0.18);
-  --shadow-inner: inset 0 2px 4px rgba(0, 0, 0, 0.06);
+  --shadow-xs: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+  --shadow-2xl: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  --shadow-inner: inset 0 2px 4px 0 rgba(0, 0, 0, 0.05);
+  --shadow-tile: 0 2px 8px rgba(0, 0, 0, 0.3);
+  --shadow-tile-hover: 0 4px 12px rgba(0, 0, 0, 0.4);
   
-  /* 游戏特定阴影 */
-  --shadow-tile: 0 2px 4px rgba(119, 110, 101, 0.2);
-  --shadow-button: 0 3px 6px rgba(0, 0, 0, 0.15);
+  /* 过渡 */
+  --transition-fast: 150ms ease-in-out;
+  --transition-base: 200ms ease-in-out;
+  --transition-slow: 300ms ease-in-out;
+  --transition-tile: 100ms ease-in-out;
 }
 
-/* 全局样式重置 */
+/* 全局样式 */
 * {
   margin: 0;
   padding: 0;
@@ -107,7 +120,7 @@
 
 body {
   font-family: var(--font-sans) !important;
-  background-color: var(--background) !important;
+  background: var(--background) !important;
   color: var(--foreground) !important;
   line-height: 1.6 !important;
   -webkit-font-smoothing: antialiased !important;
@@ -119,24 +132,27 @@ h1 {
   font-weight: 700 !important;
   color: var(--foreground) !important;
   margin-bottom: var(--spacing-lg) !important;
+  letter-spacing: -0.02em !important;
 }
 
 h2 {
   font-size: 2rem !important;
   font-weight: 600 !important;
   color: var(--foreground) !important;
+  margin-bottom: var(--spacing-md) !important;
 }
 
 h3 {
   font-size: 1.5rem !important;
   font-weight: 600 !important;
   color: var(--foreground) !important;
+  margin-bottom: var(--spacing-sm) !important;
 }
 
 button {
   font-family: var(--font-sans) !important;
   cursor: pointer !important;
-  transition: all 0.2s ease !important;
+  transition: all var(--transition-base) !important;
 }
 
 button:hover {
@@ -146,4 +162,17 @@ button:hover {
 
 button:active {
   transform: translateY(0) !important;
+}
+
+/* 工具类 */
+.rounded {
+  border-radius: var(--radius) !important;
+}
+
+.shadow {
+  box-shadow: var(--shadow-md) !important;
+}
+
+.transition {
+  transition: all var(--transition-base) !important;
 }
