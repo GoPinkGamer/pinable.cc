@@ -1,0 +1,149 @@
+:root {
+  /* 基础颜色 */
+  --background: #faf8ef;
+  --foreground: #776e65;
+  
+  /* 品牌主色 */
+  --primary: #edc22e;
+  --primary-foreground: #ffffff;
+  
+  /* 语义化颜色 */
+  --secondary: #8f7a66;
+  --secondary-foreground: #ffffff;
+  --muted: #eee4da;
+  --muted-foreground: #776e65;
+  --accent: #edcc61;
+  --accent-foreground: #ffffff;
+  
+  /* UI元素颜色 */
+  --destructive: #f67c5f;
+  --destructive-foreground: #ffffff;
+  --border: #bbada0;
+  --input: #bbada0;
+  --ring: #edc22e;
+  
+  /* 卡片和弹出层 */
+  --card: #bbada0;
+  --card-foreground: #776e65;
+  --popover: #ffffff;
+  --popover-foreground: #776e65;
+  
+  /* 数字方块颜色 */
+  --tile-empty: #cdc1b4;
+  --tile-2: #eee4da;
+  --tile-4: #ede0c8;
+  --tile-8: #f2b179;
+  --tile-16: #f59563;
+  --tile-32: #f67c5f;
+  --tile-64: #f65e3b;
+  --tile-128: #edcf72;
+  --tile-256: #edcc61;
+  --tile-512: #edc850;
+  --tile-1024: #edc53f;
+  --tile-2048: #edc22e;
+  --tile-super: #3c3a32;
+  
+  /* 数字颜色 */
+  --text-light: #776e65;
+  --text-dark: #f9f6f2;
+  
+  /* 图表颜色 */
+  --chart-1: #edc22e;
+  --chart-2: #f67c5f;
+  --chart-3: #f2b179;
+  --chart-4: #edcc61;
+  --chart-5: #8f7a66;
+  
+  /* 侧边栏颜色 */
+  --sidebar-background: #bbada0;
+  --sidebar-foreground: #ffffff;
+  --sidebar-primary: #edc22e;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #8f7a66;
+  --sidebar-accent-foreground: #ffffff;
+  --sidebar-border: #a39489;
+  --sidebar-ring: #edc22e;
+  
+  /* 字体 */
+  --font-sans: 'Poppins', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-serif: 'Merriweather', Georgia, serif;
+  --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+  
+  /* 圆角 */
+  --radius: 12px;
+  --radius-sm: 6px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 20px;
+  
+  /* 间距 */
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 16px;
+  --spacing-lg: 24px;
+  --spacing-xl: 32px;
+  --spacing-2xl: 48px;
+  
+  /* 阴影 */
+  --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.08);
+  --shadow-md: 0 4px 8px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 8px 16px rgba(0, 0, 0, 0.12);
+  --shadow-xl: 0 12px 24px rgba(0, 0, 0, 0.15);
+  --shadow-2xl: 0 16px 32px rgba(0, 0, 0, 0.18);
+  --shadow-inner: inset 0 2px 4px rgba(0, 0, 0, 0.06);
+  
+  /* 游戏特定阴影 */
+  --shadow-tile: 0 2px 4px rgba(119, 110, 101, 0.2);
+  --shadow-button: 0 3px 6px rgba(0, 0, 0, 0.15);
+}
+
+/* 全局样式重置 */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: var(--font-sans) !important;
+  background-color: var(--background) !important;
+  color: var(--foreground) !important;
+  line-height: 1.6 !important;
+  -webkit-font-smoothing: antialiased !important;
+  -moz-osx-font-smoothing: grayscale !important;
+}
+
+h1 {
+  font-size: 3rem !important;
+  font-weight: 700 !important;
+  color: var(--foreground) !important;
+  margin-bottom: var(--spacing-lg) !important;
+}
+
+h2 {
+  font-size: 2rem !important;
+  font-weight: 600 !important;
+  color: var(--foreground) !important;
+}
+
+h3 {
+  font-size: 1.5rem !important;
+  font-weight: 600 !important;
+  color: var(--foreground) !important;
+}
+
+button {
+  font-family: var(--font-sans) !important;
+  cursor: pointer !important;
+  transition: all 0.2s ease !important;
+}
+
+button:hover {
+  transform: translateY(-2px) !important;
+  box-shadow: var(--shadow-lg) !important;
+}
+
+button:active {
+  transform: translateY(0) !important;
+}
