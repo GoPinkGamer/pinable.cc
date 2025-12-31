@@ -1,0 +1,138 @@
+:root {
+  /* 基础颜色 */
+  --background: #faf8ef;
+  --foreground: #776e65;
+  
+  /* 品牌主色 */
+  --primary: #8f7a66;
+  --primary-foreground: #f9f6f2;
+  
+  /* 语义颜色 */
+  --secondary: #eee4da;
+  --secondary-foreground: #776e65;
+  --muted: #bbada0;
+  --muted-foreground: #776e65;
+  --accent: #edcf72;
+  --accent-foreground: #f9f6f2;
+  
+  /* UI元素 */
+  --destructive: #f65e3b;
+  --destructive-foreground: #f9f6f2;
+  --border: #bbada0;
+  --input: #cdc1b4;
+  --ring: #8f7a66;
+  
+  /* 卡片和弹窗 */
+  --card: #ffffff;
+  --card-foreground: #776e65;
+  --popover: #ffffff;
+  --popover-foreground: #776e65;
+  
+  /* 游戏方块颜色 */
+  --tile-2: #eee4da;
+  --tile-2-fg: #776e65;
+  --tile-4: #ede0c8;
+  --tile-4-fg: #776e65;
+  --tile-8: #f2b179;
+  --tile-8-fg: #f9f6f2;
+  --tile-16: #f59563;
+  --tile-16-fg: #f9f6f2;
+  --tile-32: #f67c5f;
+  --tile-32-fg: #f9f6f2;
+  --tile-64: #f65e3b;
+  --tile-64-fg: #f9f6f2;
+  --tile-128: #edcf72;
+  --tile-128-fg: #f9f6f2;
+  --tile-256: #edcc61;
+  --tile-256-fg: #f9f6f2;
+  --tile-512: #edc850;
+  --tile-512-fg: #f9f6f2;
+  --tile-1024: #edc53f;
+  --tile-1024-fg: #f9f6f2;
+  --tile-2048: #edc22e;
+  --tile-2048-fg: #f9f6f2;
+  --tile-super: #3c3a32;
+  --tile-super-fg: #f9f6f2;
+  
+  /* 数据可视化 */
+  --chart-1: #f2b179;
+  --chart-2: #f59563;
+  --chart-3: #f67c5f;
+  --chart-4: #edcf72;
+  --chart-5: #8f7a66;
+  
+  /* 侧边栏（如需要） */
+  --sidebar-background: #f9f6f2;
+  --sidebar-foreground: #776e65;
+  --sidebar-primary: #8f7a66;
+  --sidebar-primary-foreground: #f9f6f2;
+  --sidebar-accent: #eee4da;
+  --sidebar-accent-foreground: #776e65;
+  --sidebar-border: #bbada0;
+  --sidebar-ring: #8f7a66;
+  
+  /* 字体 */
+  --font-sans: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-serif: 'Merriweather', Georgia, serif;
+  --font-mono: 'JetBrains Mono', 'Courier New', monospace;
+  
+  /* 圆角 */
+  --radius: 6px;
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+  
+  /* 间距 */
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 16px;
+  --spacing-lg: 24px;
+  --spacing-xl: 32px;
+  --spacing-2xl: 48px;
+  
+  /* 阴影 */
+  --shadow-xs: 0 1px 2px 0 rgba(119, 110, 101, 0.05);
+  --shadow-sm: 0 1px 3px 0 rgba(119, 110, 101, 0.1), 0 1px 2px -1px rgba(119, 110, 101, 0.1);
+  --shadow-md: 0 4px 6px -1px rgba(119, 110, 101, 0.1), 0 2px 4px -2px rgba(119, 110, 101, 0.1);
+  --shadow-lg: 0 10px 15px -3px rgba(119, 110, 101, 0.1), 0 4px 6px -4px rgba(119, 110, 101, 0.1);
+  --shadow-xl: 0 20px 25px -5px rgba(119, 110, 101, 0.1), 0 8px 10px -6px rgba(119, 110, 101, 0.1);
+  --shadow-2xl: 0 25px 50px -12px rgba(119, 110, 101, 0.25);
+  --shadow-inner: inset 0 2px 4px 0 rgba(119, 110, 101, 0.05);
+  
+  /* 游戏特定阴影 */
+  --shadow-tile: 0 2px 4px rgba(119, 110, 101, 0.15);
+  --shadow-tile-hover: 0 4px 8px rgba(119, 110, 101, 0.2);
+  --shadow-grid: inset 0 0 0 1px rgba(187, 173, 160, 0.3);
+  
+  /* 过渡动画 */
+  --transition-fast: 150ms ease-in-out;
+  --transition-normal: 250ms ease-in-out;
+  --transition-slow: 350ms ease-in-out;
+  
+  /* 游戏网格 */
+  --grid-size: 4;
+  --grid-gap: 12px;
+  --tile-size: calc((100vw - 48px - (var(--grid-gap) * 5)) / 4);
+  --tile-size-max: 106px;
+}
+
+/* 响应式调整 */
+@media (min-width: 768px) {
+  :root {
+    --grid-gap: 15px;
+    --tile-size: 106px;
+  }
+}
+
+/* 深色模式支持（可选） */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #1a1a1a;
+    --foreground: #e0e0e0;
+    --card: #2a2a2a;
+    --card-foreground: #e0e0e0;
+    --popover: #2a2a2a;
+    --popover-foreground: #e0e0e0;
+  }
+}
