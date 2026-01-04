@@ -616,6 +616,20 @@
   justify-content: center;
   align-items: center;
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  overflow: hidden;
+}
+
+.ad-banner ins {
+  display: block !important;
+  width: 100% !important;
+  min-width: 320px !important;
+}
+
+/* 移动端广告优化 */
+@media (max-width: 768px) {
+  .ad-banner {
+    min-height: 50px;
+  }
 }
 
 /* ===== Loading State ===== */
