@@ -1,3 +1,59 @@
+/* ===== Logo ===== */
+
+.logo {
+  position: fixed;
+  top: var(--spacing-lg);
+  left: var(--spacing-lg);
+  z-index: var(--z-sticky);
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-sm) var(--spacing-md);
+  background: var(--bg-card);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  transition: all var(--transition-normal) var(--ease-out);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.logo:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+  border-color: var(--color-primary);
+}
+
+.logo img {
+  width: 32px;
+  height: 32px;
+  object-fit: contain;
+}
+
+.logo span {
+  font-size: var(--text-lg);
+  font-weight: var(--font-bold);
+  color: var(--text-primary);
+  font-family: 'Outfit', sans-serif;
+}
+
+/* 移动端优化 */
+@media (max-width: 768px) {
+  .logo {
+    top: var(--spacing-md);
+    left: var(--spacing-md);
+    padding: var(--spacing-xs) var(--spacing-sm);
+  }
+  
+  .logo img {
+    width: 28px;
+    height: 28px;
+  }
+  
+  .logo span {
+    font-size: var(--text-base);
+  }
+}
+
 /* ===== VSCode Plugin Button ===== */
 
 .vscode-plugin-btn {
