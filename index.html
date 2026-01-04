@@ -4,27 +4,27 @@
   <!-- Meta 标签 -->
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="探索创意游戏原型集合，包括泡泡龙、小青蛙旅行等趣味HTML5小游戏。在线免费玩，无需下载。">
-  <meta name="keywords" content="游戏原型,HTML5游戏,在线游戏,泡泡龙,小游戏,免费游戏,网页游戏">
+  <meta name="description" content="Pinable - AI 驱动的交互式原型平台。快速生成知识点应用、流程图形化、小游戏等交互原型，所见即所得，一键发布。适合教育、培训、产品演示等场景。">
+  <meta name="keywords" content="AI原型生成,交互式原型,知识点应用,流程图形化,ChatGame,所见即所得,快速原型,教育工具,培训应用,产品演示,HTML5应用">
   <meta name="author" content="Pinable">
   <meta name="robots" content="index, follow">
   
   <!-- Open Graph / Facebook -->
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://pinable.cc/">
-  <meta property="og:title" content="Pinable Game Prototypes - 创意游戏原型展示">
-  <meta property="og:description" content="探索创意游戏原型集合，在线免费玩HTML5小游戏">
+  <meta property="og:title" content="Pinable - AI 驱动的交互式原型平台">
+  <meta property="og:description" content="快速生成知识点应用、流程图形化、小游戏等交互原型，所见即所得，一键发布">
   <meta property="og:image" content="https://pinable.cc/assets/images/og-image.png">
   
   <!-- Twitter -->
   <meta property="twitter:card" content="summary_large_image">
   <meta property="twitter:url" content="https://pinable.cc/">
-  <meta property="twitter:title" content="Pinable Game Prototypes - 创意游戏原型展示">
-  <meta property="twitter:description" content="探索创意游戏原型集合，在线免费玩HTML5小游戏">
+  <meta property="twitter:title" content="Pinable - AI 驱动的交互式原型平台">
+  <meta property="twitter:description" content="快速生成知识点应用、流程图形化、小游戏等交互原型">
   <meta property="twitter:image" content="https://pinable.cc/assets/images/og-image.png">
   
   <!-- Favicon -->
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🎮%3C/text%3E%3C/svg%3E">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🎯%3C/text%3E%3C/svg%3E">
   
   <!-- Preconnect -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -41,21 +41,31 @@
   <link rel="stylesheet" href="assets/css/layout.css">
   <link rel="stylesheet" href="assets/css/animations.css">
   
-  <title>Pinable Game Prototypes - 创意游戏原型展示</title>
+  <title>Pinable - AI 驱动的交互式原型平台 | 知识点应用 | 流程图形化</title>
   
   <!-- Structured Data -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
-    "@type": "WebSite",
-    "name": "Pinable Game Prototypes",
+    "@type": "WebApplication",
+    "name": "Pinable",
+    "applicationCategory": "EducationalApplication",
+    "operatingSystem": "Web Browser",
     "url": "https://pinable.cc",
-    "description": "创意游戏原型展示平台",
-    "potentialAction": {
-      "@type": "SearchAction",
-      "target": "https://pinable.cc/?q={search_term_string}",
-      "query-input": "required name=search_term_string"
-    }
+    "description": "AI 驱动的交互式原型平台，快速生成知识点应用、流程图形化、小游戏等交互原型",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "CNY"
+    },
+    "featureList": [
+      "AI 快速生成原型",
+      "知识点可视化应用",
+      "流程图形化工具",
+      "交互式学习体验",
+      "所见即所得",
+      "一键发布"
+    ]
   }
   </script>
 </head>
@@ -81,10 +91,13 @@
     <header class="hero">
       <div class="hero-content">
         <h1 class="hero-title">
-          <span class="gradient-text">🎮 Pinable</span>
-          <span class="subtitle">Game Prototypes</span>
+          <span class="gradient-text">🎯 Pinable</span>
+          <span class="subtitle">AI 驱动的交互式原型平台</span>
         </h1>
-        <p class="hero-description">探索创意游戏原型集合，在线免费玩</p>
+        <p class="hero-description">
+          快速生成知识点应用、流程图形化、小游戏等交互原型<br>
+          <strong>所见即所得 · 一键发布 · 即时体验</strong>
+        </p>
         
         <!-- 搜索框 -->
         <div class="search-box">
@@ -92,10 +105,30 @@
           <input 
             type="text" 
             id="search-input" 
-            placeholder="搜索游戏... (Ctrl+K)"
+            placeholder="搜索原型应用... (Ctrl+K)"
             autocomplete="off"
-            aria-label="搜索游戏"
+            aria-label="搜索原型应用"
           >
+        </div>
+        
+        <!-- 使用场景说明 -->
+        <div class="use-cases">
+          <div class="use-case-item">
+            <i data-lucide="book-open"></i>
+            <span>知识点学习</span>
+          </div>
+          <div class="use-case-item">
+            <i data-lucide="git-branch"></i>
+            <span>流程可视化</span>
+          </div>
+          <div class="use-case-item">
+            <i data-lucide="gamepad-2"></i>
+            <span>互动小游戏</span>
+          </div>
+          <div class="use-case-item">
+            <i data-lucide="presentation"></i>
+            <span>产品演示</span>
+          </div>
         </div>
       </div>
       
@@ -104,15 +137,15 @@
     </header>
 
     <!-- 标签筛选 -->
-    <section class="filters" aria-label="游戏筛选">
-      <div class="filter-group" id="tag-filters" role="group" aria-label="按标签筛选">
+    <section class="filters" aria-label="原型筛选">
+      <div class="filter-group" id="tag-filters" role="group" aria-label="按类型筛选">
         <!-- 动态生成标签按钮 -->
       </div>
     </section>
 
-    <!-- 游戏网格 -->
-    <main class="game-grid" id="game-grid" role="main" aria-label="游戏列表">
-      <!-- 动态生成游戏卡片 -->
+    <!-- 原型网格 -->
+    <main class="game-grid" id="game-grid" role="main" aria-label="原型列表">
+      <!-- 动态生成原型卡片 -->
       <div class="loading">
         <div class="spinner" role="status" aria-label="加载中"></div>
       </div>
@@ -120,19 +153,48 @@
 
     <!-- 页脚 -->
     <footer class="footer">
-      <p>&copy; 2026 Pinable. All rights reserved.</p>
-      <div class="footer-links">
-        <a href="https://github.com/yourusername/pinable.cc" target="_blank" rel="noopener noreferrer">
-          GitHub
-        </a>
-        <a href="#" onclick="app?.showStatistics(); return false;">
-          统计
-        </a>
+      <div class="footer-content">
+        <div class="footer-section">
+          <h3>关于 Pinable</h3>
+          <p>基于 ChatGame 的 AI 驱动交互式原型平台，让创意快速成为现实。</p>
+        </div>
+        <div class="footer-section">
+          <h3>适用场景</h3>
+          <ul>
+            <li>📚 教育培训 - 知识点可视化</li>
+            <li>🎯 产品演示 - 快速原型验证</li>
+            <li>🎮 互动体验 - 游戏化学习</li>
+            <li>📊 流程展示 - 图形化呈现</li>
+          </ul>
+        </div>
+        <div class="footer-section">
+          <h3>核心特性</h3>
+          <ul>
+            <li>⚡ AI 快速生成</li>
+            <li>👁️ 所见即所得</li>
+            <li>🚀 一键发布</li>
+            <li>📱 跨平台访问</li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2026 Pinable. All rights reserved.</p>
+        <div class="footer-links">
+          <a href="https://github.com/yourusername/pinable.cc" target="_blank" rel="noopener noreferrer">
+            GitHub
+          </a>
+          <a href="#" onclick="app?.showStatistics(); return false;">
+            统计
+          </a>
+          <a href="USAGE.md" target="_blank">
+            使用指南
+          </a>
+        </div>
       </div>
     </footer>
   </div>
 
-  <!-- 游戏模态窗口（由 JavaScript 动态创建） -->
+  <!-- 原型模态窗口（由 JavaScript 动态创建） -->
 
   <!-- Scripts -->
   <!-- Lucide Icons -->

@@ -1,37 +1,68 @@
-# 🎮 Pinable Game Prototypes
+# 🚀 Pinable - AI 驱动的交互式原型平台
 
-> 创意游戏原型展示平台 - 探索、体验、分享
+> 基于 ChatGame 快速生成应用原型 - 所见即所得，一键发布
 
 [![GitHub Pages](https://img.shields.io/badge/GitHub%20Pages-Live-success)](https://pinable.cc)
 [![License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+[![ChatGame](https://img.shields.io/badge/Powered%20by-ChatGame-blue)](https://github.com/chatgame)
 
 ## 🌟 项目简介
 
-Pinable Game Prototypes 是一个现代化的游戏原型展示平台，用于展示和体验各种创意 HTML5 游戏原型。
+Pinable 是一个创新的 AI 驱动交互式原型平台，通过 ChatGame 技术快速生成各类应用原型。无论是知识点学习、流程可视化、互动小游戏还是产品演示，都能在几分钟内完成创建和发布。
 
 **在线访问：** [https://pinable.cc](https://pinable.cc)
 
-### ✨ 特性
+### ✨ 核心特性
 
-- 🎨 **现代化设计** - 渐变色、玻璃态效果、流畅动画
-- 🔍 **实时搜索** - 快速找到您想玩的游戏
-- 🏷️ **标签筛选** - 按类型、难度筛选游戏
+- 🤖 **AI 快速生成** - 基于 ChatGame 技术，自然语言描述即可生成原型
+- 📚 **知识点应用** - 将抽象概念转化为可交互的学习工具
+- 🔄 **流程图形化** - 复杂流程一目了然，支持交互式探索
+- 🎮 **互动小游戏** - 寓教于乐，提升学习和培训效果
+- 📊 **产品演示** - 快速制作产品原型，展示核心功能
+- 🎯 **所见即所得** - 实时预览，即时调整
+- 🚀 **一键发布** - 通过 GitHub Action 自动部署到网站
 - 📱 **响应式设计** - 完美适配桌面、平板、手机
-- ⚡ **高性能** - 优化的加载和渲染
-- 🎯 **即时体验** - 点击即玩，无需下载
 
-## 🎮 游戏列表
+## 🎯 使用场景
 
-### 精选游戏
+### 1. 📚 知识点学习
+将抽象的知识点转化为可交互的学习工具：
+- 数学公式可视化
+- 物理原理演示
+- 编程概念互动教学
+- 历史事件时间线
 
-1. **🎯 泡泡龙** - 经典泡泡射击游戏
+### 2. 🔄 流程可视化
+复杂流程一目了然：
+- 业务流程图
+- 决策树展示
+- 算法步骤演示
+- 工作流程说明
+
+### 3. 🎮 互动小游戏
+寓教于乐的学习方式：
+- 知识问答游戏
+- 技能训练工具
+- 团队协作游戏
+- 趣味测试
+
+### 4. 📊 产品演示
+快速制作产品原型：
+- 功能演示
+- 用户流程展示
+- 交互设计验证
+- 概念验证 (POC)
+
+## 🎮 精选原型
+
+1. **🎯 泡泡龙** - 经典射击游戏原型
    - 类型：休闲、益智、射击
-   - 难度：简单
+   - 适用：反应训练、休闲娱乐
    - 操作：鼠标点击
 
-2. **🐸 小青蛙旅行** - 可爱的平台跳跃游戏
+2. **🐸 小青蛙旅行** - 平台跳跃游戏原型
    - 类型：冒险、平台、休闲
-   - 难度：中等
+   - 适用：逻辑思维、空间感知
    - 操作：键盘/触摸
 
 ## 🚀 快速开始
@@ -100,44 +131,66 @@ pinable.cc/
 - **部署：** GitHub Pages
 - **域名：** pinable.cc
 
-## 📝 添加新游戏
+## 📝 创建和发布原型
 
-### 1. 准备游戏文件
+### 方法 1: 使用 ChatGame 生成
 
-将您的游戏 HTML 文件放入 `.chatgame/design_iterations/` 目录。
+1. **描述您的需求**
+   ```
+   我想创建一个展示二叉树遍历的交互式工具
+   ```
 
-### 2. 配置游戏信息
+2. **ChatGame 生成原型**
+   - AI 自动生成 HTML 原型文件
+   - 包含完整的交互逻辑和样式
 
-在 `assets/js/config.js` 中添加游戏配置：
+3. **本地测试**
+   ```bash
+   # 将生成的文件放入 .chatgame/design_iterations/
+   # 使用部署脚本自动发布
+   ./deploy.sh
+   ```
+
+### 方法 2: 手动创建
+
+1. **准备原型文件**
+   - 将 HTML 文件放入 `.chatgame/design_iterations/` 目录
+   - 文件名建议使用描述性命名，如 `binary_tree_traversal.html`
+
+2. **自动部署**
+   ```bash
+   # 运行部署脚本
+   ./deploy.sh
+   
+   # 脚本会自动：
+   # - 复制文件到 games/ 目录
+   # - 扫描并生成配置
+   # - 提交并推送到 GitHub
+   # - 触发 GitHub Pages 自动部署
+   ```
+
+3. **访问您的原型**
+   - 几分钟后访问 https://pinable.cc
+   - 您的原型会自动出现在列表中
+
+### 配置原型信息（可选）
+
+在 `assets/js/config.js` 中自定义原型信息：
 
 ```javascript
 {
-  id: 'your-game-id',
-  filename: 'your_game.html',
-  title: '🎮 您的游戏名称',
-  description: '游戏简短描述',
-  longDescription: '游戏详细描述',
-  tags: ['标签1', '标签2', '标签3'],
-  difficulty: 'easy', // easy, medium, hard
+  id: 'your-prototype-id',
+  filename: 'your_prototype.html',
+  title: '📚 您的原型名称',
+  description: '原型简短描述',
+  longDescription: '原型详细说明',
+  tags: ['知识点', '可视化', '教育'],
+  difficulty: 'easy',
   players: '单人',
-  controls: '键盘/鼠标',
+  controls: '鼠标/键盘',
   featured: false,
-  thumbnail: 'assets/images/game-thumbnails/your-game.png'
+  thumbnail: 'assets/images/game-thumbnails/your-prototype.png'
 }
-```
-
-### 3. 准备缩略图（可选）
-
-- 尺寸：800x600px
-- 格式：PNG 或 WebP
-- 位置：`assets/images/game-thumbnails/`
-
-### 4. 提交更改
-
-```bash
-git add .
-git commit -m "Add new game: 您的游戏名称"
-git push
 ```
 
 ## 🎨 自定义样式
@@ -218,6 +271,7 @@ git push
 
 ## 🙏 致谢
 
+- [ChatGame](https://github.com/chatgame) - AI 原型生成技术
 - [Lucide Icons](https://lucide.dev/) - 精美的图标库
 - [Google Fonts](https://fonts.google.com/) - 优质字体
 - [GitHub Pages](https://pages.github.com/) - 免费托管服务

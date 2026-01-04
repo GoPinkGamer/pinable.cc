@@ -1,5 +1,5 @@
 /**
- * 游戏配置文件
+ * 原型配置文件
  * 自动生成于: $(date)
  */
 
@@ -41,6 +41,14 @@ const GAMES_CONFIG = [
  * 标签颜色映射
  */
 const TAG_COLORS = {
+  // 应用类型
+  '知识点': '#3b82f6',
+  '流程': '#8b5cf6',
+  '教育': '#10b981',
+  '演示': '#f59e0b',
+  '可视化': '#06b6d4',
+  
+  // 游戏类型
   '休闲': '#4ade80',
   '益智': '#60a5fa',
   '射击': '#f87171',
@@ -50,7 +58,20 @@ const TAG_COLORS = {
   '可爱': '#fb923c',
   '动作': '#f97316',
   '策略': '#06b6d4',
-  '竞速': '#ef4444'
+  '竞速': '#ef4444',
+  
+  // 学科领域
+  '数学': '#6366f1',
+  '物理': '#ec4899',
+  '编程': '#14b8a6',
+  '历史': '#f97316',
+  '语言': '#a855f7',
+  
+  // 功能特性
+  '交互': '#22c55e',
+  '动画': '#eab308',
+  '图表': '#0ea5e9',
+  '测试': '#f43f5e'
 };
 
 /**
@@ -93,15 +114,48 @@ function getGameById(gameId) {
 }
 
 /**
- * 获取精选游戏
+ * 获取精选原型
  */
 function getFeaturedGames() {
   return GAMES_CONFIG.filter(game => game.featured);
 }
 
 /**
- * 按难度筛选游戏
+ * 按难度筛选原型
  */
 function getGamesByDifficulty(difficulty) {
   return GAMES_CONFIG.filter(game => game.difficulty === difficulty);
+}
+
+/**
+ * 按标签筛选原型
+ */
+function getGamesByTag(tag) {
+  return GAMES_CONFIG.filter(game => game.tags.includes(tag));
+}
+
+/**
+ * 获取原型类型统计
+ */
+function getPrototypeStats() {
+  const stats = {
+    total: GAMES_CONFIG.length,
+    featured: getFeaturedGames().length,
+    byDifficulty: {},
+    byTag: {}
+  };
+  
+  // 统计难度分布
+  GAMES_CONFIG.forEach(game => {
+    stats.byDifficulty[game.difficulty] = (stats.byDifficulty[game.difficulty] || 0) + 1;
+  });
+  
+  // 统计标签分布
+  GAMES_CONFIG.forEach(game => {
+    game.tags.forEach(tag => {
+      stats.byTag[tag] = (stats.byTag[tag] || 0) + 1;
+    });
+  });
+  
+  return stats;
 }
