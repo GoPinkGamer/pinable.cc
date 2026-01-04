@@ -97,7 +97,7 @@ class GameLoader {
    * @param {string} filename - 游戏文件名
    */
   loadGameInIframe(filename) {
-    const path = `.chatgame/design_iterations/${filename}`;
+    const path = `games/${filename}`;
     
     // 显示加载状态
     this.showLoading();

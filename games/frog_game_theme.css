@@ -1,0 +1,241 @@
+:root {
+  /* === 基础颜色 === */
+  --background: 224 100% 95%; /* 天空蓝背景 */
+  --foreground: 142 71% 25%; /* 深绿色文字 */
+  
+  /* === 主色调 - 青蛙绿 === */
+  --primary: 142 76% 58%; /* 鲜活的绿色 #4ADE80 */
+  --primary-foreground: 0 0% 100%; /* 白色文字 */
+  --primary-dark: 142 71% 45%; /* 深绿色 #22C55E */
+  
+  /* === 辅助色 === */
+  --secondary: 217 91% 68%; /* 天空蓝 #60A5FA */
+  --secondary-foreground: 0 0% 100%;
+  
+  /* === 强调色 === */
+  --accent: 330 81% 70%; /* 粉红色 #F472B6 花朵 */
+  --accent-foreground: 0 0% 100%;
+  
+  --gold: 43 96% 56%; /* 金黄色 #FBBF24 金币 */
+  --gold-foreground: 30 70% 20%;
+  
+  /* === 语义颜色 === */
+  --muted: 214 100% 92%; /* 柔和蓝 */
+  --muted-foreground: 215 16% 47%;
+  
+  --destructive: 0 84% 70%; /* 珊瑚红 #F87171 */
+  --destructive-foreground: 0 0% 100%;
+  
+  /* === UI元素 === */
+  --card: 0 0% 100%; /* 白色卡片 */
+  --card-foreground: 142 71% 25%;
+  
+  --popover: 0 0% 100%;
+  --popover-foreground: 142 71% 25%;
+  
+  --border: 214 100% 85%; /* 浅蓝边框 */
+  --input: 214 100% 90%;
+  --ring: 142 76% 58%; /* 聚焦环 */
+  
+  /* === 游戏特定颜色 === */
+  --water: 211 96% 60%; /* 水蓝色 #3B82F6 */
+  --water-dark: 211 96% 48%;
+  
+  --grass: 142 76% 58%; /* 草地绿 */
+  --grass-dark: 142 71% 45%;
+  
+  --stone: 210 11% 71%; /* 石头灰 */
+  --stone-dark: 215 14% 34%;
+  
+  --flower: 330 81% 70%; /* 花朵粉 */
+  --flower-center: 43 96% 56%; /* 花心黄 */
+  
+  --sky-start: 199 100% 93%; /* 天空渐变起始 #E0F2FE */
+  --sky-end: 199 100% 85%; /* 天空渐变结束 #BAE6FD */
+  
+  --cloud: 0 0% 100%; /* 云朵白 */
+  
+  /* === 图表颜色 === */
+  --chart-1: 142 76% 58%; /* 绿色 */
+  --chart-2: 217 91% 68%; /* 蓝色 */
+  --chart-3: 330 81% 70%; /* 粉色 */
+  --chart-4: 43 96% 56%; /* 黄色 */
+  --chart-5: 280 67% 68%; /* 紫色 */
+  
+  /* === 侧边栏 === */
+  --sidebar-background: 0 0% 100%;
+  --sidebar-foreground: 142 71% 25%;
+  --sidebar-primary: 142 76% 58%;
+  --sidebar-primary-foreground: 0 0% 100%;
+  --sidebar-accent: 214 100% 92%;
+  --sidebar-accent-foreground: 142 71% 25%;
+  --sidebar-border: 214 100% 85%;
+  --sidebar-ring: 142 76% 58%;
+  
+  /* === 字体 === */
+  --font-sans: 'Poppins', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-serif: 'Merriweather', Georgia, serif;
+  --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+  --font-display: 'Outfit', 'Poppins', sans-serif;
+  
+  /* === 圆角 === */
+  --radius: 24px; /* 大圆角，卡通风格 */
+  --radius-sm: 12px;
+  --radius-md: 16px;
+  --radius-lg: 24px;
+  --radius-xl: 32px;
+  --radius-full: 9999px;
+  
+  /* === 间距 === */
+  --spacing: 8px;
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 16px;
+  --spacing-lg: 24px;
+  --spacing-xl: 32px;
+  --spacing-2xl: 48px;
+  --spacing-3xl: 64px;
+  
+  /* === 阴影 === */
+  --shadow-xs: 0 1px 2px 0 rgba(34, 197, 94, 0.05);
+  --shadow-sm: 0 2px 4px 0 rgba(34, 197, 94, 0.1), 0 1px 2px 0 rgba(34, 197, 94, 0.06);
+  --shadow-md: 0 4px 8px -2px rgba(34, 197, 94, 0.15), 0 2px 4px -2px rgba(34, 197, 94, 0.1);
+  --shadow-lg: 0 10px 20px -5px rgba(34, 197, 94, 0.2), 0 4px 8px -4px rgba(34, 197, 94, 0.1);
+  --shadow-xl: 0 20px 30px -10px rgba(34, 197, 94, 0.25), 0 8px 16px -8px rgba(34, 197, 94, 0.15);
+  --shadow-2xl: 0 25px 50px -12px rgba(34, 197, 94, 0.3);
+  --shadow-inner: inset 0 2px 4px 0 rgba(34, 197, 94, 0.1);
+  
+  /* 按钮特殊阴影 */
+  --shadow-button: 0 4px 0 0 rgba(34, 197, 94, 0.4), 0 6px 12px -2px rgba(34, 197, 94, 0.3);
+  --shadow-button-hover: 0 2px 0 0 rgba(34, 197, 94, 0.4), 0 4px 8px -2px rgba(34, 197, 94, 0.3);
+  --shadow-button-active: 0 0 0 0 rgba(34, 197, 94, 0.4), 0 2px 4px -2px rgba(34, 197, 94, 0.3);
+  
+  /* 游戏元素阴影 */
+  --shadow-frog: 0 8px 16px -4px rgba(34, 197, 94, 0.4), 0 4px 8px -2px rgba(0, 0, 0, 0.1);
+  --shadow-platform: 0 4px 8px -2px rgba(0, 0, 0, 0.15);
+  --shadow-collectible: 0 4px 12px -2px rgba(244, 114, 182, 0.4);
+  
+  /* === 动画时长 === */
+  --duration-fast: 150ms;
+  --duration-normal: 250ms;
+  --duration-slow: 350ms;
+  --duration-jump: 500ms;
+  
+  /* === 缓动函数 === */
+  --ease-bounce: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  --ease-smooth: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-jump: cubic-bezier(0.36, 0, 0.66, -0.56);
+  
+  /* === Z-index层级 === */
+  --z-background: 0;
+  --z-game-bg: 10;
+  --z-platform: 20;
+  --z-collectible: 30;
+  --z-player: 40;
+  --z-ui: 50;
+  --z-modal: 100;
+}
+
+/* === 全局样式重置 === */
+* {
+  margin: 0 !important;
+  padding: 0 !important;
+  box-sizing: border-box !important;
+}
+
+body {
+  font-family: var(--font-sans) !important;
+  background: linear-gradient(180deg, hsl(var(--sky-start)), hsl(var(--sky-end))) !important;
+  color: hsl(var(--foreground)) !important;
+  line-height: 1.6 !important;
+  overflow: hidden !important;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-display) !important;
+  font-weight: 700 !important;
+  line-height: 1.2 !important;
+}
+
+h1 {
+  font-size: 2.5rem !important;
+  color: hsl(var(--primary)) !important;
+}
+
+h2 {
+  font-size: 2rem !important;
+}
+
+h3 {
+  font-size: 1.5rem !important;
+}
+
+/* === 按钮样式 === */
+.btn {
+  font-family: var(--font-display) !important;
+  font-weight: 600 !important;
+  border-radius: var(--radius) !important;
+  padding: var(--spacing-md) var(--spacing-xl) !important;
+  transition: all var(--duration-normal) var(--ease-smooth) !important;
+  cursor: pointer !important;
+  border: none !important;
+  font-size: 1.125rem !important;
+}
+
+.btn-primary {
+  background: hsl(var(--primary)) !important;
+  color: hsl(var(--primary-foreground)) !important;
+  box-shadow: var(--shadow-button) !important;
+}
+
+.btn-primary:hover {
+  background: hsl(var(--primary-dark)) !important;
+  box-shadow: var(--shadow-button-hover) !important;
+  transform: translateY(2px) !important;
+}
+
+.btn-primary:active {
+  box-shadow: var(--shadow-button-active) !important;
+  transform: translateY(4px) !important;
+}
+
+/* === 卡片样式 === */
+.card {
+  background: hsl(var(--card)) !important;
+  border-radius: var(--radius-lg) !important;
+  padding: var(--spacing-lg) !important;
+  box-shadow: var(--shadow-lg) !important;
+  border: 2px solid hsl(var(--border)) !important;
+}
+
+/* === 游戏特定样式 === */
+.game-container {
+  width: 100% !important;
+  height: 100vh !important;
+  position: relative !important;
+  overflow: hidden !important;
+}
+
+.frog {
+  filter: drop-shadow(var(--shadow-frog)) !important;
+  transition: transform var(--duration-jump) var(--ease-bounce) !important;
+}
+
+.platform {
+  box-shadow: var(--shadow-platform) !important;
+  border-radius: var(--radius-sm) !important;
+}
+
+.collectible {
+  animation: float 2s var(--ease-smooth) infinite !important;
+  filter: drop-shadow(var(--shadow-collectible)) !important;
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px) !important;
+  }
+  50% {
+    transform: translateY(-10px) !important;
+  }
+}

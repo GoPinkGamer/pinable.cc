@@ -1,0 +1,989 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🐸 小青蛙旅行 - Frog Travel Adventure</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Outfit:wght@700&family=JetBrains+Mono:wght@600&display=swap" rel="stylesheet">
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+    
+    <!-- Theme CSS -->
+    <link rel="stylesheet" href="frog_game_theme.css">
+    
+    <style>
+        /* 游戏容器 */
+        .game-wrapper {
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            overflow: hidden;
+            background: linear-gradient(180deg, #E0F2FE 0%, #BAE6FD 100%);
+        }
+
+        /* 顶部状态栏 */
+        .game-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 24px !important;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            border-bottom: 3px solid #BAE6FD;
+            z-index: var(--z-ui);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .game-title {
+            font-family: var(--font-display) !important;
+            font-size: 1.75rem !important;
+            font-weight: 700 !important;
+            color: #22C55E !important;
+            display: flex;
+            align-items: center;
+            gap: 8px !important;
+            margin: 0 !important;
+        }
+
+        .game-stats {
+            display: flex;
+            gap: 24px !important;
+            align-items: center;
+        }
+
+        .stat-item {
+            display: flex;
+            align-items: center;
+            gap: 6px !important;
+            font-family: var(--font-mono) !important;
+            font-size: 1.25rem !important;
+            font-weight: 600 !important;
+            color: #1E293B;
+        }
+
+        .hearts {
+            display: flex;
+            gap: 4px !important;
+        }
+
+        .heart {
+            width: 28px;
+            height: 28px;
+            color: #F87171;
+            animation: heartbeat 1.5s ease-in-out infinite;
+        }
+
+        @keyframes heartbeat {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        .coin-icon {
+            width: 24px;
+            height: 24px;
+            color: #FBBF24;
+            animation: spin 3s linear infinite;
+        }
+
+        @keyframes spin {
+            from { transform: rotateY(0deg); }
+            to { transform: rotateY(360deg); }
+        }
+
+        .timer-icon {
+            width: 24px;
+            height: 24px;
+            color: #60A5FA;
+        }
+
+        .timer-warning {
+            color: #F87171 !important;
+            animation: pulse 0.5s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        /* 游戏主区域 */
+        .game-canvas {
+            flex: 1;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* 背景层 */
+        .background-layer {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            z-index: var(--z-background);
+        }
+
+        .clouds {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+        }
+
+        .cloud {
+            position: absolute;
+            background: white;
+            border-radius: 100px;
+            opacity: 0.8;
+            animation: float-cloud linear infinite;
+        }
+
+        .cloud::before,
+        .cloud::after {
+            content: '';
+            position: absolute;
+            background: white;
+            border-radius: 100px;
+        }
+
+        .cloud-1 {
+            width: 100px;
+            height: 40px;
+            top: 10%;
+            left: 10%;
+            animation-duration: 30s;
+        }
+
+        .cloud-1::before {
+            width: 50px;
+            height: 50px;
+            top: -25px;
+            left: 10px;
+        }
+
+        .cloud-1::after {
+            width: 60px;
+            height: 40px;
+            top: -15px;
+            right: 10px;
+        }
+
+        .cloud-2 {
+            width: 120px;
+            height: 45px;
+            top: 20%;
+            left: 50%;
+            animation-duration: 40s;
+        }
+
+        .cloud-2::before {
+            width: 60px;
+            height: 60px;
+            top: -30px;
+            left: 15px;
+        }
+
+        .cloud-2::after {
+            width: 70px;
+            height: 45px;
+            top: -20px;
+            right: 15px;
+        }
+
+        .cloud-3 {
+            width: 80px;
+            height: 35px;
+            top: 15%;
+            left: 80%;
+            animation-duration: 35s;
+        }
+
+        .cloud-3::before {
+            width: 40px;
+            height: 40px;
+            top: -20px;
+            left: 10px;
+        }
+
+        .cloud-3::after {
+            width: 50px;
+            height: 35px;
+            top: -15px;
+            right: 10px;
+        }
+
+        @keyframes float-cloud {
+            from {
+                transform: translateX(0);
+            }
+            to {
+                transform: translateX(-100vw);
+            }
+        }
+
+        /* 游戏层 */
+        .game-layer {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            z-index: var(--z-game-bg);
+        }
+
+        /* 水面 */
+        .water {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            height: 120px;
+            background: linear-gradient(180deg, #60A5FA 0%, #3B82F6 100%);
+            overflow: hidden;
+        }
+
+        .wave {
+            position: absolute;
+            width: 200%;
+            height: 100%;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120"><path d="M0,60 Q300,0 600,60 T1200,60 L1200,120 L0,120 Z" fill="rgba(255,255,255,0.1)"/></svg>');
+            background-size: 50% 100%;
+            animation: wave 8s linear infinite;
+        }
+
+        .wave:nth-child(2) {
+            animation-duration: 12s;
+            animation-direction: reverse;
+            opacity: 0.5;
+        }
+
+        @keyframes wave {
+            from { transform: translateX(0); }
+            to { transform: translateX(-50%); }
+        }
+
+        /* 平台 */
+        .platform {
+            position: absolute;
+            background: linear-gradient(135deg, #22C55E 0%, #16A34A 100%);
+            border-radius: 50%;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2), inset 0 -2px 4px rgba(0, 0, 0, 0.1);
+            animation: float-platform 3s ease-in-out infinite;
+        }
+
+        @keyframes float-platform {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .platform-1 {
+            width: 100px;
+            height: 100px;
+            bottom: 140px;
+            left: 10%;
+            animation-delay: 0s;
+        }
+
+        .platform-2 {
+            width: 120px;
+            height: 120px;
+            bottom: 240px;
+            left: 30%;
+            animation-delay: 0.5s;
+        }
+
+        .platform-3 {
+            width: 90px;
+            height: 90px;
+            bottom: 180px;
+            left: 50%;
+            animation-delay: 1s;
+        }
+
+        .platform-4 {
+            width: 110px;
+            height: 110px;
+            bottom: 280px;
+            left: 70%;
+            animation-delay: 1.5s;
+        }
+
+        .platform-5 {
+            width: 100px;
+            height: 100px;
+            bottom: 160px;
+            right: 10%;
+            animation-delay: 2s;
+        }
+
+        /* 青蛙 */
+        .frog {
+            position: absolute;
+            width: 60px;
+            height: 60px;
+            bottom: 200px;
+            left: 10%;
+            z-index: var(--z-player);
+            transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            filter: drop-shadow(0 8px 16px rgba(34, 197, 94, 0.4));
+        }
+
+        .frog.jumping {
+            animation: jump 0.9s cubic-bezier(0.36, 0, 0.66, -0.56);
+        }
+
+        @keyframes jump {
+            0% { transform: translateY(0) scaleY(1); }
+            20% { transform: translateY(0) scaleY(0.8) scaleX(1.2); }
+            40% { transform: translateY(-150px) scaleY(1.1) scaleX(0.9); }
+            60% { transform: translateY(-180px) scaleY(1) scaleX(1); }
+            80% { transform: translateY(-150px) scaleY(1.1) scaleX(0.9); }
+            100% { transform: translateY(0) scaleY(1); }
+        }
+
+        .frog-body {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #4ADE80 0%, #22C55E 100%);
+            border-radius: 50% 50% 45% 45%;
+            position: relative;
+            animation: idle-breathe 2s ease-in-out infinite;
+        }
+
+        @keyframes idle-breathe {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .frog-eye {
+            position: absolute;
+            width: 18px;
+            height: 18px;
+            background: white;
+            border-radius: 50%;
+            top: 15%;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .frog-eye-left {
+            left: 20%;
+        }
+
+        .frog-eye-right {
+            right: 20%;
+        }
+
+        .frog-pupil {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background: #1E293B;
+            border-radius: 50%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            animation: blink 4s infinite;
+        }
+
+        @keyframes blink {
+            0%, 96%, 100% { transform: translate(-50%, -50%) scaleY(1); }
+            98% { transform: translate(-50%, -50%) scaleY(0.1); }
+        }
+
+        .frog-mouth {
+            position: absolute;
+            width: 30px;
+            height: 15px;
+            border: 3px solid #16A34A;
+            border-top: none;
+            border-radius: 0 0 15px 15px;
+            bottom: 25%;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        /* 收集物 - 花朵 */
+        .collectible {
+            position: absolute;
+            z-index: var(--z-collectible);
+            animation: float-collectible 2s ease-in-out infinite;
+            cursor: pointer;
+        }
+
+        @keyframes float-collectible {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-15px) rotate(5deg); }
+        }
+
+        .flower {
+            width: 40px;
+            height: 40px;
+            position: relative;
+        }
+
+        .flower-petal {
+            position: absolute;
+            width: 16px;
+            height: 16px;
+            background: #F472B6;
+            border-radius: 50%;
+        }
+
+        .flower-petal:nth-child(1) { top: 0; left: 12px; }
+        .flower-petal:nth-child(2) { top: 6px; right: 6px; transform: rotate(45deg); }
+        .flower-petal:nth-child(3) { top: 12px; right: 0; }
+        .flower-petal:nth-child(4) { bottom: 6px; right: 6px; transform: rotate(-45deg); }
+        .flower-petal:nth-child(5) { bottom: 0; left: 12px; }
+        .flower-petal:nth-child(6) { bottom: 6px; left: 6px; transform: rotate(45deg); }
+        .flower-petal:nth-child(7) { top: 12px; left: 0; }
+        .flower-petal:nth-child(8) { top: 6px; left: 6px; transform: rotate(-45deg); }
+
+        .flower-center {
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            background: #FBBF24;
+            border-radius: 50%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            box-shadow: 0 0 8px rgba(251, 191, 36, 0.6);
+        }
+
+        .flower-1 { top: 30%; left: 25%; animation-delay: 0s; }
+        .flower-2 { top: 45%; left: 55%; animation-delay: 0.5s; }
+        .flower-3 { top: 25%; right: 20%; animation-delay: 1s; }
+
+        /* 控制区域 */
+        .game-controls {
+            padding: 24px !important;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-top: 3px solid #BAE6FD;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 32px !important;
+            z-index: var(--z-ui);
+            box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .control-btn {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            border: none;
+            background: linear-gradient(135deg, #4ADE80 0%, #22C55E 100%);
+            color: white;
+            font-size: 1.5rem;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 6px 0 0 #16A34A, 0 8px 16px rgba(34, 197, 94, 0.3);
+            transition: all 0.15s ease;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .control-btn:hover {
+            transform: translateY(2px);
+            box-shadow: 0 4px 0 0 #16A34A, 0 6px 12px rgba(34, 197, 94, 0.3);
+        }
+
+        .control-btn:active {
+            transform: translateY(6px);
+            box-shadow: 0 0 0 0 #16A34A, 0 2px 8px rgba(34, 197, 94, 0.3);
+        }
+
+        .control-btn-jump {
+            width: 100px;
+            height: 100px;
+            font-size: 2rem;
+            background: linear-gradient(135deg, #60A5FA 0%, #3B82F6 100%);
+            box-shadow: 0 8px 0 0 #2563EB, 0 10px 20px rgba(59, 130, 246, 0.4);
+        }
+
+        .control-btn-jump:hover {
+            box-shadow: 0 6px 0 0 #2563EB, 0 8px 16px rgba(59, 130, 246, 0.4);
+        }
+
+        .control-btn-jump:active {
+            box-shadow: 0 0 0 0 #2563EB, 0 2px 8px rgba(59, 130, 246, 0.4);
+        }
+
+        /* 分数弹出动画 */
+        .score-popup {
+            position: absolute;
+            font-family: var(--font-display) !important;
+            font-size: 2rem !important;
+            font-weight: 700 !important;
+            color: #FBBF24;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            pointer-events: none;
+            z-index: var(--z-ui);
+            animation: popup 0.8s ease-out forwards;
+        }
+
+        @keyframes popup {
+            0% {
+                transform: translateY(0) scale(0.5);
+                opacity: 1;
+            }
+            50% {
+                transform: translateY(-30px) scale(1.2);
+            }
+            100% {
+                transform: translateY(-60px) scale(1);
+                opacity: 0;
+            }
+        }
+
+        /* 游戏结束/暂停遮罩 */
+        .game-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(8px);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: var(--z-modal);
+        }
+
+        .game-overlay.active {
+            display: flex;
+        }
+
+        .overlay-content {
+            background: white;
+            padding: 48px !important;
+            border-radius: 32px;
+            text-align: center;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            max-width: 400px;
+        }
+
+        .overlay-title {
+            font-family: var(--font-display) !important;
+            font-size: 3rem !important;
+            color: #22C55E !important;
+            margin-bottom: 24px !important;
+        }
+
+        .overlay-text {
+            font-size: 1.25rem !important;
+            color: #64748B;
+            margin-bottom: 32px !important;
+        }
+
+        .overlay-btn {
+            padding: 16px 48px !important;
+            font-size: 1.25rem !important;
+            font-weight: 700 !important;
+            background: linear-gradient(135deg, #4ADE80 0%, #22C55E 100%);
+            color: white;
+            border: none;
+            border-radius: 24px;
+            cursor: pointer;
+            box-shadow: 0 6px 0 0 #16A34A, 0 8px 16px rgba(34, 197, 94, 0.3);
+            transition: all 0.15s ease;
+        }
+
+        .overlay-btn:hover {
+            transform: translateY(2px);
+            box-shadow: 0 4px 0 0 #16A34A, 0 6px 12px rgba(34, 197, 94, 0.3);
+        }
+
+        .overlay-btn:active {
+            transform: translateY(6px);
+            box-shadow: 0 0 0 0 #16A34A, 0 2px 8px rgba(34, 197, 94, 0.3);
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .game-title {
+                font-size: 1.25rem !important;
+            }
+
+            .game-stats {
+                gap: 12px !important;
+            }
+
+            .stat-item {
+                font-size: 1rem !important;
+            }
+
+            .control-btn {
+                width: 70px;
+                height: 70px;
+            }
+
+            .control-btn-jump {
+                width: 90px;
+                height: 90px;
+            }
+        }
+
+        /* Google AdSense 横幅广告样式 */
+        .ad-banner {
+            width: 100%;
+            min-height: 90px;
+            background: rgba(255, 255, 255, 0.95);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-bottom: 2px solid #E0F2FE;
+        }
+    </style>
+</head>
+<body>
+    <!-- Google AdSense 横幅广告 -->
+    <div class="ad-banner">
+        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3137049467355939"
+             crossorigin="anonymous"></script>
+        <ins class="adsbygoogle"
+             style="display:block"
+             data-ad-client="ca-pub-3137049467355939"
+             data-ad-slot="4769400852"
+             data-ad-format="auto"
+             data-full-width-responsive="true"></ins>
+        <script>
+             (adsbygoogle = window.adsbygoogle || []).push({});
+        </script>
+    </div>
+
+    <div class="game-wrapper">
+        <!-- 顶部状态栏 -->
+        <header class="game-header">
+            <h1 class="game-title">
+                <span>🐸</span>
+                <span>小青蛙旅行</span>
+            </h1>
+            <div class="game-stats">
+                <div class="stat-item hearts">
+                    <i data-lucide="heart" class="heart"></i>
+                    <i data-lucide="heart" class="heart"></i>
+                    <i data-lucide="heart" class="heart"></i>
+                </div>
+                <div class="stat-item">
+                    <i data-lucide="coins" class="coin-icon"></i>
+                    <span id="score">0</span>
+                </div>
+                <div class="stat-item">
+                    <i data-lucide="timer" class="timer-icon"></i>
+                    <span id="timer">60</span>s
+                </div>
+            </div>
+        </header>
+
+        <!-- 游戏主区域 -->
+        <main class="game-canvas">
+            <!-- 背景层 -->
+            <div class="background-layer">
+                <div class="clouds">
+                    <div class="cloud cloud-1"></div>
+                    <div class="cloud cloud-2"></div>
+                    <div class="cloud cloud-3"></div>
+                </div>
+            </div>
+
+            <!-- 游戏层 -->
+            <div class="game-layer">
+                <!-- 水面 -->
+                <div class="water">
+                    <div class="wave"></div>
+                    <div class="wave"></div>
+                </div>
+
+                <!-- 平台 -->
+                <div class="platform platform-1"></div>
+                <div class="platform platform-2"></div>
+                <div class="platform platform-3"></div>
+                <div class="platform platform-4"></div>
+                <div class="platform platform-5"></div>
+
+                <!-- 收集物 - 花朵 -->
+                <div class="collectible flower-1" data-points="10">
+                    <div class="flower">
+                        <div class="flower-petal"></div>
+                        <div class="flower-petal"></div>
+                        <div class="flower-petal"></div>
+                        <div class="flower-petal"></div>
+                        <div class="flower-petal"></div>
+                        <div class="flower-petal"></div>
+                        <div class="flower-petal"></div>
+                        <div class="flower-petal"></div>
+                        <div class="flower-center"></div>
+                    </div>
+                </div>
+                <div class="collectible flower-2" data-points="10">
+                    <div class="flower">
+                        <div class="flower-petal"></div>
+                        <div class="flower-petal"></div>
+                        <div class="flower-petal"></div>
+                        <div class="flower-petal"></div>
+                        <div class="flower-petal"></div>
+                        <div class="flower-petal"></div>
+                        <div class="flower-petal"></div>
+                        <div class="flower-petal"></div>
+                        <div class="flower-center"></div>
+                    </div>
+                </div>
+                <div class="collectible flower-3" data-points="10">
+                    <div class="flower">
+                        <div class="flower-petal"></div>
+                        <div class="flower-petal"></div>
+                        <div class="flower-petal"></div>
+                        <div class="flower-petal"></div>
+                        <div class="flower-petal"></div>
+                        <div class="flower-petal"></div>
+                        <div class="flower-petal"></div>
+                        <div class="flower-petal"></div>
+                        <div class="flower-center"></div>
+                    </div>
+                </div>
+
+                <!-- 青蛙 -->
+                <div class="frog" id="frog">
+                    <div class="frog-body">
+                        <div class="frog-eye frog-eye-left">
+                            <div class="frog-pupil"></div>
+                        </div>
+                        <div class="frog-eye frog-eye-right">
+                            <div class="frog-pupil"></div>
+                        </div>
+                        <div class="frog-mouth"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 游戏结束/暂停遮罩 -->
+            <div class="game-overlay" id="gameOverlay">
+                <div class="overlay-content">
+                    <h2 class="overlay-title" id="overlayTitle">游戏结束</h2>
+                    <p class="overlay-text" id="overlayText">你的得分：<span id="finalScore">0</span></p>
+                    <button class="overlay-btn" id="restartBtn">重新开始</button>
+                </div>
+            </div>
+        </main>
+
+        <!-- 控制区域 -->
+        <footer class="game-controls">
+            <button class="control-btn" id="leftBtn" aria-label="向左移动">
+                <i data-lucide="arrow-left"></i>
+            </button>
+            <button class="control-btn control-btn-jump" id="jumpBtn" aria-label="跳跃">
+                <i data-lucide="arrow-up"></i>
+            </button>
+            <button class="control-btn" id="rightBtn" aria-label="向右移动">
+                <i data-lucide="arrow-right"></i>
+            </button>
+        </footer>
+    </div>
+
+    <script>
+        // 初始化 Lucide 图标
+        lucide.createIcons();
+
+        // 游戏状态
+        const gameState = {
+            score: 0,
+            lives: 3,
+            time: 60,
+            isPlaying: true,
+            frogPosition: { x: 10, y: 200 },
+            isJumping: false
+        };
+
+        // DOM 元素
+        const frog = document.getElementById('frog');
+        const scoreDisplay = document.getElementById('score');
+        const timerDisplay = document.getElementById('timer');
+        const gameOverlay = document.getElementById('gameOverlay');
+        const overlayTitle = document.getElementById('overlayTitle');
+        const overlayText = document.getElementById('overlayText');
+        const finalScore = document.getElementById('finalScore');
+        const restartBtn = document.getElementById('restartBtn');
+        const leftBtn = document.getElementById('leftBtn');
+        const rightBtn = document.getElementById('rightBtn');
+        const jumpBtn = document.getElementById('jumpBtn');
+        const hearts = document.querySelectorAll('.heart');
+
+        // 控制按钮事件
+        leftBtn.addEventListener('click', () => moveFrog('left'));
+        rightBtn.addEventListener('click', () => moveFrog('right'));
+        jumpBtn.addEventListener('click', () => jump());
+
+        // 键盘控制
+        document.addEventListener('keydown', (e) => {
+            if (!gameState.isPlaying) return;
+            
+            switch(e.key) {
+                case 'ArrowLeft':
+                case 'a':
+                case 'A':
+                    moveFrog('left');
+                    break;
+                case 'ArrowRight':
+                case 'd':
+                case 'D':
+                    moveFrog('right');
+                    break;
+                case 'ArrowUp':
+                case 'w':
+                case 'W':
+                case ' ':
+                    jump();
+                    break;
+            }
+        });
+
+        // 移动青蛙
+        function moveFrog(direction) {
+            if (!gameState.isPlaying || gameState.isJumping) return;
+
+            const moveAmount = 15;
+            const maxX = window.innerWidth - 80;
+
+            if (direction === 'left') {
+                gameState.frogPosition.x = Math.max(0, gameState.frogPosition.x - moveAmount);
+            } else if (direction === 'right') {
+                gameState.frogPosition.x = Math.min(maxX, gameState.frogPosition.x + moveAmount);
+            }
+
+            updateFrogPosition();
+        }
+
+        // 跳跃
+        function jump() {
+            if (!gameState.isPlaying || gameState.isJumping) return;
+
+            gameState.isJumping = true;
+            frog.classList.add('jumping');
+
+            // 检测收集物碰撞
+            setTimeout(() => {
+                checkCollectibles();
+            }, 400);
+
+            setTimeout(() => {
+                gameState.isJumping = false;
+                frog.classList.remove('jumping');
+            }, 900);
+        }
+
+        // 更新青蛙位置
+        function updateFrogPosition() {
+            frog.style.left = gameState.frogPosition.x + 'px';
+        }
+
+        // 检测收集物碰撞
+        function checkCollectibles() {
+            const collectibles = document.querySelectorAll('.collectible');
+            const frogRect = frog.getBoundingClientRect();
+
+            collectibles.forEach(collectible => {
+                if (collectible.style.display === 'none') return;
+
+                const collectibleRect = collectible.getBoundingClientRect();
+                
+                if (isColliding(frogRect, collectibleRect)) {
+                    const points = parseInt(collectible.dataset.points);
+                    addScore(points, collectibleRect.left, collectibleRect.top);
+                    collectible.style.display = 'none';
+                }
+            });
+        }
+
+        // 碰撞检测
+        function isColliding(rect1, rect2) {
+            return !(rect1.right < rect2.left || 
+                     rect1.left > rect2.right || 
+                     rect1.bottom < rect2.top || 
+                     rect1.top > rect2.bottom);
+        }
+
+        // 添加分数
+        function addScore(points, x, y) {
+            gameState.score += points;
+            scoreDisplay.textContent = gameState.score;
+
+            // 显示分数弹出
+            const popup = document.createElement('div');
+            popup.className = 'score-popup';
+            popup.textContent = '+' + points;
+            popup.style.left = x + 'px';
+            popup.style.top = y + 'px';
+            document.querySelector('.game-canvas').appendChild(popup);
+
+            setTimeout(() => {
+                popup.remove();
+            }, 800);
+        }
+
+        // 失去生命
+        function loseLife() {
+            if (gameState.lives > 0) {
+                gameState.lives--;
+                hearts[gameState.lives].style.opacity = '0.3';
+
+                if (gameState.lives === 0) {
+                    gameOver();
+                }
+            }
+        }
+
+        // 游戏计时器
+        function startTimer() {
+            const timerInterval = setInterval(() => {
+                if (!gameState.isPlaying) {
+                    clearInterval(timerInterval);
+                    return;
+                }
+
+                gameState.time--;
+                timerDisplay.textContent = gameState.time;
+
+                // 时间警告
+                if (gameState.time <= 10) {
+                    timerDisplay.parentElement.classList.add('timer-warning');
+                }
+
+                if (gameState.time <= 0) {
+                    clearInterval(timerInterval);
+                    gameOver();
+                }
+            }, 1000);
+        }
+
+        // 游戏结束
+        function gameOver() {
+            gameState.isPlaying = false;
+            overlayTitle.textContent = '游戏结束！';
+            overlayText.innerHTML = `你的得分：<strong>${gameState.score}</strong>`;
+            finalScore.textContent = gameState.score;
+            gameOverlay.classList.add('active');
+        }
+
+        // 重新开始
+        restartBtn.addEventListener('click', () => {
+            location.reload();
+        });
+
+        // 初始化游戏
+        function initGame() {
+            updateFrogPosition();
+            startTimer();
+        }
+
+        // 启动游戏
+        initGame();
+    </script>
+</body>
+</html>
