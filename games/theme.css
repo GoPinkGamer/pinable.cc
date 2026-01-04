@@ -1,0 +1,105 @@
+:root {
+  /* 基础色彩 - 宣纸与墨色 */
+  --background: 45 20% 92%; /* 宣纸米黄 */
+  --foreground: 30 15% 15%; /* 墨黑色 */
+  
+  /* 主色调 - 朱砂红 */
+  --primary: 0 65% 45%; /* 朱砂红 */
+  --primary-foreground: 45 20% 98%; /* 浅宣纸色 */
+  
+  /* 次要色 - 深棕木色 */
+  --secondary: 25 35% 35%; /* 深棕木色 */
+  --secondary-foreground: 45 20% 95%; /* 浅米色 */
+  
+  /* 柔和色 - 淡墨色 */
+  --muted: 30 15% 85%; /* 淡墨灰 */
+  --muted-foreground: 30 15% 40%; /* 中墨色 */
+  
+  /* 强调色 - 金黄色 */
+  --accent: 45 85% 55%; /* 金黄色 */
+  --accent-foreground: 30 15% 15%; /* 深墨色 */
+  
+  /* 破坏性操作 - 深红 */
+  --destructive: 0 70% 40%; /* 深红色 */
+  --destructive-foreground: 45 20% 98%; /* 浅色文字 */
+  
+  /* 边框与输入 */
+  --border: 30 20% 75%; /* 淡棕边框 */
+  --input: 30 20% 70%; /* 输入框边框 */
+  --ring: 0 65% 45%; /* 焦点环-朱砂红 */
+  
+  /* 卡片与弹出层 */
+  --card: 45 25% 96%; /* 卡片背景-浅宣纸 */
+  --card-foreground: 30 15% 15%; /* 卡片文字 */
+  --popover: 45 25% 97%; /* 弹出层背景 */
+  --popover-foreground: 30 15% 15%; /* 弹出层文字 */
+  
+  /* 侧边栏 */
+  --sidebar-background: 30 25% 25%; /* 深木色 */
+  --sidebar-foreground: 45 20% 90%; /* 浅色文字 */
+  --sidebar-primary: 0 65% 45%; /* 朱砂红 */
+  --sidebar-primary-foreground: 45 20% 98%; /* 浅色 */
+  --sidebar-accent: 45 85% 55%; /* 金黄强调 */
+  --sidebar-accent-foreground: 30 15% 15%; /* 深色文字 */
+  --sidebar-border: 30 20% 35%; /* 深边框 */
+  --sidebar-ring: 0 65% 45%; /* 焦点环 */
+  
+  /* 图表色彩 - 五行色系 */
+  --chart-1: 140 50% 45%; /* 木-青绿 */
+  --chart-2: 0 65% 50%; /* 火-朱红 */
+  --chart-3: 45 75% 55%; /* 土-黄色 */
+  --chart-4: 0 0% 85%; /* 金-银白 */
+  --chart-5: 210 40% 35%; /* 水-深蓝 */
+  
+  /* 字体家族 */
+  --font-sans: 'ZCOOL XiaoWei', 'Noto Sans SC', 'Microsoft YaHei', sans-serif;
+  --font-serif: 'Noto Serif SC', 'STSong', 'SimSun', serif;
+  --font-mono: 'JetBrains Mono', 'Courier New', monospace;
+  --font-calligraphy: 'Ma Shan Zheng', 'KaiTi', 'STKaiti', cursive;
+  
+  /* 圆角 - 古朴方正 */
+  --radius: 4px;
+  --radius-sm: 2px;
+  --radius-md: 6px;
+  --radius-lg: 8px;
+  --radius-xl: 12px;
+  
+  /* 间距系统 - 8px基准 */
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 16px;
+  --spacing-lg: 24px;
+  --spacing-xl: 32px;
+  --spacing-2xl: 48px;
+  --spacing-3xl: 64px;
+  
+  /* 阴影 - 水墨晕染效果 */
+  --shadow-xs: 0 1px 2px rgba(30, 20, 10, 0.08);
+  --shadow-sm: 0 2px 4px rgba(30, 20, 10, 0.10), 0 1px 2px rgba(30, 20, 10, 0.06);
+  --shadow-md: 0 4px 8px rgba(30, 20, 10, 0.12), 0 2px 4px rgba(30, 20, 10, 0.08);
+  --shadow-lg: 0 8px 16px rgba(30, 20, 10, 0.14), 0 4px 8px rgba(30, 20, 10, 0.10);
+  --shadow-xl: 0 12px 24px rgba(30, 20, 10, 0.16), 0 6px 12px rgba(30, 20, 10, 0.12);
+  --shadow-2xl: 0 20px 40px rgba(30, 20, 10, 0.20), 0 10px 20px rgba(30, 20, 10, 0.15);
+  --shadow-inner: inset 0 2px 4px rgba(30, 20, 10, 0.10);
+  
+  /* 棋盘专用变量 */
+  --board-bg: 40 30% 45%; /* 木质棋盘色 */
+  --board-line: 30 25% 25%; /* 棋盘线条色 */
+  --piece-red: 0 70% 45%; /* 红方棋子 */
+  --piece-black: 30 15% 15%; /* 黑方棋子 */
+  --piece-shadow: 0 3px 8px rgba(0, 0, 0, 0.3);
+  
+  /* 过渡动画 */
+  --transition-fast: 150ms ease-in-out;
+  --transition-base: 250ms ease-in-out;
+  --transition-slow: 400ms ease-in-out;
+  
+  /* 层级 */
+  --z-dropdown: 1000;
+  --z-sticky: 1020;
+  --z-fixed: 1030;
+  --z-modal-backdrop: 1040;
+  --z-modal: 1050;
+  --z-popover: 1060;
+  --z-tooltip: 1070;
+}

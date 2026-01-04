@@ -1,5 +1,5 @@
 /**
- * 原型配置文件
+ * 游戏配置文件
  * 自动生成于: $(date)
  */
 
@@ -35,20 +35,92 @@ const GAMES_CONFIG = [
     controls: '键盘/触摸',
     addedDate: '2026-01-04'
   }
+,
+  {
+    id: 'chinese-chess-1-3',
+    filename: 'chinese_chess_1_3.html',
+    title: '🎮 chinese chess 1 3',
+    description: '有趣的游戏原型，快来体验吧！',
+    longDescription: '有趣的游戏原型，快来体验吧！',
+    tags: ['休闲', '益智'],
+    theme: 'chinese_chess_1_3_theme.css',
+    thumbnail: 'assets/images/game-thumbnails/chinese-chess-1-3.png',
+    featured: true,
+    difficulty: 'easy',
+    players: '单人',
+    controls: '鼠标/键盘',
+    addedDate: '2026-01-04'
+  }
+,
+  {
+    id: 'chinese-chess-1-2',
+    filename: 'chinese_chess_1_2.html',
+    title: '🎮 chinese chess 1 2',
+    description: '有趣的游戏原型，快来体验吧！',
+    longDescription: '有趣的游戏原型，快来体验吧！',
+    tags: ['休闲', '益智'],
+    theme: 'chinese_chess_1_2_theme.css',
+    thumbnail: 'assets/images/game-thumbnails/chinese-chess-1-2.png',
+    featured: true,
+    difficulty: 'easy',
+    players: '单人',
+    controls: '鼠标/键盘',
+    addedDate: '2026-01-04'
+  }
+,
+  {
+    id: 'chinese-chess-1',
+    filename: 'chinese_chess_1.html',
+    title: '🎮 chinese chess 1',
+    description: '有趣的游戏原型，快来体验吧！',
+    longDescription: '有趣的游戏原型，快来体验吧！',
+    tags: ['休闲', '益智'],
+    theme: 'chinese_chess_1_theme.css',
+    thumbnail: 'assets/images/game-thumbnails/chinese-chess-1.png',
+    featured: true,
+    difficulty: 'easy',
+    players: '单人',
+    controls: '鼠标/键盘',
+    addedDate: '2026-01-04'
+  }
+,
+  {
+    id: '2048-game-1',
+    filename: '2048_game_1.html',
+    title: '🎮 2048 game 1',
+    description: '有趣的游戏原型，快来体验吧！',
+    longDescription: '有趣的游戏原型，快来体验吧！',
+    tags: ['休闲', '益智'],
+    theme: '2048_game_1_theme.css',
+    thumbnail: 'assets/images/game-thumbnails/2048-game-1.png',
+    featured: true,
+    difficulty: 'easy',
+    players: '单人',
+    controls: '鼠标/键盘',
+    addedDate: '2026-01-04'
+  }
+,
+  {
+    id: 'chinese-chess-1-1',
+    filename: 'chinese_chess_1_1.html',
+    title: '🎮 chinese chess 1 1',
+    description: '有趣的游戏原型，快来体验吧！',
+    longDescription: '有趣的游戏原型，快来体验吧！',
+    tags: ['休闲', '益智'],
+    theme: 'chinese_chess_1_1_theme.css',
+    thumbnail: 'assets/images/game-thumbnails/chinese-chess-1-1.png',
+    featured: true,
+    difficulty: 'easy',
+    players: '单人',
+    controls: '鼠标/键盘',
+    addedDate: '2026-01-04'
+  }
 ];
 
 /**
  * 标签颜色映射
  */
 const TAG_COLORS = {
-  // 应用类型
-  '知识点': '#3b82f6',
-  '流程': '#8b5cf6',
-  '教育': '#10b981',
-  '演示': '#f59e0b',
-  '可视化': '#06b6d4',
-  
-  // 游戏类型
   '休闲': '#4ade80',
   '益智': '#60a5fa',
   '射击': '#f87171',
@@ -58,20 +130,7 @@ const TAG_COLORS = {
   '可爱': '#fb923c',
   '动作': '#f97316',
   '策略': '#06b6d4',
-  '竞速': '#ef4444',
-  
-  // 学科领域
-  '数学': '#6366f1',
-  '物理': '#ec4899',
-  '编程': '#14b8a6',
-  '历史': '#f97316',
-  '语言': '#a855f7',
-  
-  // 功能特性
-  '交互': '#22c55e',
-  '动画': '#eab308',
-  '图表': '#0ea5e9',
-  '测试': '#f43f5e'
+  '竞速': '#ef4444'
 };
 
 /**
@@ -114,48 +173,15 @@ function getGameById(gameId) {
 }
 
 /**
- * 获取精选原型
+ * 获取精选游戏
  */
 function getFeaturedGames() {
   return GAMES_CONFIG.filter(game => game.featured);
 }
 
 /**
- * 按难度筛选原型
+ * 按难度筛选游戏
  */
 function getGamesByDifficulty(difficulty) {
   return GAMES_CONFIG.filter(game => game.difficulty === difficulty);
-}
-
-/**
- * 按标签筛选原型
- */
-function getGamesByTag(tag) {
-  return GAMES_CONFIG.filter(game => game.tags.includes(tag));
-}
-
-/**
- * 获取原型类型统计
- */
-function getPrototypeStats() {
-  const stats = {
-    total: GAMES_CONFIG.length,
-    featured: getFeaturedGames().length,
-    byDifficulty: {},
-    byTag: {}
-  };
-  
-  // 统计难度分布
-  GAMES_CONFIG.forEach(game => {
-    stats.byDifficulty[game.difficulty] = (stats.byDifficulty[game.difficulty] || 0) + 1;
-  });
-  
-  // 统计标签分布
-  GAMES_CONFIG.forEach(game => {
-    game.tags.forEach(tag => {
-      stats.byTag[tag] = (stats.byTag[tag] || 0) + 1;
-    });
-  });
-  
-  return stats;
 }

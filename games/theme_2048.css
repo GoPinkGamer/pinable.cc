@@ -1,0 +1,111 @@
+:root {
+  /* Background Colors */
+  --background: 250 248 239;
+  --foreground: 119 110 101;
+  
+  /* Primary Brand Colors - Warm Orange/Yellow */
+  --primary: 237 194 46;
+  --primary-foreground: 249 246 242;
+  
+  /* Secondary Colors */
+  --secondary: 238 228 218;
+  --secondary-foreground: 119 110 101;
+  
+  /* Muted Colors */
+  --muted: 187 173 160;
+  --muted-foreground: 119 110 101;
+  
+  /* Accent Colors */
+  --accent: 237 194 46;
+  --accent-foreground: 249 246 242;
+  
+  /* Destructive Colors */
+  --destructive: 220 53 69;
+  --destructive-foreground: 255 255 255;
+  
+  /* UI Element Colors */
+  --border: 187 173 160;
+  --input: 238 228 218;
+  --ring: 237 194 46;
+  
+  /* Card Colors */
+  --card: 187 173 160;
+  --card-foreground: 119 110 101;
+  
+  /* Popover Colors */
+  --popover: 255 255 255;
+  --popover-foreground: 119 110 101;
+  
+  /* Tile Colors for 2048 Game */
+  --tile-empty: 205 193 180;
+  --tile-2: 238 228 218;
+  --tile-4: 237 224 200;
+  --tile-8: 242 177 121;
+  --tile-16: 245 149 99;
+  --tile-32: 246 124 95;
+  --tile-64: 246 94 59;
+  --tile-128: 237 207 114;
+  --tile-256: 237 204 97;
+  --tile-512: 237 200 80;
+  --tile-1024: 237 197 63;
+  --tile-2048: 237 194 46;
+  --tile-super: 60 58 50;
+  
+  /* Chart Colors */
+  --chart-1: 237 194 46;
+  --chart-2: 242 177 121;
+  --chart-3: 246 124 95;
+  --chart-4: 237 207 114;
+  --chart-5: 187 173 160;
+  
+  /* Sidebar Colors */
+  --sidebar-background: 250 248 239;
+  --sidebar-foreground: 119 110 101;
+  --sidebar-primary: 237 194 46;
+  --sidebar-primary-foreground: 249 246 242;
+  --sidebar-accent: 238 228 218;
+  --sidebar-accent-foreground: 119 110 101;
+  --sidebar-border: 187 173 160;
+  --sidebar-ring: 237 194 46;
+  
+  /* Typography */
+  --font-sans: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-serif: 'Merriweather', Georgia, serif;
+  --font-mono: 'JetBrains Mono', 'Courier New', monospace;
+  
+  /* Spacing */
+  --spacing-xs: 0.25rem;
+  --spacing-sm: 0.5rem;
+  --spacing-md: 1rem;
+  --spacing-lg: 1.5rem;
+  --spacing-xl: 2rem;
+  --spacing-2xl: 3rem;
+  
+  /* Border Radius */
+  --radius-sm: 0.375rem;
+  --radius: 0.75rem;
+  --radius-md: 0.75rem;
+  --radius-lg: 1rem;
+  --radius-xl: 1.5rem;
+  
+  /* Shadows */
+  --shadow-xs: 0 1px 2px 0 rgba(119, 110, 101, 0.05);
+  --shadow-sm: 0 1px 3px 0 rgba(119, 110, 101, 0.1), 0 1px 2px -1px rgba(119, 110, 101, 0.1);
+  --shadow-md: 0 4px 6px -1px rgba(119, 110, 101, 0.1), 0 2px 4px -2px rgba(119, 110, 101, 0.1);
+  --shadow-lg: 0 10px 15px -3px rgba(119, 110, 101, 0.1), 0 4px 6px -4px rgba(119, 110, 101, 0.1);
+  --shadow-xl: 0 20px 25px -5px rgba(119, 110, 101, 0.1), 0 8px 10px -6px rgba(119, 110, 101, 0.1);
+  --shadow-2xl: 0 25px 50px -12px rgba(119, 110, 101, 0.25);
+  --shadow-inner: inset 0 2px 4px 0 rgba(119, 110, 101, 0.05);
+  
+  /* Game Specific */
+  --game-board-bg: 187 173 160;
+  --game-board-radius: 1rem;
+  --tile-size: 70px;
+  --tile-gap: 12px;
+  --tile-radius: 0.5rem;
+  
+  /* Animation Durations */
+  --duration-fast: 150ms;
+  --duration-normal: 250ms;
+  --duration-slow: 350ms;
+}
