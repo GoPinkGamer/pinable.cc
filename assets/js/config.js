@@ -17,7 +17,7 @@ const GAMES_CONFIG = [
     difficulty: 'easy',
     players: '单人',
     controls: '鼠标点击',
-    addedDate: '2026-01-04'
+    addedDate: '2026-01-05'
   }
 ,
   {
@@ -33,7 +33,7 @@ const GAMES_CONFIG = [
     difficulty: 'medium',
     players: '单人',
     controls: '键盘/触摸',
-    addedDate: '2026-01-04'
+    addedDate: '2026-01-05'
   }
 ,
   {
@@ -49,7 +49,7 @@ const GAMES_CONFIG = [
     difficulty: 'easy',
     players: '单人',
     controls: '鼠标/键盘',
-    addedDate: '2026-01-04'
+    addedDate: '2026-01-05'
   }
 ,
   {
@@ -65,7 +65,7 @@ const GAMES_CONFIG = [
     difficulty: 'easy',
     players: '单人',
     controls: '鼠标/键盘',
-    addedDate: '2026-01-04'
+    addedDate: '2026-01-05'
   }
 ,
   {
@@ -81,7 +81,7 @@ const GAMES_CONFIG = [
     difficulty: 'easy',
     players: '单人',
     controls: '鼠标/键盘',
-    addedDate: '2026-01-04'
+    addedDate: '2026-01-05'
   }
 ,
   {
@@ -97,7 +97,7 @@ const GAMES_CONFIG = [
     difficulty: 'easy',
     players: '单人',
     controls: '鼠标/键盘',
-    addedDate: '2026-01-04'
+    addedDate: '2026-01-05'
   }
 ,
   {
@@ -113,7 +113,7 @@ const GAMES_CONFIG = [
     difficulty: 'easy',
     players: '单人',
     controls: '鼠标/键盘',
-    addedDate: '2026-01-04'
+    addedDate: '2026-01-05'
   }
 ];
 

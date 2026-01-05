@@ -9,6 +9,7 @@ class App {
     this.gameGrid = null;
     this.searchInput = null;
     this.tagFilters = null;
+    this.siteHeader = null;
     this.allTags = getAllTags();
   }
 
@@ -22,7 +23,8 @@ class App {
     this.renderGames(GAMES_CONFIG);
     this.bindEvents();
     this.initLucideIcons();
-    
+    this.initHeaderScroll();
+
     console.log('🎮 Pinable Game Prototypes initialized!');
   }
 
@@ -33,6 +35,28 @@ class App {
     this.gameGrid = document.getElementById('game-grid');
     this.searchInput = document.getElementById('search-input');
     this.tagFilters = document.getElementById('tag-filters');
+    this.siteHeader = document.getElementById('site-header');
+  }
+
+  /**
+   * 初始化 Header 滚动效果
+   */
+  initHeaderScroll() {
+    if (!this.siteHeader) return;
+
+    const handleScroll = () => {
+      if (window.scrollY > 50) {
+        this.siteHeader.classList.add('scrolled');
+      } else {
+        this.siteHeader.classList.remove('scrolled');
+      }
+    };
+
+    // 初始检查
+    handleScroll();
+
+    // 使用 passive 监听器优化性能
+    window.addEventListener('scroll', handleScroll, { passive: true });
   }
 
   /**

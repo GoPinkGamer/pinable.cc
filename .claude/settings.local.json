@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "mcp__chrome-mcp__chrome_navigate",
+      "mcp__chrome-mcp__chrome_computer",
+      "mcp__chrome-mcp__chrome_screenshot"
+    ]
+  }
+}

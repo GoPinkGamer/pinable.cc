@@ -1,10 +1,36 @@
+/* ===== Site Header ===== */
+
+.site-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: var(--z-sticky);
+  height: 60px;
+  background: transparent;
+  transition: all var(--transition-normal) var(--ease-out);
+}
+
+.site-header.scrolled {
+  background: rgba(15, 15, 35, 0.95);
+  backdrop-filter: blur(20px);
+  box-shadow: 0 2px 20px rgba(0, 0, 0, 0.3);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.header-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 100%;
+  max-width: var(--container-2xl);
+  margin: 0 auto;
+  padding: 0 var(--spacing-lg);
+}
+
 /* ===== Logo ===== */
 
 .logo {
-  position: fixed;
-  top: var(--spacing-lg);
-  left: var(--spacing-lg);
-  z-index: var(--z-sticky);
   display: flex;
   align-items: center;
   gap: var(--spacing-sm);
@@ -40,17 +66,23 @@
 
 /* 移动端优化 */
 @media (max-width: 768px) {
+  .site-header {
+    height: 52px;
+  }
+
+  .header-content {
+    padding: 0 var(--spacing-md);
+  }
+
   .logo {
-    top: var(--spacing-md);
-    left: var(--spacing-md);
     padding: var(--spacing-xs) var(--spacing-sm);
   }
-  
+
   .logo img {
     width: 24px;
     height: 24px;
   }
-  
+
   .logo span {
     font-size: var(--text-sm);
   }
@@ -59,10 +91,6 @@
 /* ===== VSCode Plugin Button ===== */
 
 .vscode-plugin-btn {
-  position: fixed;
-  top: var(--spacing-lg);
-  right: var(--spacing-lg);
-  z-index: var(--z-sticky);
   display: flex;
   align-items: center;
   gap: var(--spacing-sm);
@@ -74,7 +102,6 @@
   border-radius: var(--radius-full);
   box-shadow: var(--shadow-lg);
   transition: all var(--transition-normal) var(--ease-out);
-  backdrop-filter: blur(10px);
 }
 
 .vscode-plugin-btn:hover {
@@ -94,16 +121,14 @@
 /* 移动端优化 */
 @media (max-width: 768px) {
   .vscode-plugin-btn {
-    top: var(--spacing-md);
-    right: var(--spacing-md);
     padding: var(--spacing-xs) var(--spacing-md);
     font-size: var(--text-xs);
   }
-  
+
   .vscode-plugin-btn span {
     display: none;
   }
-  
+
   .vscode-plugin-btn i {
     width: 20px;
     height: 20px;
@@ -114,10 +139,19 @@
 
 .hero {
   position: relative;
-  padding: var(--spacing-4xl) var(--spacing-lg);
+  padding: var(--spacing-3xl) var(--spacing-lg) var(--spacing-4xl);
+  margin-top: 60px; /* 为固定 header 留出空间 */
   text-align: center;
   overflow: hidden;
   background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
+}
+
+/* 移动端 hero 调整 */
+@media (max-width: 768px) {
+  .hero {
+    margin-top: 52px;
+    padding: var(--spacing-2xl) var(--spacing-md) var(--spacing-3xl);
+  }
 }
 
 .hero-content {
