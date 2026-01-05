@@ -53,8 +53,9 @@ for file in $html_files; do
     filename=$(basename "$file")
     game_id=$(echo "$filename" | sed 's/\.html$//' | sed 's/_/-/g')
     
-    # 从文件中提取标题（如果有）
-    title=$(grep -oP '(?<=<title>)[^<]+' "$file" | head -1 || echo "$filename")
+    # 从文件中提取标题（如果有）- 使用兼容 macOS 的方式
+    title=$(grep -o '<title>[^<]*</title>' "$file" 2>/dev/null | sed 's/<[^>]*>//g' | head -1)
+    [ -z "$title" ] && title="$filename"
     
     # 根据文件名推断游戏信息
     if [[ $filename == *"bubble"* ]]; then
@@ -73,7 +74,8 @@ for file in $html_files; do
         controls="键盘/触摸"
     else
         emoji="🎮"
-        game_title=$(echo "$filename" | sed 's/\.html$//' | sed 's/_/ /g' | sed 's/\b\(.\)/\u\1/g')
+        # 使用 awk 实现首字母大写（兼容 macOS）
+        game_title=$(echo "$filename" | sed 's/\.html$//' | sed 's/_/ /g' | awk '{for(i=1;i<=NF;i++) $i=toupper(substr($i,1,1)) substr($i,2)}1')
         description="有趣的游戏原型，快来体验吧！"
         tags="['休闲', '益智']"
         difficulty="easy"
