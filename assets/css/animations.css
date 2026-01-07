@@ -94,20 +94,11 @@
     transform: translateY(0px);
   }
   50% {
-    transform: translateY(-20px);
+    transform: translateY(-15px);
   }
 }
 
-@keyframes glow {
-  0%, 100% {
-    box-shadow: 0 0 20px rgba(102, 126, 234, 0.3);
-  }
-  50% {
-    box-shadow: 0 0 40px rgba(102, 126, 234, 0.6);
-  }
-}
-
-/* ===== Particle Background Animation ===== */
+/* ===== Neumorphism 装饰背景 ===== */
 
 .particles {
   position: absolute;
@@ -118,32 +109,54 @@
   overflow: hidden;
   z-index: 1;
   pointer-events: none;
+  opacity: 0.6;
 }
 
+/* 同心圆装饰 - Neumorphism 特色 */
 .particles::before,
 .particles::after {
   content: '';
   position: absolute;
+  border-radius: 50%;
+  transition: all 500ms var(--ease-out);
+}
+
+/* 大圆（凸起） */
+.particles::before {
   width: 300px;
   height: 300px;
-  border-radius: 50%;
-  filter: blur(80px);
-  opacity: 0.3;
+  background: var(--bg-primary);
+  box-shadow: var(--shadow-extruded);
+  top: 15%;
+  right: 5%;
   animation: float 8s ease-in-out infinite;
 }
 
-.particles::before {
-  background: var(--color-primary);
-  top: 10%;
-  left: 10%;
-  animation-delay: 0s;
+/* 小圆（凹陷） */
+.particles::after {
+  width: 200px;
+  height: 200px;
+  background: var(--bg-primary);
+  box-shadow: var(--shadow-inset);
+  bottom: 20%;
+  left: 8%;
+  animation: float 6s ease-in-out infinite 2s;
 }
 
-.particles::after {
-  background: var(--color-secondary);
-  bottom: 10%;
-  right: 10%;
-  animation-delay: 2s;
+@media (max-width: 768px) {
+  .particles::before {
+    width: 180px;
+    height: 180px;
+    top: 10%;
+    right: -10%;
+  }
+
+  .particles::after {
+    width: 120px;
+    height: 120px;
+    bottom: 15%;
+    left: -5%;
+  }
 }
 
 /* ===== Utility Animation Classes ===== */
@@ -180,34 +193,26 @@
   animation: float 3s ease-in-out infinite;
 }
 
-.animate-glow {
-  animation: glow 2s ease-in-out infinite;
-}
-
 /* ===== Hover Effects ===== */
 
 .hover-lift {
-  transition: transform var(--transition-normal) var(--ease-out);
+  transition: transform var(--transition-normal) var(--ease-out),
+              box-shadow var(--transition-normal) var(--ease-out);
 }
 
 .hover-lift:hover {
-  transform: translateY(-4px);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-extruded-hover);
 }
 
-.hover-scale {
-  transition: transform var(--transition-normal) var(--ease-out);
+.hover-press {
+  transition: transform var(--transition-normal) var(--ease-out),
+              box-shadow var(--transition-normal) var(--ease-out);
 }
 
-.hover-scale:hover {
-  transform: scale(1.05);
-}
-
-.hover-glow {
-  transition: box-shadow var(--transition-normal) var(--ease-out);
-}
-
-.hover-glow:hover {
-  box-shadow: var(--shadow-glow);
+.hover-press:active {
+  transform: translateY(0.5px);
+  box-shadow: var(--shadow-inset-small);
 }
 
 /* ===== Loading Skeleton ===== */

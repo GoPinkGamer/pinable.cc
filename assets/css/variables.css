@@ -1,34 +1,34 @@
 :root {
-  /* ===== 颜色系统 ===== */
-  --color-primary: #667eea;
-  --color-primary-dark: #5568d3;
-  --color-secondary: #764ba2;
-  --color-accent: #f5576c;
-  --color-success: #4ade80;
+  /* ===== Neumorphism 颜色系统 ===== */
+  /* 单色调冷灰色基调 - 所有视觉深度通过阴影创建 */
+
+  --color-primary: #6C63FF;  /* 柔和紫罗兰强调色 */
+  --color-primary-light: #8B84FF;  /* 浅紫罗兰（渐变/悬停） */
+  --color-accent: #38B2AC;  /* 青色（成功/正向指示） */
+  --color-success: #38B2AC;
   --color-warning: #fbbf24;
   --color-danger: #f87171;
   --color-info: #60a5fa;
-  
-  /* ===== 背景色 ===== */
-  --bg-primary: #0f0f23;
-  --bg-secondary: #1a1a2e;
-  --bg-tertiary: #16213e;
-  --bg-card: rgba(255, 255, 255, 0.05);
-  --bg-card-hover: rgba(255, 255, 255, 0.08);
-  --bg-overlay: rgba(0, 0, 0, 0.8);
-  
-  /* ===== 文字色 ===== */
-  --text-primary: #ffffff;
-  --text-secondary: rgba(255, 255, 255, 0.7);
-  --text-muted: rgba(255, 255, 255, 0.5);
-  --text-disabled: rgba(255, 255, 255, 0.3);
-  
-  /* ===== 渐变 ===== */
-  --gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  --gradient-secondary: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-  --gradient-success: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
-  --gradient-warm: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
-  --gradient-cool: linear-gradient(135deg, #30cfd0 0%, #330867 100%);
+
+  /* ===== 背景色（单色） ===== */
+  --bg-primary: #E0E5EC;  /* 冷灰色基底 - 所有元素的基础 */
+  --bg-secondary: #E0E5EC;  /* 保持一致 */
+  --bg-tertiary: #E0E5EC;
+  --bg-card: #E0E5EC;  /* 卡片背景与页面相同 */
+  --bg-card-hover: #E0E5EC;  /* 悬停时背景不变，只改变阴影 */
+  --bg-overlay: rgba(224, 229, 236, 0.95);  /* 模态背景（半透明冷灰） */
+
+  /* ===== 文字色（深色对比） ===== */
+  --text-primary: #3D4852;  /* 深蓝灰主文本 - WCAG AAA (7.5:1 对比度) */
+  --text-secondary: #6B7280;  /* 冷灰次要文本 - WCAG AA (4.6:1) */
+  --text-muted: #A0AEC0;  /* 占位符/辅助文本 */
+  --text-disabled: #CBD5E0;
+
+  /* ===== 阴影颜色（RGBA for 平滑混合） ===== */
+  --shadow-light: rgba(255, 255, 255, 0.5);  /* 光源阴影（左上） */
+  --shadow-light-strong: rgba(255, 255, 255, 0.6);
+  --shadow-dark: rgb(163, 177, 198, 0.6);  /* 暗部阴影（右下） */
+  --shadow-dark-strong: rgb(163, 177, 198, 0.7);
   
   /* ===== 间距系统 ===== */
   --spacing-xs: 0.25rem;    /* 4px */
@@ -40,24 +40,35 @@
   --spacing-3xl: 4rem;      /* 64px */
   --spacing-4xl: 6rem;      /* 96px */
   
-  /* ===== 圆角 ===== */
-  --radius-xs: 4px;
-  --radius-sm: 8px;
-  --radius-md: 12px;
-  --radius-lg: 16px;
-  --radius-xl: 24px;
-  --radius-2xl: 32px;
+  /* ===== 圆角（超柔和） ===== */
+  --radius-xs: 8px;
+  --radius-sm: 12px;
+  --radius-md: 16px;  /* 按钮基础圆角 */
+  --radius-lg: 24px;
+  --radius-xl: 32px;  /* 卡片/容器圆角 */
+  --radius-2xl: 40px;
   --radius-full: 9999px;
-  
-  /* ===== 阴影 ===== */
-  --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.05);
-  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.1);
-  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.15);
-  --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.2);
-  --shadow-xl: 0 16px 48px rgba(0, 0, 0, 0.25);
-  --shadow-2xl: 0 24px 64px rgba(0, 0, 0, 0.3);
-  --shadow-glow: 0 0 20px rgba(102, 126, 234, 0.3);
-  --shadow-glow-strong: 0 0 40px rgba(102, 126, 234, 0.5);
+
+  /* ===== Neumorphic 阴影（双向物理光照） ===== */
+  /* 所有阴影使用 RGBA 实现平滑混合 */
+
+  /* 凸起（Extruded）- 默认休息状态 */
+  --shadow-extruded: 9px 9px 16px rgb(163,177,198,0.6), -9px -9px 16px rgba(255,255,255,0.5);
+
+  /* 凸起悬停（Lifted）- 悬停时增强深度 */
+  --shadow-extruded-hover: 12px 12px 20px rgb(163,177,198,0.7), -12px -12px 20px rgba(255,255,255,0.6);
+
+  /* 凸起小型 - 用于小元素 */
+  --shadow-extruded-small: 5px 5px 10px rgb(163,177,198,0.6), -5px -5px 10px rgba(255,255,255,0.5);
+
+  /* 凹陷（Inset）- 按下状态或浅井 */
+  --shadow-inset: inset 6px 6px 10px rgb(163,177,198,0.6), inset -6px -6px 10px rgba(255,255,255,0.5);
+
+  /* 凹陷深度（Inset Deep）- 输入框和深井 */
+  --shadow-inset-deep: inset 10px 10px 20px rgb(163,177,198,0.7), inset -10px -10px 20px rgba(255,255,255,0.6);
+
+  /* 凹陷小型 - 用于轨道或药丸 */
+  --shadow-inset-small: inset 3px 3px 6px rgb(163,177,198,0.6), inset -3px -3px 6px rgba(255,255,255,0.5);
   
   /* ===== 动画时长 ===== */
   --transition-fast: 150ms;
@@ -71,9 +82,9 @@
   --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
   --ease-bounce: cubic-bezier(0.68, -0.55, 0.265, 1.55);
   
-  /* ===== 字体 ===== */
-  --font-sans: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
-  --font-display: 'Outfit', 'Poppins', sans-serif;
+  /* ===== 字体（Neumorphism 专用） ===== */
+  --font-display: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;  /* 标题字体 */
+  --font-sans: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;  /* 正文字体 */
   --font-mono: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace;
   
   /* ===== 字体大小 ===== */
