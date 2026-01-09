@@ -1,222 +1,275 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-  <!-- Meta 标签 -->
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Pinable - AI 驱动的游戏开发平台。使用 ChatGame 快速创建 HTML5 游戏原型，从创意到发布只需几分钟。支持各类游戏类型，所见即所得，一键部署。">
-  <meta name="keywords" content="AI游戏开发,ChatGame,HTML5游戏,游戏原型,快速开发,游戏创作,独立游戏,浏览器游戏,游戏设计,游戏发布">
-  <meta name="author" content="Pinable">
+  <meta name="description" content="PinableLab - AI 驱动的创意实验室。PinableVideo 自助导演视频创作，PinableGame 快速游戏原型设计。">
+  <meta name="keywords" content="AI创作,PinableVideo,PinableGame,视频制作,游戏原型,自助导演,HTML5游戏">
+  <meta name="author" content="PinableLab">
   <meta name="robots" content="index, follow">
-  
-  <!-- Open Graph / Facebook -->
+
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://pinable.cc/">
-  <meta property="og:title" content="Pinable - AI 驱动的游戏开发平台">
-  <meta property="og:description" content="使用 ChatGame 快速创建 HTML5 游戏，从创意到发布只需几分钟">
+  <meta property="og:title" content="PinableLab - AI 创意实验室">
+  <meta property="og:description" content="PinableVideo 自助导演 | PinableGame 游戏原型设计">
   <meta property="og:image" content="https://pinable.cc/assets/images/og-image.png">
-  
-  <!-- Twitter -->
+
   <meta property="twitter:card" content="summary_large_image">
   <meta property="twitter:url" content="https://pinable.cc/">
-  <meta property="twitter:title" content="Pinable - AI 驱动的游戏开发平台">
-  <meta property="twitter:description" content="使用 ChatGame 快速创建 HTML5 游戏，从创意到发布只需几分钟">
-  <meta property="twitter:image" content="https://pinable.cc/assets/images/og-image.png">
-  
-  <!-- Favicon -->
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🎯%3C/text%3E%3C/svg%3E">
-  
-  <!-- Preconnect -->
+  <meta property="twitter:title" content="PinableLab - AI 创意实验室">
+  <meta property="twitter:description" content="PinableVideo 自助导演 | PinableGame 游戏原型设计">
+
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%94%AC%3C/text%3E%3C/svg%3E">
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="preconnect" href="https://unpkg.com">
-  
-  <!-- Google Fonts - Neumorphism 设计系统 -->
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
-  
-  <!-- Stylesheets -->
+
+  <!-- Google Fonts - Flat Design 几何字体 -->
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
   <link rel="stylesheet" href="assets/css/variables.css">
   <link rel="stylesheet" href="assets/css/reset.css">
   <link rel="stylesheet" href="assets/css/components.css">
   <link rel="stylesheet" href="assets/css/layout.css">
   <link rel="stylesheet" href="assets/css/animations.css">
-  
-  <title>Pinable - AI 驱动的游戏开发平台 | ChatGame | HTML5 游戏创作</title>
-  
-  <!-- Structured Data -->
+
+  <title>PinableLab - AI 创意实验室 | 视频导演 | 游戏原型</title>
+
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
-    "@type": "SoftwareApplication",
-    "name": "Pinable",
-    "applicationCategory": "GameApplication",
-    "operatingSystem": "Web Browser",
+    "@type": "Organization",
+    "name": "PinableLab",
     "url": "https://pinable.cc",
-    "description": "AI 驱动的游戏开发平台，使用 ChatGame 技术快速创建 HTML5 游戏原型",
-    "offers": {
-      "@type": "Offer",
-      "price": "0",
-      "priceCurrency": "CNY"
-    },
-    "featureList": [
-      "AI 辅助游戏设计",
-      "快速原型开发",
-      "多种游戏类型支持",
-      "即时预览测试",
-      "所见即所得编辑",
-      "一键发布部署"
-    ]
+    "description": "AI 驱动的创意实验室，提供自助视频导演和游戏原型设计服务",
+    "logo": "https://pinable.cc/assets/logo.png"
   }
   </script>
 </head>
 <body>
-  <!-- Google AdSense 横幅广告 -->
-  <div class="ad-banner">
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7256060087403757"
-         crossorigin="anonymous"></script>
-    <ins class="adsbygoogle"
-         style="display:block"
-         data-ad-client="ca-pub-7256060087403757"
-         data-ad-slot="1234567890"
-         data-ad-format="auto"
-         data-full-width-responsive="true"></ins>
-    <script>
-         (adsbygoogle = window.adsbygoogle || []).push({});
-    </script>
-  </div>
-
   <!-- 固定顶部导航 -->
   <header class="site-header" id="site-header">
     <div class="header-content">
       <!-- Logo -->
-      <a href="/" class="logo" aria-label="Pinable 首页">
-        <img src="assets/icon.png" alt="Pinable Logo">
-        <span>Pinable</span>
+      <a href="/" class="logo" aria-label="PinableLab 首页">
+        <img src="assets/logo.png" alt="PinableLab Logo">
+        <span>PinableLab</span>
       </a>
 
-      <!-- VSCode 插件下载按钮 -->
-      <a href="https://marketplace.visualstudio.com/items?itemName=your-publisher.chatgame"
-         class="vscode-plugin-btn"
-         target="_blank"
-         rel="noopener noreferrer"
-         aria-label="下载 VSCode 插件">
-        <i data-lucide="download"></i>
-        <span>VSCode 插件</span>
-      </a>
+      <!-- 产品切换导航 -->
+      <nav class="product-nav" role="navigation" aria-label="产品导航">
+        <button class="nav-tab active" data-product="video" aria-selected="true">
+          <i data-lucide="video"></i>
+          <span>PinableVideo</span>
+        </button>
+        <button class="nav-tab" data-product="game" aria-selected="false">
+          <i data-lucide="gamepad-2"></i>
+          <span>PinableGame</span>
+        </button>
+      </nav>
+
     </div>
   </header>
 
-  <!-- 主容器 -->
-  <div class="container">
-    <!-- Hero 区域 -->
-    <header class="hero">
-      <div class="hero-content">
-        <h1 class="hero-title">
-          <span class="gradient-text">🎮 Pinable</span>
-          <span class="subtitle">AI 驱动的游戏开发平台</span>
-        </h1>
-        <p class="hero-description">
-          使用 ChatGame 快速创建 HTML5 游戏，从创意到发布只需几分钟<br>
-          <strong>AI 辅助设计 · 快速原型 · 即时发布</strong>
-        </p>
-        
-        <!-- 搜索框 -->
-        <div class="search-box">
-          <i data-lucide="search" aria-hidden="true"></i>
-          <input 
-            type="text" 
-            id="search-input" 
-            placeholder="搜索游戏... (Ctrl+K)"
-            autocomplete="off"
-            aria-label="搜索游戏"
-          >
-        </div>
-        
-      </div>
-      
-      <!-- 粒子背景 -->
-      <div class="particles" aria-hidden="true"></div>
-    </header>
+  <!-- Hero 区域 - 蓝色背景 -->
+  <section class="hero" id="hero-section">
+    <!-- 装饰几何图形 -->
+    <div class="hero-decoration" aria-hidden="true">
+      <div class="deco-circle deco-circle-1"></div>
+      <div class="deco-circle deco-circle-2"></div>
+      <div class="deco-square deco-square-1"></div>
+    </div>
 
-    <!-- 标签筛选 -->
-    <section class="filters" aria-label="游戏筛选">
-      <div class="filter-group" id="tag-filters" role="group" aria-label="按游戏类型筛选">
-        <!-- 动态生成标签按钮 -->
+    <div class="hero-content">
+      <h1 class="hero-title">
+        <span class="hero-label">AI CREATIVE LAB</span>
+        <span class="hero-main" id="hero-main-title">PinableVideo</span>
+        <span class="hero-sub" id="hero-sub-title">自助导演，创意无限</span>
+      </h1>
+      <p class="hero-description" id="hero-description">
+        用 AI 释放你的创意，几分钟内将想法变成精彩视频。
+        无需专业技能，人人都是导演。
+      </p>
+
+      <!-- 搜索框 -->
+      <div class="search-box">
+        <i data-lucide="search" aria-hidden="true"></i>
+        <input
+          type="text"
+          id="search-input"
+          placeholder="搜索视频或游戏... (Ctrl+K)"
+          autocomplete="off"
+          aria-label="搜索"
+        >
+      </div>
+
+      <!-- 数据统计 -->
+      <div class="hero-stats">
+        <div class="stat-item">
+          <span class="stat-number stat-blue" id="stat-count">12</span>
+          <span class="stat-label" id="stat-label">个作品</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-number stat-emerald">AI</span>
+          <span class="stat-label">智能驱动</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-number stat-amber">0</span>
+          <span class="stat-label">门槛</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 筛选标签区域 -->
+  <section class="filters" aria-label="筛选">
+    <div class="filter-group" id="tag-filters" role="group" aria-label="按类型筛选">
+      <!-- 动态生成标签按钮 -->
+    </div>
+  </section>
+
+  <!-- 内容展示区域 -->
+  <main class="main-content">
+    <!-- 视频展示区域 -->
+    <section class="content-section video-section active" id="video-section" aria-label="视频列表">
+      <div class="section-header">
+        <h2 class="section-title">
+          <span class="title-icon" style="background: var(--block-rose);">
+            <i data-lucide="video"></i>
+          </span>
+          视频作品
+        </h2>
+        <p class="section-desc">AI 自助导演，轻松创作专业视频</p>
+      </div>
+      <div class="content-grid" id="video-grid">
+        <div class="loading">
+          <div class="spinner" role="status" aria-label="加载中"></div>
+        </div>
       </div>
     </section>
 
-    <!-- 游戏网格 -->
-    <main class="game-grid" id="game-grid" role="main" aria-label="游戏列表">
-      <!-- 动态生成游戏卡片 -->
-      <div class="loading">
-        <div class="spinner" role="status" aria-label="加载中"></div>
+    <!-- 游戏展示区域 -->
+    <section class="content-section game-section" id="game-section" aria-label="游戏列表">
+      <div class="section-header">
+        <h2 class="section-title">
+          <span class="title-icon" style="background: var(--block-purple);">
+            <i data-lucide="gamepad-2"></i>
+          </span>
+          游戏原型
+        </h2>
+        <p class="section-desc">快速验证创意，从想法到可玩只需几分钟</p>
       </div>
-    </main>
+      <div class="content-grid" id="game-grid">
+        <div class="loading">
+          <div class="spinner" role="status" aria-label="加载中"></div>
+        </div>
+      </div>
+    </section>
+  </main>
 
-    <!-- 页脚 -->
-    <footer class="footer">
-      <div class="footer-content">
-        <div class="footer-section">
-          <h3>关于 Pinable</h3>
-          <p>基于 ChatGame 的 AI 驱动游戏开发平台，让游戏创意快速成为现实。</p>
+  <!-- 特性展示区域 - 翡翠绿背景 -->
+  <section class="features-section">
+    <div class="features-container">
+      <h2 class="features-title">为什么选择 PinableLab</h2>
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon" style="background: var(--bg-white); color: var(--block-blue);">
+            <i data-lucide="zap"></i>
+          </div>
+          <h3>极速创作</h3>
+          <p>AI 辅助创作流程，几分钟完成从创意到成品</p>
         </div>
-        <div class="footer-section">
-          <h3>游戏类型</h3>
-          <ul>
-            <li>🎯 休闲益智 - 轻松有趣</li>
-            <li>⚡ 动作冒险 - 刺激挑战</li>
-            <li>🎲 策略模拟 - 深度思考</li>
-            <li>🏃 平台跳跃 - 经典玩法</li>
-          </ul>
+        <div class="feature-card">
+          <div class="feature-icon" style="background: var(--bg-white); color: var(--block-emerald);">
+            <i data-lucide="sparkles"></i>
+          </div>
+          <h3>智能生成</h3>
+          <p>描述你的想法，AI 自动生成专业内容</p>
         </div>
-        <div class="footer-section">
-          <h3>开发特性</h3>
-          <ul>
-            <li>🤖 AI 辅助设计</li>
-            <li>⚡ 快速原型开发</li>
-            <li>🚀 即时发布部署</li>
-            <li>📱 多平台支持</li>
-          </ul>
+        <div class="feature-card">
+          <div class="feature-icon" style="background: var(--bg-white); color: var(--block-amber);">
+            <i data-lucide="share-2"></i>
+          </div>
+          <h3>一键发布</h3>
+          <p>即时预览、一键部署，作品即刻上线</p>
         </div>
-      </div>
-      <div class="footer-bottom">
-        <p>&copy; 2026 Pinable. All rights reserved.</p>
-        <div class="footer-links">
-          <a href="https://github.com/yourusername/pinable.cc" target="_blank" rel="noopener noreferrer">
-            GitHub
-          </a>
-          <a href="#" onclick="app?.showStatistics(); return false;">
-            统计
-          </a>
-          <a href="USAGE.md" target="_blank">
-            使用指南
-          </a>
+        <div class="feature-card">
+          <div class="feature-icon" style="background: var(--bg-white); color: var(--block-rose);">
+            <i data-lucide="puzzle"></i>
+          </div>
+          <h3>无缝集成</h3>
+          <p>VSCode 插件直接使用，融入开发工作流</p>
         </div>
       </div>
-    </footer>
-  </div>
+    </div>
+  </section>
 
-  <!-- 游戏模态窗口（由 JavaScript 动态创建） -->
+  <!-- CTA 区域 - 琥珀色背景 -->
+  <section class="cta-section">
+    <div class="cta-container">
+      <h2 class="cta-title">准备好释放创意了吗？</h2>
+      <p class="cta-desc">立即下载 VSCode 插件，开启 AI 创作之旅</p>
+      <div class="cta-buttons">
+        <a href="https://marketplace.visualstudio.com/items?itemName=your-publisher.chatgame"
+           class="btn-cta btn-cta-primary"
+           target="_blank">
+          <i data-lucide="download"></i>
+          免费下载
+        </a>
+        <a href="USAGE.md" class="btn-cta btn-cta-outline" target="_blank">
+          <i data-lucide="book-open"></i>
+          使用指南
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- 页脚 - 深色背景 -->
+  <footer class="footer">
+    <div class="footer-content">
+      <div class="footer-section footer-brand">
+        <div class="footer-logo">
+          <img src="assets/logo.png" alt="PinableLab">
+          <span>PinableLab</span>
+        </div>
+        <p>AI 驱动的创意实验室，让每个人都能成为创作者。</p>
+      </div>
+      <div class="footer-section">
+        <h3>产品</h3>
+        <ul>
+          <li><a href="#" data-nav="video">PinableVideo</a></li>
+          <li><a href="#" data-nav="game">PinableGame</a></li>
+        </ul>
+      </div>
+      <div class="footer-section">
+        <h3>资源</h3>
+        <ul>
+          <li><a href="USAGE.md" target="_blank">使用指南</a></li>
+          <li><a href="#" onclick="app?.showStatistics(); return false;">统计数据</a></li>
+        </ul>
+      </div>
+      <div class="footer-section">
+        <h3>内容类型</h3>
+        <ul>
+          <li>视频 - 短片 / 教程 / 宣传</li>
+          <li>游戏 - 休闲 / 益智 / 动作</li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2026 PinableLab. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <!-- 模态窗口容器（由 JavaScript 动态创建） -->
+  <div id="modal-container"></div>
 
   <!-- Scripts -->
-  <!-- Lucide Icons -->
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
-  
-  <!-- 应用脚本 -->
   <script src="assets/js/config.js"></script>
   <script src="assets/js/game-loader.js"></script>
   <script src="assets/js/search.js"></script>
   <script src="assets/js/main.js"></script>
-  
-  <!-- Google Analytics (可选) -->
-  <!-- 
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', 'G-XXXXXXXXXX');
-  </script>
-  -->
 </body>
 </html>

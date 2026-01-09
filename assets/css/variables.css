@@ -1,35 +1,31 @@
 :root {
-  /* ===== Neumorphism 颜色系统 ===== */
-  /* 单色调冷灰色基调 - 所有视觉深度通过阴影创建 */
+  /* ===== Flat Design 颜色系统 ===== */
+  /* 充满活力、自信的调色板，避免浑浊的色调。高对比度至关重要。 */
 
-  --color-primary: #6C63FF;  /* 柔和紫罗兰强调色 */
-  --color-primary-light: #8B84FF;  /* 浅紫罗兰（渐变/悬停） */
-  --color-accent: #38B2AC;  /* 青色（成功/正向指示） */
-  --color-success: #38B2AC;
-  --color-warning: #fbbf24;
-  --color-danger: #f87171;
-  --color-info: #60a5fa;
+  /* 背景色 */
+  --bg-white: #FFFFFF;           /* 纯白画布 */
+  --bg-muted: #F3F4F6;           /* Gray 100 - 次要背景/色块 */
+  --bg-dark: #111827;            /* Gray 900 - 深色区域 */
 
-  /* ===== 背景色（单色） ===== */
-  --bg-primary: #E0E5EC;  /* 冷灰色基底 - 所有元素的基础 */
-  --bg-secondary: #E0E5EC;  /* 保持一致 */
-  --bg-tertiary: #E0E5EC;
-  --bg-card: #E0E5EC;  /* 卡片背景与页面相同 */
-  --bg-card-hover: #E0E5EC;  /* 悬停时背景不变，只改变阴影 */
-  --bg-overlay: rgba(224, 229, 236, 0.95);  /* 模态背景（半透明冷灰） */
+  /* 前景/文字色 */
+  --text-primary: #111827;       /* Gray 900 - 锐利的高对比度文本 */
+  --text-secondary: #6B7280;     /* Gray 500 - 次要文本 */
+  --text-muted: #9CA3AF;         /* Gray 400 - 占位符文本 */
+  --text-white: #FFFFFF;         /* 白色文字 */
 
-  /* ===== 文字色（深色对比） ===== */
-  --text-primary: #3D4852;  /* 深蓝灰主文本 - WCAG AAA (7.5:1 对比度) */
-  --text-secondary: #6B7280;  /* 冷灰次要文本 - WCAG AA (4.6:1) */
-  --text-muted: #A0AEC0;  /* 占位符/辅助文本 */
-  --text-disabled: #CBD5E0;
+  /* 主题色 */
+  --color-primary: #3B82F6;      /* Blue 500 - "动作"色。明亮的标准数字蓝。 */
+  --color-primary-hover: #2563EB; /* Blue 600 - 悬停状态 */
+  --color-secondary: #10B981;    /* Emerald 500 - 支持强调色 */
+  --color-secondary-hover: #059669; /* Emerald 600 */
+  --color-accent: #F59E0B;       /* Amber 500 - 用于高亮/徽章 */
+  --color-accent-hover: #D97706; /* Amber 600 */
 
-  /* ===== 阴影颜色（RGBA for 平滑混合） ===== */
-  --shadow-light: rgba(255, 255, 255, 0.5);  /* 光源阴影（左上） */
-  --shadow-light-strong: rgba(255, 255, 255, 0.6);
-  --shadow-dark: rgb(163, 177, 198, 0.6);  /* 暗部阴影（右下） */
-  --shadow-dark-strong: rgb(163, 177, 198, 0.7);
-  
+  /* 边框色 */
+  --border-color: #E5E7EB;       /* Gray 200 - 少用 */
+  --border-thick: 4px;           /* 粗边框用于按钮 */
+  --border-medium: 2px;          /* 中等边框 */
+
   /* ===== 间距系统 ===== */
   --spacing-xs: 0.25rem;    /* 4px */
   --spacing-sm: 0.5rem;     /* 8px */
@@ -39,54 +35,30 @@
   --spacing-2xl: 3rem;      /* 48px */
   --spacing-3xl: 4rem;      /* 64px */
   --spacing-4xl: 6rem;      /* 96px */
-  
-  /* ===== 圆角（超柔和） ===== */
-  --radius-xs: 8px;
-  --radius-sm: 12px;
-  --radius-md: 16px;  /* 按钮基础圆角 */
-  --radius-lg: 24px;
-  --radius-xl: 32px;  /* 卡片/容器圆角 */
-  --radius-2xl: 40px;
-  --radius-full: 9999px;
 
-  /* ===== Neumorphic 阴影（双向物理光照） ===== */
-  /* 所有阴影使用 RGBA 实现平滑混合 */
+  /* ===== 圆角（一致性） ===== */
+  --radius-sm: 4px;
+  --radius-md: 6px;         /* 按钮基础圆角 */
+  --radius-lg: 8px;         /* 卡片/容器圆角 */
+  --radius-full: 9999px;    /* 药丸/标签 */
 
-  /* 凸起（Extruded）- 默认休息状态 */
-  --shadow-extruded: 9px 9px 16px rgb(163,177,198,0.6), -9px -9px 16px rgba(255,255,255,0.5);
+  /* ===== 阴影（Flat Design：无阴影） ===== */
+  --shadow-none: none;
 
-  /* 凸起悬停（Lifted）- 悬停时增强深度 */
-  --shadow-extruded-hover: 12px 12px 20px rgb(163,177,198,0.7), -12px -12px 20px rgba(255,255,255,0.6);
-
-  /* 凸起小型 - 用于小元素 */
-  --shadow-extruded-small: 5px 5px 10px rgb(163,177,198,0.6), -5px -5px 10px rgba(255,255,255,0.5);
-
-  /* 凹陷（Inset）- 按下状态或浅井 */
-  --shadow-inset: inset 6px 6px 10px rgb(163,177,198,0.6), inset -6px -6px 10px rgba(255,255,255,0.5);
-
-  /* 凹陷深度（Inset Deep）- 输入框和深井 */
-  --shadow-inset-deep: inset 10px 10px 20px rgb(163,177,198,0.7), inset -10px -10px 20px rgba(255,255,255,0.6);
-
-  /* 凹陷小型 - 用于轨道或药丸 */
-  --shadow-inset-small: inset 3px 3px 6px rgb(163,177,198,0.6), inset -3px -3px 6px rgba(255,255,255,0.5);
-  
   /* ===== 动画时长 ===== */
   --transition-fast: 150ms;
-  --transition-normal: 300ms;
-  --transition-slow: 500ms;
-  --transition-slower: 700ms;
-  
+  --transition-normal: 200ms;
+  --transition-slow: 300ms;
+
   /* ===== 缓动函数 ===== */
-  --ease-in: cubic-bezier(0.4, 0, 1, 1);
   --ease-out: cubic-bezier(0, 0, 0.2, 1);
   --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
-  --ease-bounce: cubic-bezier(0.68, -0.55, 0.265, 1.55);
-  
-  /* ===== 字体（Neumorphism 专用） ===== */
-  --font-display: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;  /* 标题字体 */
-  --font-sans: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;  /* 正文字体 */
-  --font-mono: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace;
-  
+
+  /* ===== 字体（Flat Design 几何字体） ===== */
+  --font-display: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-sans: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+
   /* ===== 字体大小 ===== */
   --text-xs: 0.75rem;      /* 12px */
   --text-sm: 0.875rem;     /* 14px */
@@ -98,14 +70,14 @@
   --text-4xl: 2.25rem;     /* 36px */
   --text-5xl: 3rem;        /* 48px */
   --text-6xl: 3.75rem;     /* 60px */
-  
+
   /* ===== 字重 ===== */
   --font-normal: 400;
   --font-medium: 500;
   --font-semibold: 600;
   --font-bold: 700;
   --font-extrabold: 800;
-  
+
   /* ===== Z-index 层级 ===== */
   --z-base: 0;
   --z-dropdown: 100;
@@ -115,18 +87,30 @@
   --z-modal: 500;
   --z-popover: 600;
   --z-tooltip: 700;
-  
+
   /* ===== 容器宽度 ===== */
   --container-sm: 640px;
   --container-md: 768px;
   --container-lg: 1024px;
   --container-xl: 1280px;
   --container-2xl: 1536px;
-  
+
   /* ===== 断点 ===== */
   --breakpoint-sm: 640px;
   --breakpoint-md: 768px;
   --breakpoint-lg: 1024px;
   --breakpoint-xl: 1280px;
   --breakpoint-2xl: 1536px;
+
+  /* ===== Flat Design 特有色块 ===== */
+  --block-blue: #3B82F6;         /* Primary Blue */
+  --block-blue-light: #DBEAFE;   /* Blue 100 */
+  --block-emerald: #10B981;      /* Emerald */
+  --block-emerald-light: #D1FAE5; /* Emerald 100 */
+  --block-amber: #F59E0B;        /* Amber */
+  --block-amber-light: #FEF3C7;  /* Amber 100 */
+  --block-rose: #F43F5E;         /* Rose 500 */
+  --block-rose-light: #FFE4E6;   /* Rose 100 */
+  --block-purple: #8B5CF6;       /* Violet 500 */
+  --block-purple-light: #EDE9FE; /* Violet 100 */
 }

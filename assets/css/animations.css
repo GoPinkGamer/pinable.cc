@@ -1,9 +1,12 @@
+/* ===== Flat Design Animations ===== */
+/* 数字化、敏捷、直接 */
+
 /* ===== Keyframe Animations ===== */
 
 @keyframes fadeInUp {
   from {
     opacity: 0;
-    transform: translateY(30px);
+    transform: translateY(20px);
   }
   to {
     opacity: 1;
@@ -23,7 +26,7 @@
 @keyframes slideInFromLeft {
   from {
     opacity: 0;
-    transform: translateX(-50px);
+    transform: translateX(-30px);
   }
   to {
     opacity: 1;
@@ -34,7 +37,7 @@
 @keyframes slideInFromRight {
   from {
     opacity: 0;
-    transform: translateX(50px);
+    transform: translateX(30px);
   }
   to {
     opacity: 1;
@@ -43,6 +46,17 @@
 }
 
 @keyframes modalSlideIn {
+  from {
+    opacity: 0;
+    transform: scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes scaleIn {
   from {
     opacity: 0;
     transform: scale(0.95);
@@ -58,20 +72,11 @@
     opacity: 1;
   }
   50% {
-    opacity: 0.5;
+    opacity: 0.6;
   }
 }
 
-@keyframes bounce {
-  0%, 100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-10px);
-  }
-}
-
-@keyframes rotate {
+@keyframes spin {
   from {
     transform: rotate(0deg);
   }
@@ -80,152 +85,81 @@
   }
 }
 
-@keyframes shimmer {
-  0% {
-    background-position: -1000px 0;
-  }
-  100% {
-    background-position: 1000px 0;
-  }
-}
-
-@keyframes float {
-  0%, 100% {
-    transform: translateY(0px);
-  }
-  50% {
-    transform: translateY(-15px);
-  }
-}
-
-/* ===== Neumorphism 装饰背景 ===== */
-
-.particles {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-  z-index: 1;
-  pointer-events: none;
-  opacity: 0.6;
-}
-
-/* 同心圆装饰 - Neumorphism 特色 */
-.particles::before,
-.particles::after {
-  content: '';
-  position: absolute;
-  border-radius: 50%;
-  transition: all 500ms var(--ease-out);
-}
-
-/* 大圆（凸起） */
-.particles::before {
-  width: 300px;
-  height: 300px;
-  background: var(--bg-primary);
-  box-shadow: var(--shadow-extruded);
-  top: 15%;
-  right: 5%;
-  animation: float 8s ease-in-out infinite;
-}
-
-/* 小圆（凹陷） */
-.particles::after {
-  width: 200px;
-  height: 200px;
-  background: var(--bg-primary);
-  box-shadow: var(--shadow-inset);
-  bottom: 20%;
-  left: 8%;
-  animation: float 6s ease-in-out infinite 2s;
-}
-
-@media (max-width: 768px) {
-  .particles::before {
-    width: 180px;
-    height: 180px;
-    top: 10%;
-    right: -10%;
-  }
-
-  .particles::after {
-    width: 120px;
-    height: 120px;
-    bottom: 15%;
-    left: -5%;
-  }
-}
-
 /* ===== Utility Animation Classes ===== */
 
 .animate-fade-in {
-  animation: fadeIn 0.6s var(--ease-out);
+  animation: fadeIn 0.3s var(--ease-out);
 }
 
 .animate-fade-in-up {
-  animation: fadeInUp 0.6s var(--ease-out);
+  animation: fadeInUp 0.3s var(--ease-out);
 }
 
 .animate-slide-in-left {
-  animation: slideInFromLeft 0.6s var(--ease-out);
+  animation: slideInFromLeft 0.3s var(--ease-out);
 }
 
 .animate-slide-in-right {
-  animation: slideInFromRight 0.6s var(--ease-out);
+  animation: slideInFromRight 0.3s var(--ease-out);
+}
+
+.animate-scale-in {
+  animation: scaleIn 0.2s var(--ease-out);
 }
 
 .animate-pulse {
   animation: pulse 2s ease-in-out infinite;
 }
 
-.animate-bounce {
-  animation: bounce 1s ease-in-out infinite;
+.animate-spin {
+  animation: spin 1s linear infinite;
 }
 
-.animate-rotate {
-  animation: rotate 2s linear infinite;
+/* ===== Hover Effects (Scale Transform) ===== */
+
+.hover-scale {
+  transition: transform var(--transition-normal) var(--ease-out);
 }
 
-.animate-float {
-  animation: float 3s ease-in-out infinite;
+.hover-scale:hover {
+  transform: scale(1.02);
 }
 
-/* ===== Hover Effects ===== */
-
-.hover-lift {
-  transition: transform var(--transition-normal) var(--ease-out),
-              box-shadow var(--transition-normal) var(--ease-out);
+.hover-scale-lg {
+  transition: transform var(--transition-normal) var(--ease-out);
 }
 
-.hover-lift:hover {
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-extruded-hover);
+.hover-scale-lg:hover {
+  transform: scale(1.05);
 }
 
-.hover-press {
-  transition: transform var(--transition-normal) var(--ease-out),
-              box-shadow var(--transition-normal) var(--ease-out);
-}
+/* ===== Color Transition Effects ===== */
 
-.hover-press:active {
-  transform: translateY(0.5px);
-  box-shadow: var(--shadow-inset-small);
+.hover-color {
+  transition: background-color var(--transition-normal) var(--ease-out),
+              color var(--transition-normal) var(--ease-out);
 }
 
 /* ===== Loading Skeleton ===== */
 
+@keyframes shimmer {
+  0% {
+    background-position: -400px 0;
+  }
+  100% {
+    background-position: 400px 0;
+  }
+}
+
 .skeleton {
   background: linear-gradient(
     90deg,
-    var(--bg-card) 0%,
-    var(--bg-card-hover) 50%,
-    var(--bg-card) 100%
+    var(--bg-muted) 0%,
+    var(--bg-white) 50%,
+    var(--bg-muted) 100%
   );
-  background-size: 200% 100%;
-  animation: shimmer 1.5s ease-in-out infinite;
+  background-size: 800px 100%;
+  animation: shimmer 1.2s ease-in-out infinite;
   border-radius: var(--radius-md);
 }
 
@@ -242,8 +176,7 @@
 
 .skeleton-image {
   width: 100%;
-  padding-top: 75%;
-  position: relative;
+  padding-top: 56.25%;
 }
 
 /* ===== Transition Groups ===== */
@@ -268,18 +201,103 @@
 
 /* ===== Stagger Animation Delays ===== */
 
-.stagger-1 { animation-delay: 0.1s; }
-.stagger-2 { animation-delay: 0.2s; }
-.stagger-3 { animation-delay: 0.3s; }
-.stagger-4 { animation-delay: 0.4s; }
-.stagger-5 { animation-delay: 0.5s; }
-.stagger-6 { animation-delay: 0.6s; }
+.stagger-1 { animation-delay: 0.05s; }
+.stagger-2 { animation-delay: 0.1s; }
+.stagger-3 { animation-delay: 0.15s; }
+.stagger-4 { animation-delay: 0.2s; }
+.stagger-5 { animation-delay: 0.25s; }
+.stagger-6 { animation-delay: 0.3s; }
+
+/* ===== Card Animation ===== */
+
+.card-animate {
+  animation: fadeInUp 0.4s var(--ease-out) backwards;
+}
+
+/* ===== Content Section Transitions ===== */
+
+.content-section {
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity var(--transition-slow) var(--ease-out),
+              transform var(--transition-slow) var(--ease-out);
+}
+
+.content-section.active {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ===== Hero Decoration Animations ===== */
+
+.deco-circle-1 {
+  animation: floatSlow 20s ease-in-out infinite;
+}
+
+.deco-circle-2 {
+  animation: floatSlow 15s ease-in-out infinite reverse;
+}
+
+.deco-square-1 {
+  animation: rotateSlow 30s linear infinite;
+}
+
+@keyframes floatSlow {
+  0%, 100% {
+    transform: translate(0, 0);
+  }
+  25% {
+    transform: translate(20px, -20px);
+  }
+  50% {
+    transform: translate(0, -30px);
+  }
+  75% {
+    transform: translate(-20px, -10px);
+  }
+}
+
+@keyframes rotateSlow {
+  from {
+    transform: rotate(45deg);
+  }
+  to {
+    transform: rotate(405deg);
+  }
+}
+
+/* ===== Interactive Button Press Effect ===== */
+
+.btn-press {
+  transition: transform var(--transition-fast) var(--ease-out);
+}
+
+.btn-press:active {
+  transform: scale(0.98);
+}
+
+/* ===== Tab Switch Animation ===== */
+
+.tab-switch {
+  transition: background-color var(--transition-normal) var(--ease-out),
+              color var(--transition-normal) var(--ease-out);
+}
+
+/* ===== Icon Hover Scale ===== */
+
+.icon-hover {
+  transition: transform var(--transition-normal) var(--ease-out);
+}
+
+.group:hover .icon-hover {
+  transform: scale(1.1);
+}
 
 /* ===== Page Transitions ===== */
 
 .page-enter {
   opacity: 0;
-  transform: translateY(20px);
+  transform: translateY(10px);
 }
 
 .page-enter-active {
@@ -295,5 +313,5 @@
 
 .page-exit-active {
   opacity: 0;
-  transition: opacity var(--transition-fast) var(--ease-in);
+  transition: opacity var(--transition-fast) var(--ease-out);
 }
