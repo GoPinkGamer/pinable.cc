@@ -112,6 +112,7 @@ const I18N = {
       'footer.contentTypes': '内容类型',
       'footer.videoTypes': '视频 - 短片 / 教程 / 宣传',
       'footer.gameTypes': '游戏 - 休闲 / 益智 / 动作',
+      'footer.followUs': '关注我们',
       'footer.copyright': '© 2026 PinableLab. All rights reserved.',
 
       // Language Switcher
@@ -240,6 +241,7 @@ const I18N = {
       'footer.contentTypes': 'Content Types',
       'footer.videoTypes': 'Video - Shorts / Tutorials / Promos',
       'footer.gameTypes': 'Games - Casual / Puzzle / Action',
+      'footer.followUs': 'Follow Us',
       'footer.copyright': '© 2026 PinableLab. All rights reserved.',
 
       // Language Switcher
