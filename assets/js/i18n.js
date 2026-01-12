@@ -123,6 +123,9 @@ const I18N = {
       'video.playing': '即将播放',
       'video.devNote': '（视频播放功能开发中）',
 
+      // Tags (通用标签)
+      'tag.全部': '全部',
+
       // Tags (游戏标签)
       'tag.休闲': '休闲',
       'tag.益智': '益智',
@@ -251,6 +254,9 @@ const I18N = {
       // Video Player
       'video.playing': 'Now playing',
       'video.devNote': '(Video playback feature in development)',
+
+      // Tags (通用标签)
+      'tag.全部': 'All',
 
       // Tags (游戏标签)
       'tag.休闲': 'Casual',
