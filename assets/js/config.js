@@ -117,22 +117,6 @@ const GAMES_CONFIG = [
   }
 ,
   {
-    id: 'animations-demo',
-    filename: 'animations_demo.html',
-    title: '🎮 Animations Demo',
-    description: '有趣的游戏原型，快来体验吧！',
-    longDescription: '有趣的游戏原型，快来体验吧！',
-    tags: ['休闲', '益智'],
-    theme: 'animations_demo_theme.css',
-    thumbnail: null, // 使用自动生成的占位图
-    featured: true,
-    difficulty: 'easy',
-    players: '单人',
-    controls: '鼠标/键盘',
-    addedDate: '2026-01-12'
-  }
-,
-  {
     id: '2048-game-1',
     filename: '2048_game_1.html',
     title: '🎮 2048 Game 1',
