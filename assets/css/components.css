@@ -919,14 +919,14 @@
 
 .footer-content {
   display: grid;
-  grid-template-columns: 2fr repeat(4, 1fr);
+  grid-template-columns: 2fr repeat(3, 1fr);
   gap: var(--spacing-3xl);
   max-width: var(--container-xl);
   margin: 0 auto var(--spacing-3xl);
 }
 
 .footer-brand {
-  max-width: 300px;
+  max-width: 320px;
 }
 
 .footer-logo {
@@ -984,6 +984,21 @@
 }
 
 /* ===== Social Links ===== */
+.social-section {
+  margin-top: var(--spacing-lg);
+  padding-top: var(--spacing-lg);
+  border-top: var(--border-medium) solid rgba(255, 255, 255, 0.1);
+}
+
+.social-section h4 {
+  font-size: var(--text-sm);
+  font-weight: var(--font-semibold);
+  color: var(--text-white);
+  margin-bottom: var(--spacing-md);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
 .social-links {
   display: flex;
   gap: var(--spacing-sm);
@@ -994,8 +1009,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 40px;
-  height: 40px;
+  width: 44px;
+  height: 44px;
   background: rgba(255, 255, 255, 0.1);
   border-radius: var(--radius-md);
   color: var(--text-muted);
@@ -1003,14 +1018,33 @@
 }
 
 .social-link:hover {
-  background: var(--color-primary);
+  transform: translateY(-3px);
+}
+
+/* Social link hover colors */
+.social-link[aria-label="X (Twitter)"]:hover {
+  background: #000000;
   color: var(--text-white);
-  transform: translateY(-2px);
+}
+
+.social-link[aria-label="Facebook"]:hover {
+  background: #1877F2;
+  color: var(--text-white);
+}
+
+.social-link[aria-label="YouTube"]:hover {
+  background: #FF0000;
+  color: var(--text-white);
+}
+
+.social-link[aria-label="Instagram"]:hover {
+  background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
+  color: var(--text-white);
 }
 
 .social-link i {
-  width: 20px;
-  height: 20px;
+  width: 22px;
+  height: 22px;
 }
 
 .footer-bottom {
