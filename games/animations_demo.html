@@ -1,0 +1,1003 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>小作家助手 - 核心动画演示</title>
+    <link rel="stylesheet" href="theme.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        /* ========================================
+           动画演示页面样式
+           ======================================== */
+        
+        body {
+            padding: 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .demo-section {
+            margin-bottom: 4rem;
+            padding: 2rem;
+            background: white;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-md);
+        }
+        
+        .demo-title {
+            font-size: var(--font-size-2xl);
+            color: var(--primary);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .demo-description {
+            color: var(--muted-foreground);
+            margin-bottom: 2rem;
+            line-height: 1.6;
+        }
+        
+        .demo-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2rem;
+            align-items: center;
+            justify-content: center;
+            min-height: 200px;
+            padding: 2rem;
+            background: var(--background);
+            border-radius: var(--radius);
+            position: relative;
+        }
+        
+        .trigger-btn {
+            padding: 0.75rem 2rem;
+            background: var(--gradient-primary);
+            color: var(--primary-foreground);
+            border: none;
+            border-radius: var(--radius);
+            font-size: var(--font-size-base);
+            font-weight: var(--font-weight-semibold);
+            cursor: pointer;
+            box-shadow: var(--shadow-primary);
+            transition: all var(--transition-base);
+            min-height: 44px;
+        }
+        
+        .trigger-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+        
+        .trigger-btn:active {
+            transform: scale(0.95);
+        }
+        
+        /* ========================================
+           1. 页面转场动画
+           ======================================== */
+        
+        .page-transition {
+            width: 300px;
+            height: 200px;
+            background: white;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: var(--font-size-xl);
+            font-weight: var(--font-weight-bold);
+            color: var(--primary);
+        }
+        
+        .page-transition.animate {
+            animation: pageTransition 600ms ease-out;
+        }
+        
+        @keyframes pageTransition {
+            0% {
+                opacity: 0;
+                transform: scale(0.95);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+        
+        /* ========================================
+           2. 写作提示滑入动画
+           ======================================== */
+        
+        .writing-tip {
+            background: white;
+            padding: 1.5rem;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-md);
+            border-left: 4px solid var(--primary);
+            max-width: 400px;
+            opacity: 0;
+            transform: translateX(20px);
+        }
+        
+        .writing-tip.animate {
+            animation: slideInBounce 400ms cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards;
+        }
+        
+        @keyframes slideInBounce {
+            0% {
+                opacity: 0;
+                transform: translateX(20px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        
+        .tip-icon {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .tip-text {
+            color: var(--foreground);
+            line-height: 1.6;
+        }
+        
+        /* ========================================
+           3. 成就解锁动画
+           ======================================== */
+        
+        .achievement-container {
+            position: relative;
+            width: 100%;
+            height: 300px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .achievement-badge {
+            width: 120px;
+            height: 120px;
+            background: var(--achievement);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
+            box-shadow: var(--shadow-xl);
+            opacity: 0;
+            transform: scale(0);
+        }
+        
+        .achievement-badge.animate {
+            animation: achievementUnlock 1500ms ease-out forwards;
+        }
+        
+        @keyframes achievementUnlock {
+            0% {
+                opacity: 0;
+                transform: scale(0) rotate(0deg);
+            }
+            50% {
+                opacity: 1;
+                transform: scale(1.2) rotate(180deg);
+            }
+            70% {
+                transform: scale(0.9) rotate(360deg);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1) rotate(360deg);
+            }
+        }
+        
+        .achievement-text {
+            position: absolute;
+            bottom: 50px;
+            font-size: var(--font-size-2xl);
+            font-weight: var(--font-weight-bold);
+            color: var(--primary);
+            opacity: 0;
+        }
+        
+        .achievement-text.animate {
+            animation: textPopIn 500ms ease-out 1000ms forwards;
+        }
+        
+        @keyframes textPopIn {
+            0% {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        /* 粒子效果 */
+        .particle {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            opacity: 0;
+        }
+        
+        .particle.animate {
+            animation: particleExplosion 1000ms ease-out forwards;
+        }
+        
+        @keyframes particleExplosion {
+            0% {
+                opacity: 1;
+                transform: translate(0, 0) scale(1);
+            }
+            100% {
+                opacity: 0;
+                transform: translate(var(--tx), var(--ty)) scale(0);
+            }
+        }
+        
+        /* ========================================
+           4. 进度条动画
+           ======================================== */
+        
+        .progress-demo {
+            width: 100%;
+            max-width: 500px;
+        }
+        
+        .progress-label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+            font-weight: var(--font-weight-semibold);
+            color: var(--foreground);
+        }
+        
+        .progress-bar-demo {
+            width: 100%;
+            height: 20px;
+            background-color: var(--muted);
+            border-radius: var(--radius-full);
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .progress-fill-demo {
+            height: 100%;
+            background: var(--gradient-primary);
+            border-radius: var(--radius-full);
+            width: 0;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .progress-fill-demo.animate {
+            animation: progressFill 800ms ease-out forwards;
+        }
+        
+        @keyframes progressFill {
+            0% {
+                width: 0;
+            }
+            100% {
+                width: 75%;
+            }
+        }
+        
+        /* 流动渐变效果 */
+        .progress-fill-demo::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, 
+                transparent, 
+                rgba(255, 255, 255, 0.3), 
+                transparent
+            );
+            animation: shimmer 1.5s infinite;
+        }
+        
+        @keyframes shimmer {
+            0% {
+                left: -100%;
+            }
+            100% {
+                left: 200%;
+            }
+        }
+        
+        .progress-number {
+            font-size: var(--font-size-2xl);
+            font-weight: var(--font-weight-bold);
+            color: var(--primary);
+            margin-top: 1rem;
+            text-align: center;
+        }
+        
+        /* ========================================
+           5. 按钮涟漪动画
+           ======================================== */
+        
+        .ripple-button {
+            position: relative;
+            overflow: hidden;
+            padding: 1rem 2rem;
+            background: var(--gradient-secondary);
+            color: white;
+            border: none;
+            border-radius: var(--radius);
+            font-size: var(--font-size-lg);
+            font-weight: var(--font-weight-semibold);
+            cursor: pointer;
+            box-shadow: var(--shadow-secondary);
+            transition: all var(--transition-base);
+            min-height: 44px;
+        }
+        
+        .ripple-button:active {
+            transform: scale(0.95);
+        }
+        
+        .ripple {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.6);
+            transform: scale(0);
+            animation: rippleEffect 600ms ease-out;
+            pointer-events: none;
+        }
+        
+        @keyframes rippleEffect {
+            to {
+                transform: scale(4);
+                opacity: 0;
+            }
+        }
+        
+        /* ========================================
+           6. 词汇卡片弹出动画
+           ======================================== */
+        
+        .word-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-lg);
+            max-width: 300px;
+            opacity: 0;
+            transform: translateY(20px) scale(0.9);
+        }
+        
+        .word-card.animate {
+            animation: popUp 300ms ease-out forwards;
+        }
+        
+        @keyframes popUp {
+            0% {
+                opacity: 0;
+                transform: translateY(20px) scale(0.9);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+        
+        .word-original {
+            font-size: var(--font-size-lg);
+            color: var(--muted-foreground);
+            margin-bottom: 1rem;
+        }
+        
+        .word-suggestion {
+            font-size: var(--font-size-xl);
+            font-weight: var(--font-weight-bold);
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+        
+        .word-example {
+            font-size: var(--font-size-sm);
+            color: var(--foreground);
+            line-height: 1.6;
+        }
+        
+        /* ========================================
+           7. 打字机效果
+           ======================================== */
+        
+        .typewriter-container {
+            background: white;
+            padding: 2rem;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-md);
+            max-width: 500px;
+            min-height: 150px;
+        }
+        
+        .typewriter-text {
+            font-size: var(--font-size-lg);
+            color: var(--foreground);
+            line-height: 1.8;
+            border-right: 2px solid var(--primary);
+            white-space: nowrap;
+            overflow: hidden;
+            display: inline-block;
+        }
+        
+        .typewriter-text.typing {
+            animation: typing 3s steps(40) forwards, blink 0.75s step-end infinite;
+        }
+        
+        @keyframes typing {
+            from {
+                width: 0;
+            }
+            to {
+                width: 100%;
+            }
+        }
+        
+        @keyframes blink {
+            50% {
+                border-color: transparent;
+            }
+        }
+        
+        /* ========================================
+           8. 星星飞行动画
+           ======================================== */
+        
+        .star-demo-container {
+            position: relative;
+            width: 100%;
+            height: 250px;
+        }
+        
+        .star-counter {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: white;
+            padding: 1rem 1.5rem;
+            border-radius: var(--radius-full);
+            box-shadow: var(--shadow-md);
+            font-size: var(--font-size-xl);
+            font-weight: var(--font-weight-bold);
+            color: var(--primary);
+        }
+        
+        .flying-star {
+            position: absolute;
+            bottom: 50px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 3rem;
+            opacity: 0;
+        }
+        
+        .flying-star.animate {
+            animation: starFly 600ms ease-out forwards;
+        }
+        
+        @keyframes starFly {
+            0% {
+                opacity: 1;
+                transform: translate(-50%, 0) scale(1);
+            }
+            100% {
+                opacity: 0;
+                transform: translate(300px, -150px) scale(0.5);
+            }
+        }
+        
+        /* ========================================
+           9. 加载动画
+           ======================================== */
+        
+        .loading-container {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            font-size: var(--font-size-lg);
+            color: var(--foreground);
+        }
+        
+        .loading-dots {
+            display: flex;
+            gap: 0.5rem;
+        }
+        
+        .loading-dot {
+            width: 12px;
+            height: 12px;
+            background: var(--primary);
+            border-radius: 50%;
+            animation: dotBounce 1.2s infinite ease-in-out;
+        }
+        
+        .loading-dot:nth-child(1) {
+            animation-delay: 0s;
+        }
+        
+        .loading-dot:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+        
+        .loading-dot:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+        
+        @keyframes dotBounce {
+            0%, 80%, 100% {
+                transform: scale(0.8);
+                opacity: 0.5;
+            }
+            40% {
+                transform: scale(1.2);
+                opacity: 1;
+            }
+        }
+        
+        /* ========================================
+           10. 卡片翻转动画
+           ======================================== */
+        
+        .flip-card {
+            width: 300px;
+            height: 200px;
+            perspective: 1000px;
+            cursor: pointer;
+        }
+        
+        .flip-card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+        }
+        
+        .flip-card.flipped .flip-card-inner {
+            transform: rotateY(180deg);
+        }
+        
+        .flip-card-front,
+        .flip-card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-lg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: var(--font-size-xl);
+            font-weight: var(--font-weight-bold);
+        }
+        
+        .flip-card-front {
+            background: var(--gradient-primary);
+            color: var(--primary-foreground);
+        }
+        
+        .flip-card-back {
+            background: var(--gradient-secondary);
+            color: white;
+            transform: rotateY(180deg);
+        }
+        
+        /* ========================================
+           响应式设计
+           ======================================== */
+        
+        @media (max-width: 768px) {
+            body {
+                padding: 1rem;
+            }
+            
+            .demo-section {
+                padding: 1rem;
+            }
+            
+            .demo-container {
+                padding: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1 style="text-align: center; color: var(--primary); margin-bottom: 3rem;">
+        ✨ 小作家助手 - 核心动画演示
+    </h1>
+    
+    <!-- 1. 页面转场动画 -->
+    <div class="demo-section">
+        <div class="demo-title">
+            <span>1️⃣</span>
+            <span>页面转场动画</span>
+        </div>
+        <div class="demo-description">
+            用于页面切换时的平滑过渡，从95%缩放到100%，配合淡入效果
+        </div>
+        <div class="demo-container">
+            <button class="trigger-btn" onclick="triggerPageTransition()">
+                触发转场动画
+            </button>
+            <div class="page-transition" id="pageTransition">
+                📝 新页面
+            </div>
+        </div>
+    </div>
+    
+    <!-- 2. 写作提示滑入动画 -->
+    <div class="demo-section">
+        <div class="demo-title">
+            <span>2️⃣</span>
+            <span>写作提示滑入动画</span>
+        </div>
+        <div class="demo-description">
+            智能助手给出建议时，提示卡片从右侧滑入并带有弹跳效果
+        </div>
+        <div class="demo-container">
+            <button class="trigger-btn" onclick="triggerWritingTip()">
+                显示写作提示
+            </button>
+            <div class="writing-tip" id="writingTip">
+                <div class="tip-icon">💡</div>
+                <div class="tip-text">
+                    <strong>写作建议：</strong><br>
+                    试试加入你当时的心情和感受，会让作文更生动哦！
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 3. 成就解锁动画 -->
+    <div class="demo-section">
+        <div class="demo-title">
+            <span>3️⃣</span>
+            <span>成就解锁动画</span>
+        </div>
+        <div class="demo-description">
+            完成作文或达成里程碑时的庆祝动画，包含勋章旋转、粒子爆炸和文字弹出
+        </div>
+        <div class="demo-container">
+            <button class="trigger-btn" onclick="triggerAchievement()">
+                解锁成就
+            </button>
+            <div class="achievement-container" id="achievementContainer">
+                <div class="achievement-badge" id="achievementBadge">🏅</div>
+                <div class="achievement-text" id="achievementText">太棒了！</div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 4. 进度条动画 -->
+    <div class="demo-section">
+        <div class="demo-title">
+            <span>4️⃣</span>
+            <span>进度条动画</span>
+        </div>
+        <div class="demo-description">
+            显示写作进度或能力成长，带有流动渐变效果和数字跳动
+        </div>
+        <div class="demo-container">
+            <button class="trigger-btn" onclick="triggerProgress()">
+                开始进度
+            </button>
+            <div class="progress-demo">
+                <div class="progress-label">
+                    <span>写作进度</span>
+                    <span id="progressPercent">0%</span>
+                </div>
+                <div class="progress-bar-demo">
+                    <div class="progress-fill-demo" id="progressFill"></div>
+                </div>
+                <div class="progress-number" id="progressNumber">0%</div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 5. 按钮涟漪动画 -->
+    <div class="demo-section">
+        <div class="demo-title">
+            <span>5️⃣</span>
+            <span>按钮涟漪动画</span>
+        </div>
+        <div class="demo-description">
+            点击按钮时从点击位置扩散的涟漪效果，增强交互反馈
+        </div>
+        <div class="demo-container">
+            <button class="ripple-button" id="rippleButton">
+                点击我看涟漪效果
+            </button>
+        </div>
+    </div>
+    
+    <!-- 6. 词汇卡片弹出动画 -->
+    <div class="demo-section">
+        <div class="demo-title">
+            <span>6️⃣</span>
+            <span>词汇卡片弹出动画</span>
+        </div>
+        <div class="demo-description">
+            选中文字后，词汇建议卡片从下方弹出
+        </div>
+        <div class="demo-container">
+            <button class="trigger-btn" onclick="triggerWordCard()">
+                显示词汇建议
+            </button>
+            <div class="word-card" id="wordCard">
+                <div class="word-original">原词：漂亮</div>
+                <div class="word-suggestion">✨ 绚丽多彩</div>
+                <div class="word-example">
+                    例句：花坛里绚丽多彩的花朵在阳光下格外美丽。
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 7. 打字机效果 -->
+    <div class="demo-section">
+        <div class="demo-title">
+            <span>7️⃣</span>
+            <span>打字机效果</span>
+        </div>
+        <div class="demo-description">
+            AI给出建议时的逐字显示效果，模拟真实打字
+        </div>
+        <div class="demo-container">
+            <button class="trigger-btn" onclick="triggerTypewriter()">
+                开始打字
+            </button>
+            <div class="typewriter-container">
+                <div class="typewriter-text" id="typewriterText"></div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 8. 星星飞行动画 -->
+    <div class="demo-section">
+        <div class="demo-title">
+            <span>8️⃣</span>
+            <span>星星飞行动画</span>
+        </div>
+        <div class="demo-description">
+            获得奖励时，星星从原位置飞向顶部计数器
+        </div>
+        <div class="demo-container">
+            <button class="trigger-btn" onclick="triggerStarFly()">
+                获得星星
+            </button>
+            <div class="star-demo-container">
+                <div class="star-counter" id="starCounter">⭐ 10</div>
+                <div class="flying-star" id="flyingStar">⭐</div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 9. 加载动画 -->
+    <div class="demo-section">
+        <div class="demo-title">
+            <span>9️⃣</span>
+            <span>加载动画</span>
+        </div>
+        <div class="demo-description">
+            AI思考或保存文件时的加载提示，三个点依次跳动
+        </div>
+        <div class="demo-container">
+            <div class="loading-container">
+                <span>AI 思考中</span>
+                <div class="loading-dots">
+                    <div class="loading-dot"></div>
+                    <div class="loading-dot"></div>
+                    <div class="loading-dot"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 10. 卡片翻转动画 -->
+    <div class="demo-section">
+        <div class="demo-title">
+            <span>🔟</span>
+            <span>卡片翻转动画</span>
+        </div>
+        <div class="demo-description">
+            查看作文详情或素材卡片时的3D翻转效果
+        </div>
+        <div class="demo-container">
+            <div class="flip-card" id="flipCard" onclick="this.classList.toggle('flipped')">
+                <div class="flip-card-inner">
+                    <div class="flip-card-front">
+                        📝 作文标题<br>
+                        <small style="font-size: 0.8rem; font-weight: normal;">点击翻转</small>
+                    </div>
+                    <div class="flip-card-back">
+                        ⭐ 评分：85分<br>
+                        <small style="font-size: 0.8rem; font-weight: normal;">再次点击返回</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // 1. 页面转场动画
+        function triggerPageTransition() {
+            const element = document.getElementById('pageTransition');
+            element.classList.remove('animate');
+            void element.offsetWidth; // 触发重排
+            element.classList.add('animate');
+        }
+        
+        // 2. 写作提示动画
+        function triggerWritingTip() {
+            const element = document.getElementById('writingTip');
+            element.classList.remove('animate');
+            void element.offsetWidth;
+            element.classList.add('animate');
+        }
+        
+        // 3. 成就解锁动画
+        function triggerAchievement() {
+            const badge = document.getElementById('achievementBadge');
+            const text = document.getElementById('achievementText');
+            const container = document.getElementById('achievementContainer');
+            
+            // 重置动画
+            badge.classList.remove('animate');
+            text.classList.remove('animate');
+            
+            // 清除旧粒子
+            const oldParticles = container.querySelectorAll('.particle');
+            oldParticles.forEach(p => p.remove());
+            
+            void badge.offsetWidth;
+            
+            // 创建粒子
+            const colors = ['#FFB84D', '#5DADE2', '#A8E6CF', '#FF9AA2', '#FFD93D'];
+            for (let i = 0; i < 20; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.background = colors[Math.floor(Math.random() * colors.length)];
+                particle.style.left = '50%';
+                particle.style.top = '50%';
+                
+                const angle = (Math.PI * 2 * i) / 20;
+                const distance = 100 + Math.random() * 50;
+                const tx = Math.cos(angle) * distance;
+                const ty = Math.sin(angle) * distance;
+                
+                particle.style.setProperty('--tx', `${tx}px`);
+                particle.style.setProperty('--ty', `${ty}px`);
+                
+                container.appendChild(particle);
+                
+                setTimeout(() => {
+                    particle.classList.add('animate');
+                }, 600);
+            }
+            
+            // 启动动画
+            badge.classList.add('animate');
+            text.classList.add('animate');
+        }
+        
+        // 4. 进度条动画
+        function triggerProgress() {
+            const fill = document.getElementById('progressFill');
+            const percent = document.getElementById('progressPercent');
+            const number = document.getElementById('progressNumber');
+            
+            fill.classList.remove('animate');
+            void fill.offsetWidth;
+            fill.classList.add('animate');
+            
+            // 数字跳动动画
+            let current = 0;
+            const target = 75;
+            const duration = 800;
+            const increment = target / (duration / 16);
+            
+            const timer = setInterval(() => {
+                current += increment;
+                if (current >= target) {
+                    current = target;
+                    clearInterval(timer);
+                }
+                percent.textContent = Math.round(current) + '%';
+                number.textContent = Math.round(current) + '%';
+            }, 16);
+        }
+        
+        // 5. 按钮涟漪动画
+        document.getElementById('rippleButton').addEventListener('click', function(e) {
+            const button = this;
+            const ripple = document.createElement('span');
+            ripple.className = 'ripple';
+            
+            const rect = button.getBoundingClientRect();
+            const size = Math.max(rect.width, rect.height);
+            const x = e.clientX - rect.left - size / 2;
+            const y = e.clientY - rect.top - size / 2;
+            
+            ripple.style.width = ripple.style.height = size + 'px';
+            ripple.style.left = x + 'px';
+            ripple.style.top = y + 'px';
+            
+            button.appendChild(ripple);
+            
+            setTimeout(() => ripple.remove(), 600);
+        });
+        
+        // 6. 词汇卡片弹出动画
+        function triggerWordCard() {
+            const element = document.getElementById('wordCard');
+            element.classList.remove('animate');
+            void element.offsetWidth;
+            element.classList.add('animate');
+        }
+        
+        // 7. 打字机效果
+        function triggerTypewriter() {
+            const element = document.getElementById('typewriterText');
+            const text = '你的作文开头写得很好！接下来可以详细描述一下当时的场景和你的感受。';
+            
+            element.textContent = '';
+            element.style.width = '0';
+            element.classList.remove('typing');
+            
+            void element.offsetWidth;
+            
+            element.textContent = text;
+            element.classList.add('typing');
+        }
+        
+        // 8. 星星飞行动画
+        function triggerStarFly() {
+            const star = document.getElementById('flyingStar');
+            const counter = document.getElementById('starCounter');
+            
+            star.classList.remove('animate');
+            void star.offsetWidth;
+            star.classList.add('animate');
+            
+            setTimeout(() => {
+                const currentCount = parseInt(counter.textContent.match(/\d+/)[0]);
+                counter.textContent = `⭐ ${currentCount + 1}`;
+                counter.style.animation = 'pulse 0.3s ease-out';
+                setTimeout(() => {
+                    counter.style.animation = '';
+                }, 300);
+            }, 500);
+        }
+        
+        // 页面加载时的欢迎动画
+        window.addEventListener('load', () => {
+            document.body.style.opacity = '0';
+            setTimeout(() => {
+                document.body.style.transition = 'opacity 0.5s ease-out';
+                document.body.style.opacity = '1';
+            }, 100);
+        });
+    </script>
+</body>
+</html>

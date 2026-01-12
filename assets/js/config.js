@@ -12,12 +12,12 @@ const GAMES_CONFIG = [
     longDescription: '经典泡泡射击游戏，消除相同颜色的泡泡，挑战高分！',
     tags: ['休闲', '益智', '射击', '经典'],
     theme: 'bubble_shooter_1_theme.css',
-    thumbnail: null,
+    thumbnail: null, // 使用自动生成的占位图
     featured: true,
     difficulty: 'easy',
     players: '单人',
     controls: '鼠标点击',
-    addedDate: '2026-01-11'
+    addedDate: '2026-01-12'
   }
 ,
   {
@@ -28,12 +28,12 @@ const GAMES_CONFIG = [
     longDescription: '帮助小青蛙跳跃收集花朵，探索美丽的世界！',
     tags: ['冒险', '平台', '休闲', '可爱'],
     theme: 'frog_travel_game_1_theme.css',
-    thumbnail: null,
+    thumbnail: null, // 使用自动生成的占位图
     featured: true,
     difficulty: 'medium',
     players: '单人',
     controls: '键盘/触摸',
-    addedDate: '2026-01-11'
+    addedDate: '2026-01-12'
   }
 ,
   {
@@ -44,12 +44,12 @@ const GAMES_CONFIG = [
     longDescription: '有趣的游戏原型，快来体验吧！',
     tags: ['休闲', '益智'],
     theme: 'chinese_chess_1_3_theme.css',
-    thumbnail: null,
+    thumbnail: null, // 使用自动生成的占位图
     featured: true,
     difficulty: 'easy',
     players: '单人',
     controls: '鼠标/键盘',
-    addedDate: '2026-01-11'
+    addedDate: '2026-01-12'
   }
 ,
   {
@@ -60,12 +60,12 @@ const GAMES_CONFIG = [
     longDescription: '有趣的游戏原型，快来体验吧！',
     tags: ['休闲', '益智'],
     theme: 'chinese_chess_1_2_theme.css',
-    thumbnail: null,
+    thumbnail: null, // 使用自动生成的占位图
     featured: true,
     difficulty: 'easy',
     players: '单人',
     controls: '鼠标/键盘',
-    addedDate: '2026-01-11'
+    addedDate: '2026-01-12'
   }
 ,
   {
@@ -76,12 +76,28 @@ const GAMES_CONFIG = [
     longDescription: '有趣的游戏原型，快来体验吧！',
     tags: ['休闲', '益智'],
     theme: 'chinese_chess_1_theme.css',
-    thumbnail: null,
+    thumbnail: null, // 使用自动生成的占位图
     featured: true,
     difficulty: 'easy',
     players: '单人',
     controls: '鼠标/键盘',
-    addedDate: '2026-01-11'
+    addedDate: '2026-01-12'
+  }
+,
+  {
+    id: 'animations-demo',
+    filename: 'animations_demo.html',
+    title: '🎮 Animations Demo',
+    description: '有趣的游戏原型，快来体验吧！',
+    longDescription: '有趣的游戏原型，快来体验吧！',
+    tags: ['休闲', '益智'],
+    theme: 'animations_demo_theme.css',
+    thumbnail: null, // 使用自动生成的占位图
+    featured: true,
+    difficulty: 'easy',
+    players: '单人',
+    controls: '鼠标/键盘',
+    addedDate: '2026-01-12'
   }
 ,
   {
@@ -92,12 +108,12 @@ const GAMES_CONFIG = [
     longDescription: '有趣的游戏原型，快来体验吧！',
     tags: ['休闲', '益智'],
     theme: '2048_game_1_theme.css',
-    thumbnail: null,
+    thumbnail: null, // 使用自动生成的占位图
     featured: true,
     difficulty: 'easy',
     players: '单人',
     controls: '鼠标/键盘',
-    addedDate: '2026-01-11'
+    addedDate: '2026-01-12'
   }
 ,
   {
@@ -108,12 +124,12 @@ const GAMES_CONFIG = [
     longDescription: '有趣的游戏原型，快来体验吧！',
     tags: ['休闲', '益智'],
     theme: 'chinese_chess_1_1_theme.css',
-    thumbnail: null,
+    thumbnail: null, // 使用自动生成的占位图
     featured: true,
     difficulty: 'easy',
     players: '单人',
     controls: '鼠标/键盘',
-    addedDate: '2026-01-11'
+    addedDate: '2026-01-12'
   }
 ,
   {
@@ -124,12 +140,12 @@ const GAMES_CONFIG = [
     longDescription: '有趣的游戏原型，快来体验吧！',
     tags: ['休闲', '益智'],
     theme: 'plane_battle_1_theme.css',
-    thumbnail: null,
+    thumbnail: null, // 使用自动生成的占位图
     featured: true,
     difficulty: 'easy',
     players: '单人',
     controls: '鼠标/键盘',
-    addedDate: '2026-01-11'
+    addedDate: '2026-01-12'
   }
 ];
 

@@ -1,133 +1,449 @@
 :root {
-  /* === 基础颜色 === */
-  --background: 240 100% 99%;
-  --foreground: 210 40% 20%;
+  /* ========================================
+     基础色彩系统 - Base Colors
+     ======================================== */
   
-  /* === 品牌主色 === */
-  --primary: 197 71% 73%;
-  --primary-foreground: 0 0% 100%;
+  /* 主色调 - 阳光橙（创造力、温暖、活力） */
+  --primary: #FFB84D;
+  --primary-foreground: #1A1A1A;
+  --primary-hover: #FFA726;
+  --primary-light: #FFE0B2;
+  --primary-dark: #F57C00;
   
-  /* === 语义颜色 === */
-  --secondary: 204 100% 97%;
-  --secondary-foreground: 210 40% 30%;
+  /* 辅助色 - 天空蓝（清新、专注、信任） */
+  --secondary: #5DADE2;
+  --secondary-foreground: #FFFFFF;
+  --secondary-hover: #3498DB;
+  --secondary-light: #AED6F1;
+  --secondary-dark: #2874A6;
   
-  --muted: 210 40% 96%;
-  --muted-foreground: 210 20% 50%;
+  /* 背景色系统 */
+  --background: #FFF9F0; /* 米白色 - 护眼主背景 */
+  --foreground: #2C3E50; /* 深灰蓝 - 主文字颜色 */
+  --background-secondary: #FFFFFF; /* 纯白 - 卡片背景 */
+  --background-tertiary: #FFF5E6; /* 浅奶油色 - 次要区域 */
   
-  --accent: 197 71% 85%;
-  --accent-foreground: 197 71% 25%;
+  /* 语义色彩 */
+  --muted: #ECF0F1; /* 静音灰 */
+  --muted-foreground: #7F8C8D;
+  --accent: #A8E6CF; /* 薄荷绿 - 成功/成长 */
+  --accent-foreground: #1A5F3F;
+  --destructive: #E74C3C; /* 珊瑚红 - 错误/删除 */
+  --destructive-foreground: #FFFFFF;
   
-  /* === 功能颜色 === */
-  --destructive: 0 84% 68%;
-  --destructive-foreground: 0 0% 100%;
+  /* UI元素色彩 */
+  --border: #E0E0E0;
+  --input: #FFFFFF;
+  --ring: #FFB84D; /* 聚焦环颜色 */
+  --card: #FFFFFF;
+  --card-foreground: #2C3E50;
+  --popover: #FFFFFF;
+  --popover-foreground: #2C3E50;
   
-  --success: 177 70% 60%;
-  --success-foreground: 0 0% 100%;
+  /* 游戏化色彩 */
+  --success: #A8E6CF; /* 薄荷绿 - 成功 */
+  --success-foreground: #1A5F3F;
+  --warning: #FFD93D; /* 明黄 - 警告/提示 */
+  --warning-foreground: #6B4E00;
+  --info: #5DADE2; /* 天空蓝 - 信息 */
+  --info-foreground: #FFFFFF;
+  --achievement: linear-gradient(135deg, #FFD93D 0%, #FFB84D 100%); /* 成就渐变 */
+  --star-color: #FFD700; /* 金色星星 */
   
-  --warning: 38 92% 50%;
-  --warning-foreground: 0 0% 100%;
+  /* 数据可视化色彩 */
+  --chart-1: #FFB84D; /* 橙色 */
+  --chart-2: #5DADE2; /* 蓝色 */
+  --chart-3: #A8E6CF; /* 绿色 */
+  --chart-4: #FF9AA2; /* 粉色 */
+  --chart-5: #B4A7D6; /* 紫色 */
   
-  /* === UI元素 === */
-  --border: 214 32% 91%;
-  --input: 214 32% 91%;
-  --ring: 197 71% 73%;
+  /* 侧边栏色彩 */
+  --sidebar-background: #FFFFFF;
+  --sidebar-foreground: #2C3E50;
+  --sidebar-primary: #FFB84D;
+  --sidebar-primary-foreground: #1A1A1A;
+  --sidebar-accent: #5DADE2;
+  --sidebar-accent-foreground: #FFFFFF;
+  --sidebar-border: #E0E0E0;
+  --sidebar-ring: #FFB84D;
   
-  --card: 0 0% 100%;
-  --card-foreground: 210 40% 20%;
+  /* ========================================
+     字体系统 - Typography
+     ======================================== */
   
-  --popover: 0 0% 100%;
-  --popover-foreground: 210 40% 20%;
+  --font-sans: 'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  --font-serif: 'Noto Serif SC', 'Source Serif Pro', 'STSong', serif;
+  --font-mono: 'JetBrains Mono', 'Fira Code', 'Consolas', monospace;
+  --font-display: 'Quicksand', 'Noto Sans SC', sans-serif; /* 标题专用 */
+  --font-handwriting: 'Architects Daughter', cursive; /* 手写风格 */
   
-  /* === 图表颜色 === */
-  --chart-1: 197 71% 73%;
-  --chart-2: 177 70% 60%;
-  --chart-3: 38 92% 50%;
-  --chart-4: 0 84% 68%;
-  --chart-5: 271 76% 53%;
+  /* 字体大小 */
+  --font-size-xs: 0.75rem; /* 12px */
+  --font-size-sm: 0.875rem; /* 14px */
+  --font-size-base: 1rem; /* 16px */
+  --font-size-lg: 1.125rem; /* 18px */
+  --font-size-xl: 1.25rem; /* 20px */
+  --font-size-2xl: 1.5rem; /* 24px */
+  --font-size-3xl: 1.875rem; /* 30px */
+  --font-size-4xl: 2.25rem; /* 36px */
   
-  /* === 侧边栏 === */
-  --sidebar-background: 0 0% 100%;
-  --sidebar-foreground: 210 40% 30%;
-  --sidebar-primary: 197 71% 73%;
-  --sidebar-primary-foreground: 0 0% 100%;
-  --sidebar-accent: 204 100% 97%;
-  --sidebar-accent-foreground: 210 40% 30%;
-  --sidebar-border: 214 32% 91%;
-  --sidebar-ring: 197 71% 73%;
+  /* 行高 */
+  --line-height-tight: 1.25;
+  --line-height-normal: 1.5;
+  --line-height-relaxed: 1.75;
+  --line-height-loose: 2;
   
-  /* === 字体家族 === */
-  --font-sans: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  --font-serif: 'Merriweather', Georgia, serif;
-  --font-mono: 'JetBrains Mono', 'Courier New', monospace;
+  /* 字重 */
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
   
-  /* === 圆角 === */
-  --radius: 16px;
-  --radius-sm: 8px;
-  --radius-md: 12px;
-  --radius-lg: 20px;
-  --radius-xl: 24px;
+  /* ========================================
+     间距系统 - Spacing (8px基准网格)
+     ======================================== */
   
-  /* === 间距系统 === */
-  --spacing-xs: 4px;
-  --spacing-sm: 8px;
-  --spacing-md: 16px;
-  --spacing-lg: 24px;
-  --spacing-xl: 32px;
-  --spacing-2xl: 48px;
-  --spacing-3xl: 64px;
+  --spacing-0: 0;
+  --spacing-1: 0.25rem; /* 4px */
+  --spacing-2: 0.5rem; /* 8px */
+  --spacing-3: 0.75rem; /* 12px */
+  --spacing-4: 1rem; /* 16px */
+  --spacing-5: 1.25rem; /* 20px */
+  --spacing-6: 1.5rem; /* 24px */
+  --spacing-8: 2rem; /* 32px */
+  --spacing-10: 2.5rem; /* 40px */
+  --spacing-12: 3rem; /* 48px */
+  --spacing-16: 4rem; /* 64px */
+  --spacing-20: 5rem; /* 80px */
   
-  /* === 阴影系统 === */
-  --shadow-xs: 0 1px 2px 0 rgba(135, 206, 235, 0.05);
-  --shadow-sm: 0 2px 4px 0 rgba(135, 206, 235, 0.1);
-  --shadow-md: 0 4px 8px 0 rgba(135, 206, 235, 0.15);
-  --shadow-lg: 0 8px 16px 0 rgba(135, 206, 235, 0.2);
-  --shadow-xl: 0 12px 24px 0 rgba(135, 206, 235, 0.25);
-  --shadow-2xl: 0 16px 32px 0 rgba(135, 206, 235, 0.3);
-  --shadow-inner: inset 0 2px 4px 0 rgba(135, 206, 235, 0.1);
+  /* ========================================
+     圆角系统 - Border Radius
+     ======================================== */
   
-  /* === 游戏特定颜色 === */
-  --game-sky-start: 135 206 235;
-  --game-sky-end: 224 246 255;
-  --game-cloud: 255 255 255;
-  --game-player: 78 205 196;
-  --game-enemy: 255 107 107;
-  --game-bullet: 255 215 0;
-  --game-explosion: 255 140 0;
+  --radius-sm: 0.5rem; /* 8px */
+  --radius: 1rem; /* 16px - 默认圆角 */
+  --radius-md: 1rem; /* 16px */
+  --radius-lg: 1.5rem; /* 24px */
+  --radius-xl: 2rem; /* 32px */
+  --radius-full: 9999px; /* 完全圆形 */
   
-  /* === 动画时长 === */
-  --duration-fast: 150ms;
-  --duration-normal: 300ms;
-  --duration-slow: 500ms;
+  /* ========================================
+     阴影系统 - Shadows
+     ======================================== */
   
-  /* === Z-index层级 === */
-  --z-background: 0;
-  --z-game-area: 10;
-  --z-player: 20;
-  --z-enemy: 15;
-  --z-bullet: 18;
-  --z-explosion: 25;
-  --z-ui: 30;
-  --z-modal: 40;
+  --shadow-xs: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-sm: 0 2px 4px 0 rgba(0, 0, 0, 0.08);
+  --shadow-md: 0 4px 8px 0 rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 8px 16px 0 rgba(0, 0, 0, 0.12);
+  --shadow-xl: 0 12px 24px 0 rgba(0, 0, 0, 0.15);
+  --shadow-2xl: 0 16px 32px 0 rgba(0, 0, 0, 0.18);
+  --shadow-inner: inset 0 2px 4px 0 rgba(0, 0, 0, 0.06);
+  
+  /* 彩色阴影（用于强调元素） */
+  --shadow-primary: 0 4px 12px 0 rgba(255, 184, 77, 0.3);
+  --shadow-secondary: 0 4px 12px 0 rgba(93, 173, 226, 0.3);
+  --shadow-success: 0 4px 12px 0 rgba(168, 230, 207, 0.3);
+  
+  /* ========================================
+     动画系统 - Animations
+     ======================================== */
+  
+  --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-base: 250ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-slow: 350ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-bounce: 500ms cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  
+  /* ========================================
+     Z-index 层级系统
+     ======================================== */
+  
+  --z-dropdown: 1000;
+  --z-sticky: 1020;
+  --z-fixed: 1030;
+  --z-modal-backdrop: 1040;
+  --z-modal: 1050;
+  --z-popover: 1060;
+  --z-tooltip: 1070;
+  
+  /* ========================================
+     特殊效果
+     ======================================== */
+  
+  --blur-sm: blur(4px);
+  --blur-md: blur(8px);
+  --blur-lg: blur(16px);
+  
+  --gradient-primary: linear-gradient(135deg, #FFB84D 0%, #FFA726 100%);
+  --gradient-secondary: linear-gradient(135deg, #5DADE2 0%, #3498DB 100%);
+  --gradient-success: linear-gradient(135deg, #A8E6CF 0%, #7FD8BE 100%);
+  --gradient-rainbow: linear-gradient(135deg, #FFB84D 0%, #5DADE2 33%, #A8E6CF 66%, #FF9AA2 100%);
 }
 
-/* === 深色模式支持 === */
-@media (prefers-color-scheme: dark) {
+/* ========================================
+   全局样式重置
+   ======================================== */
+
+* {
+  margin: 0 !important;
+  padding: 0 !important;
+  box-sizing: border-box !important;
+}
+
+*:where(:not(input):not(textarea):not(select)) {
+  margin: 0 !important;
+}
+
+body {
+  font-family: var(--font-sans) !important;
+  font-size: var(--font-size-base) !important;
+  line-height: var(--line-height-normal) !important;
+  color: var(--foreground) !important;
+  background-color: var(--background) !important;
+  -webkit-font-smoothing: antialiased !important;
+  -moz-osx-font-smoothing: grayscale !important;
+}
+
+/* ========================================
+   标题样式
+   ======================================== */
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-display) !important;
+  font-weight: var(--font-weight-bold) !important;
+  line-height: var(--line-height-tight) !important;
+  color: var(--foreground) !important;
+}
+
+h1 {
+  font-size: var(--font-size-4xl) !important;
+  margin-bottom: var(--spacing-6) !important;
+}
+
+h2 {
+  font-size: var(--font-size-3xl) !important;
+  margin-bottom: var(--spacing-5) !important;
+}
+
+h3 {
+  font-size: var(--font-size-2xl) !important;
+  margin-bottom: var(--spacing-4) !important;
+}
+
+h4 {
+  font-size: var(--font-size-xl) !important;
+  margin-bottom: var(--spacing-3) !important;
+}
+
+h5 {
+  font-size: var(--font-size-lg) !important;
+  margin-bottom: var(--spacing-3) !important;
+}
+
+h6 {
+  font-size: var(--font-size-base) !important;
+  margin-bottom: var(--spacing-2) !important;
+}
+
+/* ========================================
+   段落和文本样式
+   ======================================== */
+
+p {
+  margin-bottom: var(--spacing-4) !important;
+  line-height: var(--line-height-relaxed) !important;
+}
+
+a {
+  color: var(--primary) !important;
+  text-decoration: none !important;
+  transition: color var(--transition-fast) !important;
+}
+
+a:hover {
+  color: var(--primary-hover) !important;
+  text-decoration: underline !important;
+}
+
+strong, b {
+  font-weight: var(--font-weight-bold) !important;
+}
+
+em, i {
+  font-style: italic !important;
+}
+
+/* ========================================
+   按钮样式
+   ======================================== */
+
+.btn {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: var(--spacing-3) var(--spacing-6) !important;
+  font-size: var(--font-size-base) !important;
+  font-weight: var(--font-weight-semibold) !important;
+  border-radius: var(--radius) !important;
+  border: none !important;
+  cursor: pointer !important;
+  transition: all var(--transition-base) !important;
+  min-height: 44px !important;
+  min-width: 44px !important;
+}
+
+.btn-primary {
+  background: var(--gradient-primary) !important;
+  color: var(--primary-foreground) !important;
+  box-shadow: var(--shadow-primary) !important;
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px) !important;
+  box-shadow: var(--shadow-lg) !important;
+}
+
+.btn-secondary {
+  background: var(--gradient-secondary) !important;
+  color: var(--secondary-foreground) !important;
+  box-shadow: var(--shadow-secondary) !important;
+}
+
+.btn-secondary:hover {
+  transform: translateY(-2px) !important;
+  box-shadow: var(--shadow-lg) !important;
+}
+
+/* ========================================
+   卡片样式
+   ======================================== */
+
+.card {
+  background-color: var(--card) !important;
+  border-radius: var(--radius-lg) !important;
+  padding: var(--spacing-6) !important;
+  box-shadow: var(--shadow-md) !important;
+  transition: all var(--transition-base) !important;
+}
+
+.card:hover {
+  box-shadow: var(--shadow-lg) !important;
+  transform: translateY(-4px) !important;
+}
+
+/* ========================================
+   输入框样式
+   ======================================== */
+
+input, textarea, select {
+  font-family: var(--font-sans) !important;
+  font-size: var(--font-size-base) !important;
+  padding: var(--spacing-3) var(--spacing-4) !important;
+  border: 2px solid var(--border) !important;
+  border-radius: var(--radius) !important;
+  background-color: var(--input) !important;
+  color: var(--foreground) !important;
+  transition: all var(--transition-fast) !important;
+}
+
+input:focus, textarea:focus, select:focus {
+  outline: none !important;
+  border-color: var(--ring) !important;
+  box-shadow: 0 0 0 3px rgba(255, 184, 77, 0.2) !important;
+}
+
+/* ========================================
+   游戏化元素样式
+   ======================================== */
+
+.badge {
+  display: inline-flex !important;
+  align-items: center !important;
+  padding: var(--spacing-1) var(--spacing-3) !important;
+  font-size: var(--font-size-sm) !important;
+  font-weight: var(--font-weight-semibold) !important;
+  border-radius: var(--radius-full) !important;
+  background: var(--achievement) !important;
+  color: var(--primary-foreground) !important;
+  box-shadow: var(--shadow-sm) !important;
+}
+
+.star {
+  color: var(--star-color) !important;
+  font-size: var(--font-size-xl) !important;
+  filter: drop-shadow(0 2px 4px rgba(255, 215, 0, 0.5)) !important;
+}
+
+.progress-bar {
+  width: 100% !important;
+  height: 12px !important;
+  background-color: var(--muted) !important;
+  border-radius: var(--radius-full) !important;
+  overflow: hidden !important;
+}
+
+.progress-fill {
+  height: 100% !important;
+  background: var(--gradient-primary) !important;
+  transition: width var(--transition-slow) !important;
+  border-radius: var(--radius-full) !important;
+}
+
+/* ========================================
+   动画关键帧
+   ======================================== */
+
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -1000px 0;
+  }
+  100% {
+    background-position: 1000px 0;
+  }
+}
+
+.animate-bounce {
+  animation: bounce 1s infinite !important;
+}
+
+.animate-pulse {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite !important;
+}
+
+/* ========================================
+   响应式断点
+   ======================================== */
+
+@media (max-width: 640px) {
   :root {
-    --background: 210 40% 10%;
-    --foreground: 210 40% 98%;
-    --card: 210 40% 12%;
-    --card-foreground: 210 40% 98%;
-    --popover: 210 40% 12%;
-    --popover-foreground: 210 40% 98%;
-    --primary: 197 71% 60%;
-    --primary-foreground: 210 40% 10%;
-    --secondary: 210 40% 15%;
-    --secondary-foreground: 210 40% 98%;
-    --muted: 210 40% 15%;
-    --muted-foreground: 210 40% 70%;
-    --accent: 197 71% 20%;
-    --accent-foreground: 197 71% 90%;
-    --border: 210 40% 20%;
-    --input: 210 40% 20%;
+    --font-size-base: 0.875rem !important; /* 14px */
+    --spacing-4: 0.75rem !important; /* 12px */
+  }
+}
+
+@media (max-width: 768px) {
+  h1 {
+    font-size: var(--font-size-3xl) !important;
+  }
+  
+  h2 {
+    font-size: var(--font-size-2xl) !important;
   }
 }
