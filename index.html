@@ -58,16 +58,35 @@
       </a>
 
       <!-- 产品切换导航 -->
-      <nav class="product-nav" role="navigation" aria-label="产品导航">
+      <nav class="product-nav" role="navigation" aria-label="产品导航" data-i18n-aria="nav.aria">
         <button class="nav-tab active" data-product="game" aria-selected="true">
           <i data-lucide="gamepad-2"></i>
-          <span>PinableGame</span>
+          <span data-i18n="nav.game">PinableGame</span>
         </button>
         <button class="nav-tab" data-product="video" aria-selected="false">
           <i data-lucide="video"></i>
-          <span>PinableVideo</span>
+          <span data-i18n="nav.video">PinableVideo</span>
         </button>
       </nav>
+
+      <!-- 语言切换 -->
+      <div class="lang-switcher" id="lang-switcher">
+        <button class="lang-btn" id="lang-toggle" aria-label="切换语言" data-i18n-aria="lang.switch">
+          <i data-lucide="globe"></i>
+          <span id="current-lang-name">简体中文</span>
+          <i data-lucide="chevron-down" class="lang-arrow"></i>
+        </button>
+        <div class="lang-dropdown" id="lang-dropdown">
+          <button class="lang-option active" data-lang="zh-CN">
+            <span class="lang-flag">🇨🇳</span>
+            <span>简体中文</span>
+          </button>
+          <button class="lang-option" data-lang="en">
+            <span class="lang-flag">🇺🇸</span>
+            <span>English</span>
+          </button>
+        </div>
+      </div>
 
     </div>
   </header>
@@ -85,9 +104,9 @@
       <h1 class="hero-title">
         <span class="hero-label">AI CREATIVE LAB</span>
         <span class="hero-main" id="hero-main-title">PinableVideo</span>
-        <span class="hero-sub" id="hero-sub-title">自助导演，创意无限</span>
+        <span class="hero-sub" id="hero-sub-title" data-i18n="hero.video.sub">自助导演，创意无限</span>
       </h1>
-      <p class="hero-description" id="hero-description">
+      <p class="hero-description" id="hero-description" data-i18n="hero.video.description">
         用 AI 释放你的创意，几分钟内将想法变成精彩视频。
         无需专业技能，人人都是导演。
       </p>
@@ -98,8 +117,10 @@
           type="text"
           id="search-input"
           placeholder="搜索视频或游戏... (Ctrl+K)"
+          data-i18n-placeholder="search.placeholder"
           autocomplete="off"
           aria-label="搜索"
+          data-i18n-aria="search.aria"
         >
       </div>
 
@@ -107,22 +128,22 @@
       <div class="hero-stats">
         <div class="stat-item">
           <span class="stat-number stat-blue" id="stat-count">12</span>
-          <span class="stat-label" id="stat-label">个作品</span>
+          <span class="stat-label" id="stat-label" data-i18n="stats.works">个作品</span>
         </div>
         <div class="stat-item">
-          <span class="stat-number stat-emerald">AI</span>
-          <span class="stat-label">智能驱动</span>
+          <span class="stat-number stat-emerald" data-i18n="stats.ai">AI</span>
+          <span class="stat-label" data-i18n="stats.aiDriven">智能驱动</span>
         </div>
         <div class="stat-item">
-          <span class="stat-number stat-amber">0</span>
-          <span class="stat-label">门槛</span>
+          <span class="stat-number stat-amber" data-i18n="stats.zero">0</span>
+          <span class="stat-label" data-i18n="stats.threshold">门槛</span>
         </div>
       </div>
     </div>
   </section>
 
   <!-- 筛选标签区域 -->
-  <section class="filters" aria-label="筛选">
+  <section class="filters" aria-label="筛选" data-i18n-aria="filters.aria">
     <div class="filter-group" id="tag-filters" role="group" aria-label="按类型筛选">
       <!-- 动态生成标签按钮 -->
     </div>
@@ -131,37 +152,37 @@
   <!-- 内容展示区域 -->
   <main class="main-content">
     <!-- 视频展示区域 -->
-    <section class="content-section video-section" id="video-section" aria-label="视频列表">
+    <section class="content-section video-section" id="video-section" aria-label="视频列表" data-i18n-aria="section.video.aria">
       <div class="section-header">
         <h2 class="section-title">
           <span class="title-icon" style="background: var(--block-rose);">
             <i data-lucide="video"></i>
           </span>
-          视频作品
+          <span data-i18n="section.video.title">视频作品</span>
         </h2>
-        <p class="section-desc">AI 自助导演，轻松创作专业视频</p>
+        <p class="section-desc" data-i18n="section.video.desc">AI 自助导演，轻松创作专业视频</p>
       </div>
       <div class="content-grid" id="video-grid">
         <div class="loading">
-          <div class="spinner" role="status" aria-label="加载中"></div>
+          <div class="spinner" role="status" aria-label="加载中" data-i18n-aria="loading"></div>
         </div>
       </div>
     </section>
 
     <!-- 游戏展示区域 -->
-    <section class="content-section game-section active" id="game-section" aria-label="游戏列表">
+    <section class="content-section game-section active" id="game-section" aria-label="游戏列表" data-i18n-aria="section.game.aria">
       <div class="section-header">
         <h2 class="section-title">
           <span class="title-icon" style="background: var(--block-purple);">
             <i data-lucide="gamepad-2"></i>
           </span>
-          游戏原型
+          <span data-i18n="section.game.title">游戏原型</span>
         </h2>
-        <p class="section-desc">快速验证创意，从想法到可玩只需几分钟</p>
+        <p class="section-desc" data-i18n="section.game.desc">快速验证创意，从想法到可玩只需几分钟</p>
       </div>
       <div class="content-grid" id="game-grid">
         <div class="loading">
-          <div class="spinner" role="status" aria-label="加载中"></div>
+          <div class="spinner" role="status" aria-label="加载中" data-i18n-aria="loading"></div>
         </div>
       </div>
     </section>
@@ -170,35 +191,35 @@
   <!-- 特性展示区域 - 翡翠绿背景 -->
   <section class="features-section">
     <div class="features-container">
-      <h2 class="features-title">为什么选择 PinableLab</h2>
+      <h2 class="features-title" data-i18n="features.title">为什么选择 PinableLab</h2>
       <div class="features-grid">
         <div class="feature-card">
           <div class="feature-icon" style="background: var(--bg-white); color: var(--block-blue);">
             <i data-lucide="zap"></i>
           </div>
-          <h3>极速创作</h3>
-          <p>AI 辅助创作流程，几分钟完成从创意到成品</p>
+          <h3 data-i18n="features.speed.title">极速创作</h3>
+          <p data-i18n="features.speed.desc">AI 辅助创作流程，几分钟完成从创意到成品</p>
         </div>
         <div class="feature-card">
           <div class="feature-icon" style="background: var(--bg-white); color: var(--block-emerald);">
             <i data-lucide="sparkles"></i>
           </div>
-          <h3>智能生成</h3>
-          <p>描述你的想法，AI 自动生成专业内容</p>
+          <h3 data-i18n="features.ai.title">智能生成</h3>
+          <p data-i18n="features.ai.desc">描述你的想法，AI 自动生成专业内容</p>
         </div>
         <div class="feature-card">
           <div class="feature-icon" style="background: var(--bg-white); color: var(--block-amber);">
             <i data-lucide="share-2"></i>
           </div>
-          <h3>一键发布</h3>
-          <p>即时预览、一键部署，作品即刻上线</p>
+          <h3 data-i18n="features.publish.title">一键发布</h3>
+          <p data-i18n="features.publish.desc">即时预览、一键部署，作品即刻上线</p>
         </div>
         <div class="feature-card">
           <div class="feature-icon" style="background: var(--bg-white); color: var(--block-rose);">
             <i data-lucide="puzzle"></i>
           </div>
-          <h3>无缝集成</h3>
-          <p>VSCode 插件直接使用，融入开发工作流</p>
+          <h3 data-i18n="features.integrate.title">无缝集成</h3>
+          <p data-i18n="features.integrate.desc">VSCode 插件直接使用，融入开发工作流</p>
         </div>
       </div>
     </div>
@@ -207,18 +228,18 @@
   <!-- CTA 区域 - 琥珀色背景 -->
   <section class="cta-section">
     <div class="cta-container">
-      <h2 class="cta-title">准备好释放创意了吗？</h2>
-      <p class="cta-desc">立即下载 VSCode 插件，开启 AI 创作之旅</p>
+      <h2 class="cta-title" data-i18n="cta.title">准备好释放创意了吗？</h2>
+      <p class="cta-desc" data-i18n="cta.desc">立即下载 VSCode 插件，开启 AI 创作之旅</p>
       <div class="cta-buttons">
         <a href="https://marketplace.visualstudio.com/items?itemName=your-publisher.chatgame"
            class="btn-cta btn-cta-primary"
            target="_blank">
           <i data-lucide="download"></i>
-          免费下载
+          <span data-i18n="cta.download">免费下载</span>
         </a>
         <a href="USAGE.md" class="btn-cta btn-cta-outline" target="_blank">
           <i data-lucide="book-open"></i>
-          使用指南
+          <span data-i18n="cta.guide">使用指南</span>
         </a>
       </div>
     </div>
@@ -232,32 +253,32 @@
           <img src="assets/logo.png" alt="PinableLab">
           <span>PinableLab</span>
         </div>
-        <p>AI 驱动的创意实验室，让每个人都能成为创作者。</p>
+        <p data-i18n="footer.brand.desc">AI 驱动的创意实验室，让每个人都能成为创作者。</p>
       </div>
       <div class="footer-section">
-        <h3>产品</h3>
+        <h3 data-i18n="footer.products">产品</h3>
         <ul>
           <li><a href="#" data-nav="video">PinableVideo</a></li>
           <li><a href="#" data-nav="game">PinableGame</a></li>
         </ul>
       </div>
       <div class="footer-section">
-        <h3>资源</h3>
+        <h3 data-i18n="footer.resources">资源</h3>
         <ul>
-          <li><a href="USAGE.md" target="_blank">使用指南</a></li>
-          <li><a href="#" onclick="app?.showStatistics(); return false;">统计数据</a></li>
+          <li><a href="USAGE.md" target="_blank" data-i18n="footer.guide">使用指南</a></li>
+          <li><a href="#" onclick="app?.showStatistics(); return false;" data-i18n="footer.stats">统计数据</a></li>
         </ul>
       </div>
       <div class="footer-section">
-        <h3>内容类型</h3>
+        <h3 data-i18n="footer.contentTypes">内容类型</h3>
         <ul>
-          <li>视频 - 短片 / 教程 / 宣传</li>
-          <li>游戏 - 休闲 / 益智 / 动作</li>
+          <li data-i18n="footer.videoTypes">视频 - 短片 / 教程 / 宣传</li>
+          <li data-i18n="footer.gameTypes">游戏 - 休闲 / 益智 / 动作</li>
         </ul>
       </div>
     </div>
     <div class="footer-bottom">
-      <p>&copy; 2026 PinableLab. All rights reserved.</p>
+      <p data-i18n="footer.copyright">&copy; 2026 PinableLab. All rights reserved.</p>
     </div>
   </footer>
 
@@ -266,6 +287,7 @@
 
   <!-- Scripts -->
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <script src="assets/js/i18n.js"></script>
   <script src="assets/js/config.js"></script>
   <script src="assets/js/game-loader.js"></script>
   <script src="assets/js/search.js"></script>

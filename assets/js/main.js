@@ -1,6 +1,7 @@
 /**
  * PinableLab App
  * 主应用控制器 - 支持视频和游戏双产品展示
+ * 支持中英文多语言
  */
 
 // 视频配置数据
@@ -8,7 +9,9 @@ const VIDEOS_CONFIG = [
   {
     id: 'video_1',
     title: '产品演示视频',
+    titleEn: 'Product Demo Video',
     description: '使用 PinableVideo 创建的产品演示，展示 AI 辅助视频制作的强大功能。',
+    descriptionEn: 'Product demo created with PinableVideo, showcasing the power of AI-assisted video production.',
     thumbnail: null, // 使用生成的占位图
     duration: '2:30',
     tags: ['产品演示', 'AI生成'],
@@ -18,7 +21,9 @@ const VIDEOS_CONFIG = [
   {
     id: 'video_2',
     title: '教程：快速上手',
+    titleEn: 'Tutorial: Quick Start',
     description: '5分钟学会使用 PinableVideo 创建你的第一个视频项目。',
+    descriptionEn: 'Learn to create your first video project with PinableVideo in 5 minutes.',
     thumbnail: null,
     duration: '5:00',
     tags: ['教程', '入门'],
@@ -28,7 +33,9 @@ const VIDEOS_CONFIG = [
   {
     id: 'video_3',
     title: '创意短片示例',
+    titleEn: 'Creative Short Film Example',
     description: 'AI 辅助创作的创意短片，展示无限创意可能。',
+    descriptionEn: 'AI-assisted creative short film, showcasing unlimited creative possibilities.',
     thumbnail: null,
     duration: '1:45',
     tags: ['创意', '短片'],
@@ -41,15 +48,15 @@ const VIDEOS_CONFIG = [
 const HERO_CONTENT = {
   video: {
     main: 'PinableVideo',
-    sub: '自助导演，创意无限',
-    description: '用 AI 释放你的创意，几分钟内将想法变成精彩视频。无需专业技能，人人都是导演。',
-    statLabel: '个视频'
+    sub: 'hero.video.sub',
+    description: 'hero.video.description',
+    statLabel: 'hero.video.stat'
   },
   game: {
     main: 'PinableGame',
-    sub: '快速原型，即刻验证',
-    description: '使用 AI 快速创建游戏原型，从创意到可玩只需几分钟。支持多种游戏类型，一键发布。',
-    statLabel: '个游戏'
+    sub: 'hero.game.sub',
+    description: 'hero.game.description',
+    statLabel: 'hero.game.stat'
   }
 };
 
@@ -70,12 +77,18 @@ class App {
     this.heroSection = null;
     this.videoSection = null;
     this.gameSection = null;
+    this.langSwitcher = null;
+    this.langToggle = null;
+    this.langDropdown = null;
   }
 
   /**
    * 初始化应用
    */
   init() {
+    // 初始化多语言
+    I18N.init();
+
     this.gameLoader.init();
     this.setupDOM();
     this.renderTagFilters();
@@ -84,8 +97,10 @@ class App {
     this.bindEvents();
     this.initLucideIcons();
     this.initHeaderScroll();
+    this.initLanguageSwitcher();
     this.updateHeroContent();
     this.updateStats();
+    this.translatePage();
 
     console.log('🔬 PinableLab initialized!');
   }
@@ -103,6 +118,113 @@ class App {
     this.heroSection = document.getElementById('hero-section');
     this.videoSection = document.getElementById('video-section');
     this.gameSection = document.getElementById('game-section');
+    this.langSwitcher = document.getElementById('lang-switcher');
+    this.langToggle = document.getElementById('lang-toggle');
+    this.langDropdown = document.getElementById('lang-dropdown');
+  }
+
+  /**
+   * 初始化语言切换器
+   */
+  initLanguageSwitcher() {
+    if (!this.langToggle || !this.langSwitcher) return;
+
+    // 更新当前语言显示
+    this.updateLangDisplay();
+
+    // 切换下拉菜单
+    this.langToggle.addEventListener('click', (e) => {
+      e.stopPropagation();
+      this.langSwitcher.classList.toggle('open');
+    });
+
+    // 点击外部关闭下拉菜单
+    document.addEventListener('click', (e) => {
+      if (!this.langSwitcher.contains(e.target)) {
+        this.langSwitcher.classList.remove('open');
+      }
+    });
+
+    // 语言选项点击
+    const langOptions = document.querySelectorAll('.lang-option');
+    langOptions.forEach(option => {
+      option.addEventListener('click', () => {
+        const lang = option.dataset.lang;
+        this.switchLanguage(lang);
+        this.langSwitcher.classList.remove('open');
+      });
+    });
+
+    // 监听语言变化事件
+    window.addEventListener('langchange', () => {
+      this.onLanguageChange();
+    });
+  }
+
+  /**
+   * 切换语言
+   */
+  switchLanguage(lang) {
+    if (I18N.setLang(lang)) {
+      this.updateLangDisplay();
+    }
+  }
+
+  /**
+   * 更新语言显示
+   */
+  updateLangDisplay() {
+    const currentLang = I18N.getLang();
+    const langInfo = I18N.getSupportedLangs()[currentLang];
+    const currentLangName = document.getElementById('current-lang-name');
+
+    if (currentLangName && langInfo) {
+      currentLangName.textContent = langInfo.name;
+    }
+
+    // 更新选项激活状态
+    const langOptions = document.querySelectorAll('.lang-option');
+    langOptions.forEach(option => {
+      option.classList.toggle('active', option.dataset.lang === currentLang);
+    });
+  }
+
+  /**
+   * 语言变化回调
+   */
+  onLanguageChange() {
+    this.translatePage();
+    this.updateHeroContent();
+    this.renderTagFilters();
+    this.renderGames(GAMES_CONFIG);
+    this.renderVideos(VIDEOS_CONFIG);
+    this.initLucideIcons();
+  }
+
+  /**
+   * 翻译页面
+   */
+  translatePage() {
+    // 翻译带 data-i18n 属性的元素
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+      const key = el.getAttribute('data-i18n');
+      el.textContent = t(key);
+    });
+
+    // 翻译 placeholder
+    document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+      const key = el.getAttribute('data-i18n-placeholder');
+      el.placeholder = t(key);
+    });
+
+    // 翻译 aria-label
+    document.querySelectorAll('[data-i18n-aria]').forEach(el => {
+      const key = el.getAttribute('data-i18n-aria');
+      el.setAttribute('aria-label', t(key));
+    });
+
+    // 更新页面标题
+    document.title = t('meta.title');
   }
 
   /**
@@ -187,9 +309,9 @@ class App {
     const statLabel = document.getElementById('stat-label');
 
     if (mainTitle) mainTitle.textContent = content.main;
-    if (subTitle) subTitle.textContent = content.sub;
-    if (description) description.textContent = content.description;
-    if (statLabel) statLabel.textContent = content.statLabel;
+    if (subTitle) subTitle.textContent = t(content.sub);
+    if (description) description.textContent = t(content.description);
+    if (statLabel) statLabel.textContent = t(content.statLabel);
   }
 
   /**
@@ -217,7 +339,7 @@ class App {
 
     this.tagFilters.innerHTML = tags.map(tag => `
       <button class="tag-filter" data-tag="${tag}">
-        ${tag}
+        ${I18N.translateTag(tag)}
       </button>
     `).join('');
   }
@@ -230,7 +352,7 @@ class App {
     VIDEOS_CONFIG.forEach(video => {
       video.tags.forEach(tag => tags.add(tag));
     });
-    return ['全部', ...Array.from(tags)];
+    return [t('filters.all'), ...Array.from(tags)];
   }
 
   /**
@@ -263,25 +385,28 @@ class App {
     card.style.animationDelay = `${index * 0.05}s`;
 
     const thumbnailSrc = video.thumbnail || this.generateVideoPlaceholder(video);
+    const isEn = I18N.getLang() === 'en';
+    const title = isEn && video.titleEn ? video.titleEn : video.title;
+    const description = isEn && video.descriptionEn ? video.descriptionEn : video.description;
 
     card.innerHTML = `
       <div class="card-thumbnail">
-        <img src="${thumbnailSrc}" alt="${video.title}" loading="lazy" onerror="this.src='${this.generateVideoPlaceholder(video)}'">
+        <img src="${thumbnailSrc}" alt="${title}" loading="lazy" onerror="this.src='${this.generateVideoPlaceholder(video)}'">
         <span class="card-type-badge">
           <i data-lucide="video"></i>
           ${video.duration}
         </span>
-        ${video.featured ? '<span class="card-badge">精选</span>' : ''}
+        ${video.featured ? `<span class="card-badge">${t('card.featured')}</span>` : ''}
       </div>
       <div class="card-content">
-        <h3 class="card-title">${video.title}</h3>
-        <p class="card-description">${video.description}</p>
+        <h3 class="card-title">${title}</h3>
+        <p class="card-description">${description}</p>
         <div class="card-tags">
-          ${video.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}
+          ${video.tags.map(tag => `<span class="tag">${I18N.translateTag(tag)}</span>`).join('')}
         </div>
-        <button class="btn-action" data-video-id="${video.id}" aria-label="播放 ${video.title}">
+        <button class="btn-action" data-video-id="${video.id}" aria-label="${t('card.playAria')} ${title}">
           <i data-lucide="play"></i>
-          <span>播放视频</span>
+          <span>${t('card.playVideo')}</span>
         </button>
       </div>
     `;
@@ -329,11 +454,12 @@ class App {
     card.style.animationDelay = `${index * 0.05}s`;
 
     const thumbnailSrc = this.getThumbnailSrc(game);
+    const difficultyLabel = t(`difficulty.${game.difficulty}`);
 
     card.innerHTML = `
       <div class="game-card-thumbnail">
         <img src="${thumbnailSrc}" alt="${game.title}" loading="lazy" onerror="this.src='${this.generatePlaceholder(game)}'">
-        ${game.featured ? '<span class="featured-badge">精选</span>' : ''}
+        ${game.featured ? `<span class="featured-badge">${t('card.featured')}</span>` : ''}
       </div>
       <div class="game-card-content">
         <h3 class="game-card-title">${game.title}</h3>
@@ -341,7 +467,7 @@ class App {
         <div class="game-card-tags">
           ${game.tags.map(tag => `
             <span class="tag" style="background: ${TAG_COLORS[tag] || 'var(--bg-muted)'}; color: white;">
-              ${tag}
+              ${I18N.translateTag(tag)}
             </span>
           `).join('')}
         </div>
@@ -356,12 +482,12 @@ class App {
           </span>
           <span class="meta-item difficulty-${game.difficulty}">
             ${DIFFICULTY_CONFIG[game.difficulty].icon}
-            ${DIFFICULTY_CONFIG[game.difficulty].label}
+            ${difficultyLabel}
           </span>
         </div>
-        <button class="btn-play" data-game-id="${game.id}" aria-label="开始玩 ${game.title}">
+        <button class="btn-play" data-game-id="${game.id}" aria-label="${t('card.playAria')} ${game.title}">
           <i data-lucide="play"></i>
-          <span>开始游戏</span>
+          <span>${t('card.play')}</span>
         </button>
       </div>
     `;
@@ -391,16 +517,16 @@ class App {
    */
   showNoResults(container, type) {
     const icon = type === 'video' ? 'video-off' : 'search-x';
-    const text = type === 'video' ? '视频' : '游戏';
+    const titleKey = type === 'video' ? 'noResults.video.title' : 'noResults.game.title';
 
     container.innerHTML = `
       <div class="no-results">
         <i data-lucide="${icon}"></i>
-        <h3>未找到${text}</h3>
-        <p>尝试使用其他关键词或清除筛选条件</p>
+        <h3>${t(titleKey)}</h3>
+        <p>${t('noResults.hint')}</p>
         <button class="btn-play" onclick="app.resetFilters()" style="max-width: 200px; margin: var(--spacing-lg) auto 0;">
           <i data-lucide="refresh-cw"></i>
-          <span>重置筛选</span>
+          <span>${t('noResults.reset')}</span>
         </button>
       </div>
     `;
@@ -528,7 +654,8 @@ class App {
     const activeTags = Array.from(document.querySelectorAll('.tag-filter.active'))
       .map(btn => btn.dataset.tag);
 
-    if (activeTags.length === 0 || activeTags.includes('全部')) {
+    const allLabel = t('filters.all');
+    if (activeTags.length === 0 || activeTags.includes(allLabel) || activeTags.includes('全部')) {
       this.renderVideos(VIDEOS_CONFIG);
       return;
     }
@@ -547,10 +674,13 @@ class App {
     const video = VIDEOS_CONFIG.find(v => v.id === videoId);
     if (!video) return;
 
+    const isEn = I18N.getLang() === 'en';
+    const title = isEn && video.titleEn ? video.titleEn : video.title;
+
     // 这里可以实现视频播放逻辑
     // 例如打开模态窗口播放视频
-    console.log('播放视频:', video.title);
-    alert(`即将播放: ${video.title}\n\n（视频播放功能开发中）`);
+    console.log('播放视频:', title);
+    alert(`${t('video.playing')}: ${title}\n\n${t('video.devNote')}`);
   }
 
   /**
