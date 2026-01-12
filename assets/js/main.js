@@ -57,7 +57,7 @@ class App {
   constructor() {
     this.gameLoader = new GameLoader();
     this.searchEngine = new SearchEngine(GAMES_CONFIG);
-    this.currentProduct = 'video'; // 默认显示视频
+    this.currentProduct = 'game'; // 默认显示游戏
     this.allTags = getAllTags();
 
     // DOM 元素引用

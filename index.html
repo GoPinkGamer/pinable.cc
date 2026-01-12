@@ -59,13 +59,13 @@
 
       <!-- 产品切换导航 -->
       <nav class="product-nav" role="navigation" aria-label="产品导航">
-        <button class="nav-tab active" data-product="video" aria-selected="true">
-          <i data-lucide="video"></i>
-          <span>PinableVideo</span>
-        </button>
-        <button class="nav-tab" data-product="game" aria-selected="false">
+        <button class="nav-tab active" data-product="game" aria-selected="true">
           <i data-lucide="gamepad-2"></i>
           <span>PinableGame</span>
+        </button>
+        <button class="nav-tab" data-product="video" aria-selected="false">
+          <i data-lucide="video"></i>
+          <span>PinableVideo</span>
         </button>
       </nav>
 
@@ -132,7 +132,7 @@
   <!-- 内容展示区域 -->
   <main class="main-content">
     <!-- 视频展示区域 -->
-    <section class="content-section video-section active" id="video-section" aria-label="视频列表">
+    <section class="content-section video-section" id="video-section" aria-label="视频列表">
       <div class="section-header">
         <h2 class="section-title">
           <span class="title-icon" style="background: var(--block-rose);">
@@ -150,7 +150,7 @@
     </section>
 
     <!-- 游戏展示区域 -->
-    <section class="content-section game-section" id="game-section" aria-label="游戏列表">
+    <section class="content-section game-section active" id="game-section" aria-label="游戏列表">
       <div class="section-header">
         <h2 class="section-title">
           <span class="title-icon" style="background: var(--block-purple);">
