@@ -1,0 +1,2081 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>小作家助手 - 智能写作辅助工具</title>
+    <link rel="stylesheet" href="theme.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        /* ========================================
+           应用主体样式
+           ======================================== */
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: var(--font-sans);
+            background: var(--background);
+            color: var(--foreground);
+            overflow-x: hidden;
+        }
+        
+        .app-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        /* ========================================
+           页面容器
+           ======================================== */
+        
+        .page {
+            display: none;
+            flex: 1;
+            overflow-y: auto;
+            animation: pageTransition 400ms ease-out;
+        }
+        
+        .page.active {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        @keyframes pageTransition {
+            from {
+                opacity: 0;
+                transform: scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+        
+        /* ========================================
+           底部导航栏
+           ======================================== */
+        
+        .bottom-nav {
+            background: white;
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: space-around;
+            padding: 0.75rem 0;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05);
+            position: sticky;
+            bottom: 0;
+            z-index: var(--z-sticky);
+        }
+        
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.25rem;
+            padding: 0.5rem 1rem;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+            border-radius: var(--radius);
+            color: var(--muted-foreground);
+            text-decoration: none;
+            min-width: 60px;
+        }
+        
+        .nav-item:hover {
+            background: var(--background);
+            color: var(--primary);
+        }
+        
+        .nav-item.active {
+            color: var(--primary);
+            font-weight: var(--font-weight-semibold);
+        }
+        
+        .nav-item i {
+            font-size: 1.5rem;
+        }
+        
+        .nav-item span {
+            font-size: var(--font-size-sm);
+        }
+        
+        /* ========================================
+           首页样式
+           ======================================== */
+        
+        .home-page {
+            padding: 2rem 1.5rem;
+        }
+        
+        .home-header {
+            margin-bottom: 2rem;
+        }
+        
+        .home-title {
+            font-size: var(--font-size-3xl);
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .home-greeting {
+            font-size: var(--font-size-xl);
+            color: var(--foreground);
+            margin-bottom: 1rem;
+        }
+        
+        .action-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .action-card {
+            background: white;
+            border-radius: var(--radius-lg);
+            padding: 2rem;
+            box-shadow: var(--shadow-md);
+            cursor: pointer;
+            transition: all var(--transition-base);
+            text-align: center;
+            border: 2px solid transparent;
+        }
+        
+        .action-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--primary);
+        }
+        
+        .action-card-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+        
+        .action-card-title {
+            font-size: var(--font-size-xl);
+            font-weight: var(--font-weight-bold);
+            color: var(--foreground);
+            margin-bottom: 0.5rem;
+        }
+        
+        .action-card-subtitle {
+            font-size: var(--font-size-sm);
+            color: var(--muted-foreground);
+        }
+        
+        .daily-topic {
+            background: white;
+            border-radius: var(--radius-lg);
+            padding: 1.5rem;
+            box-shadow: var(--shadow-md);
+            margin-bottom: 2rem;
+            border-left: 4px solid var(--primary);
+        }
+        
+        .daily-topic-header {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+            font-size: var(--font-size-lg);
+            font-weight: var(--font-weight-semibold);
+            color: var(--primary);
+        }
+        
+        .daily-topic-content {
+            font-size: var(--font-size-base);
+            color: var(--foreground);
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+        
+        .daily-topic-btn {
+            background: var(--gradient-primary);
+            color: var(--primary-foreground);
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: var(--radius);
+            font-size: var(--font-size-base);
+            font-weight: var(--font-weight-semibold);
+            cursor: pointer;
+            transition: all var(--transition-base);
+            box-shadow: var(--shadow-primary);
+        }
+        
+        .daily-topic-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+        
+        .achievement-summary {
+            background: white;
+            border-radius: var(--radius-lg);
+            padding: 1.5rem;
+            box-shadow: var(--shadow-md);
+        }
+        
+        .achievement-header {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+            font-size: var(--font-size-lg);
+            font-weight: var(--font-weight-semibold);
+        }
+        
+        .achievement-stats {
+            display: flex;
+            justify-content: space-around;
+            gap: 1rem;
+        }
+        
+        .stat-item {
+            text-align: center;
+        }
+        
+        .stat-value {
+            font-size: var(--font-size-2xl);
+            font-weight: var(--font-weight-bold);
+            color: var(--primary);
+            display: block;
+        }
+        
+        .stat-label {
+            font-size: var(--font-size-sm);
+            color: var(--muted-foreground);
+        }
+        
+        .star-rating {
+            color: var(--star-color);
+            font-size: var(--font-size-xl);
+            letter-spacing: 0.25rem;
+        }
+        
+        /* ========================================
+           写作页面样式
+           ======================================== */
+        
+        .writing-page {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+        
+        .writing-header {
+            background: white;
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: var(--shadow-sm);
+        }
+        
+        .writing-title-input {
+            font-size: var(--font-size-xl);
+            font-weight: var(--font-weight-semibold);
+            border: none;
+            outline: none;
+            flex: 1;
+            color: var(--foreground);
+        }
+        
+        .writing-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+        
+        .icon-btn {
+            background: transparent;
+            border: none;
+            padding: 0.5rem;
+            cursor: pointer;
+            border-radius: var(--radius);
+            transition: all var(--transition-fast);
+            color: var(--muted-foreground);
+        }
+        
+        .icon-btn:hover {
+            background: var(--background);
+            color: var(--primary);
+        }
+        
+        .writing-toolbar {
+            background: var(--background-tertiary);
+            padding: 1rem 1.5rem;
+            display: flex;
+            gap: 0.75rem;
+            overflow-x: auto;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .tool-btn {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            background: white;
+            border: 2px solid var(--border);
+            border-radius: var(--radius);
+            cursor: pointer;
+            transition: all var(--transition-fast);
+            white-space: nowrap;
+            font-size: var(--font-size-sm);
+            font-weight: var(--font-weight-medium);
+            color: var(--foreground);
+        }
+        
+        .tool-btn:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-sm);
+        }
+        
+        .tool-btn.active {
+            background: var(--primary);
+            color: var(--primary-foreground);
+            border-color: var(--primary);
+        }
+        
+        .writing-content {
+            display: flex;
+            flex: 1;
+            overflow: hidden;
+        }
+        
+        .editor-area {
+            flex: 1;
+            padding: 2rem;
+            overflow-y: auto;
+        }
+        
+        .editor-textarea {
+            width: 100%;
+            min-height: 500px;
+            border: none;
+            outline: none;
+            font-size: var(--font-size-lg);
+            line-height: var(--line-height-loose);
+            color: var(--foreground);
+            background: transparent;
+            resize: none;
+            font-family: var(--font-serif);
+        }
+        
+        .assistant-panel {
+            width: 400px;
+            background: white;
+            border-left: 1px solid var(--border);
+            padding: 1.5rem;
+            overflow-y: auto;
+            display: none;
+        }
+        
+        .assistant-panel.active {
+            display: block;
+        }
+        
+        .assistant-header {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+            font-size: var(--font-size-lg);
+            font-weight: var(--font-weight-semibold);
+            color: var(--primary);
+        }
+        
+        .suggestion-card {
+            background: var(--background-tertiary);
+            padding: 1rem;
+            border-radius: var(--radius);
+            margin-bottom: 1rem;
+            border-left: 3px solid var(--primary);
+            animation: slideInBounce 400ms cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+        
+        @keyframes slideInBounce {
+            from {
+                opacity: 0;
+                transform: translateX(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        
+        .suggestion-title {
+            font-weight: var(--font-weight-semibold);
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .suggestion-list {
+            list-style: none;
+            padding-left: 0;
+        }
+        
+        .suggestion-list li {
+            padding: 0.5rem 0;
+            color: var(--foreground);
+            line-height: 1.6;
+        }
+        
+        .suggestion-list li::before {
+            content: "•";
+            color: var(--primary);
+            font-weight: bold;
+            margin-right: 0.5rem;
+        }
+        
+        .writing-footer {
+            background: white;
+            padding: 1rem 1.5rem;
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .writing-stats {
+            display: flex;
+            gap: 2rem;
+            font-size: var(--font-size-sm);
+            color: var(--muted-foreground);
+        }
+        
+        .stat-item-inline {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .auto-save {
+            color: var(--success);
+            font-size: var(--font-size-sm);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        /* ========================================
+           模态框样式
+           ======================================== */
+        
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: var(--z-modal-backdrop);
+            animation: fadeIn 200ms ease-out;
+        }
+        
+        .modal-overlay.active {
+            display: flex;
+        }
+        
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+        
+        .modal {
+            background: white;
+            border-radius: var(--radius-lg);
+            padding: 2rem;
+            max-width: 600px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            box-shadow: var(--shadow-2xl);
+            animation: modalSlideUp 300ms ease-out;
+        }
+        
+        @keyframes modalSlideUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+        
+        .modal-title {
+            font-size: var(--font-size-2xl);
+            font-weight: var(--font-weight-bold);
+            color: var(--primary);
+        }
+        
+        .modal-close {
+            background: transparent;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--muted-foreground);
+            padding: 0.25rem;
+            border-radius: var(--radius);
+            transition: all var(--transition-fast);
+        }
+        
+        .modal-close:hover {
+            background: var(--background);
+            color: var(--foreground);
+        }
+        
+        .modal-content {
+            margin-bottom: 1.5rem;
+        }
+        
+        /* ========================================
+           思维导图样式
+           ======================================== */
+        
+        .mindmap-container {
+            background: var(--background);
+            padding: 2rem;
+            border-radius: var(--radius);
+            margin-bottom: 1.5rem;
+        }
+        
+        .mindmap-center {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .mindmap-topic {
+            display: inline-block;
+            background: var(--gradient-primary);
+            color: var(--primary-foreground);
+            padding: 1rem 2rem;
+            border-radius: var(--radius-lg);
+            font-size: var(--font-size-xl);
+            font-weight: var(--font-weight-bold);
+            box-shadow: var(--shadow-primary);
+        }
+        
+        .mindmap-branches {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .mindmap-branch {
+            background: white;
+            padding: 1.5rem;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-md);
+            text-align: center;
+        }
+        
+        .branch-question {
+            font-weight: var(--font-weight-semibold);
+            color: var(--primary);
+            margin-bottom: 0.75rem;
+        }
+        
+        .branch-answer {
+            color: var(--foreground);
+            font-size: var(--font-size-sm);
+        }
+        
+        .branch-input {
+            width: 100%;
+            padding: 0.5rem;
+            border: 2px solid var(--border);
+            border-radius: var(--radius);
+            font-size: var(--font-size-sm);
+            margin-top: 0.5rem;
+        }
+        
+        .branch-input:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+        
+        .next-steps {
+            margin-top: 2rem;
+        }
+        
+        .next-step-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-md);
+            margin-bottom: 1rem;
+            cursor: pointer;
+            transition: all var(--transition-base);
+            border: 2px solid transparent;
+        }
+        
+        .next-step-card:hover {
+            border-color: var(--primary);
+            transform: translateX(4px);
+        }
+        
+        .step-number {
+            display: inline-block;
+            width: 2rem;
+            height: 2rem;
+            background: var(--primary);
+            color: white;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 2rem;
+            font-weight: var(--font-weight-bold);
+            margin-right: 0.75rem;
+        }
+        
+        .step-title {
+            font-weight: var(--font-weight-semibold);
+            color: var(--foreground);
+            margin-bottom: 0.5rem;
+        }
+        
+        .step-hint {
+            font-size: var(--font-size-sm);
+            color: var(--muted-foreground);
+            padding-left: 2.75rem;
+        }
+        
+        /* ========================================
+           词汇卡片样式
+           ======================================== */
+        
+        .vocab-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-lg);
+            margin-bottom: 1rem;
+            transition: all var(--transition-base);
+        }
+        
+        .vocab-card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-xl);
+        }
+        
+        .vocab-original {
+            font-size: var(--font-size-base);
+            color: var(--muted-foreground);
+            margin-bottom: 1rem;
+        }
+        
+        .vocab-suggestion {
+            font-size: var(--font-size-xl);
+            font-weight: var(--font-weight-bold);
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .vocab-level {
+            font-size: var(--font-size-sm);
+            color: var(--star-color);
+        }
+        
+        .vocab-explanation {
+            font-size: var(--font-size-sm);
+            color: var(--foreground);
+            margin-bottom: 0.75rem;
+            padding: 0.75rem;
+            background: var(--background-tertiary);
+            border-radius: var(--radius);
+        }
+        
+        .vocab-example {
+            font-size: var(--font-size-sm);
+            color: var(--foreground);
+            line-height: 1.6;
+            padding-left: 1rem;
+            border-left: 3px solid var(--secondary);
+        }
+        
+        .vocab-actions {
+            display: flex;
+            gap: 0.75rem;
+            margin-top: 1rem;
+        }
+        
+        .btn-small {
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: var(--radius);
+            font-size: var(--font-size-sm);
+            font-weight: var(--font-weight-semibold);
+            cursor: pointer;
+            transition: all var(--transition-base);
+        }
+        
+        .btn-primary-small {
+            background: var(--gradient-primary);
+            color: var(--primary-foreground);
+            box-shadow: var(--shadow-sm);
+        }
+        
+        .btn-primary-small:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+        
+        .btn-secondary-small {
+            background: white;
+            color: var(--foreground);
+            border: 2px solid var(--border);
+        }
+        
+        .btn-secondary-small:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+        
+        /* ========================================
+           素材库样式
+           ======================================== */
+        
+        .material-page {
+            padding: 1.5rem;
+        }
+        
+        .search-bar {
+            background: white;
+            padding: 1rem;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-md);
+            margin-bottom: 1.5rem;
+        }
+        
+        .search-input-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem 1rem;
+            background: var(--background);
+            border: 2px solid var(--border);
+            border-radius: var(--radius);
+            transition: all var(--transition-fast);
+        }
+        
+        .search-input-wrapper:focus-within {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(255, 184, 77, 0.2);
+        }
+        
+        .search-input {
+            flex: 1;
+            border: none;
+            outline: none;
+            font-size: var(--font-size-base);
+            background: transparent;
+        }
+        
+        .category-tabs {
+            display: flex;
+            gap: 0.75rem;
+            overflow-x: auto;
+            padding: 0.5rem 0;
+            margin-bottom: 1.5rem;
+        }
+        
+        .category-tab {
+            padding: 0.5rem 1.25rem;
+            background: white;
+            border: 2px solid var(--border);
+            border-radius: var(--radius-full);
+            cursor: pointer;
+            transition: all var(--transition-fast);
+            white-space: nowrap;
+            font-size: var(--font-size-sm);
+            font-weight: var(--font-weight-medium);
+        }
+        
+        .category-tab:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+        
+        .category-tab.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+        
+        .material-section {
+            margin-bottom: 2rem;
+        }
+        
+        .section-title {
+            font-size: var(--font-size-xl);
+            font-weight: var(--font-weight-bold);
+            color: var(--foreground);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .material-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-md);
+            margin-bottom: 1rem;
+            transition: all var(--transition-base);
+            cursor: pointer;
+        }
+        
+        .material-card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+        
+        .material-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.75rem;
+        }
+        
+        .material-title {
+            font-weight: var(--font-weight-semibold);
+            color: var(--foreground);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .material-content {
+            color: var(--foreground);
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+        
+        .material-actions {
+            display: flex;
+            gap: 0.75rem;
+        }
+        
+        /* ========================================
+           成长报告样式
+           ======================================== */
+        
+        .growth-page {
+            padding: 1.5rem;
+        }
+        
+        .growth-header {
+            background: white;
+            padding: 2rem;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-md);
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+        
+        .growth-title {
+            font-size: var(--font-size-2xl);
+            font-weight: var(--font-weight-bold);
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+        
+        .achievement-badges {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+        
+        .badge-large {
+            width: 80px;
+            height: 80px;
+            background: var(--achievement);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            box-shadow: var(--shadow-lg);
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+        }
+        
+        .stat-card {
+            background: var(--background-tertiary);
+            padding: 1rem;
+            border-radius: var(--radius);
+            text-align: center;
+        }
+        
+        .ability-analysis {
+            background: white;
+            padding: 2rem;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-md);
+            margin-bottom: 1.5rem;
+        }
+        
+        .ability-item {
+            margin-bottom: 1.5rem;
+        }
+        
+        .ability-label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+            font-weight: var(--font-weight-medium);
+        }
+        
+        .ability-bar {
+            width: 100%;
+            height: 12px;
+            background: var(--muted);
+            border-radius: var(--radius-full);
+            overflow: hidden;
+        }
+        
+        .ability-fill {
+            height: 100%;
+            background: var(--gradient-primary);
+            border-radius: var(--radius-full);
+            transition: width 800ms ease-out;
+        }
+        
+        .teacher-advice {
+            background: white;
+            padding: 2rem;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-md);
+            margin-bottom: 1.5rem;
+            border-left: 4px solid var(--secondary);
+        }
+        
+        .advice-icon {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+        
+        .advice-text {
+            color: var(--foreground);
+            line-height: 1.8;
+        }
+        
+        .essay-history {
+            background: white;
+            padding: 2rem;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-md);
+        }
+        
+        .essay-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem;
+            border-bottom: 1px solid var(--border);
+            cursor: pointer;
+            transition: all var(--transition-fast);
+        }
+        
+        .essay-item:hover {
+            background: var(--background);
+        }
+        
+        .essay-item:last-child {
+            border-bottom: none;
+        }
+        
+        .essay-info {
+            flex: 1;
+        }
+        
+        .essay-title-text {
+            font-weight: var(--font-weight-semibold);
+            color: var(--foreground);
+            margin-bottom: 0.25rem;
+        }
+        
+        .essay-date {
+            font-size: var(--font-size-sm);
+            color: var(--muted-foreground);
+        }
+        
+        .essay-score {
+            font-size: var(--font-size-xl);
+            font-weight: var(--font-weight-bold);
+            color: var(--primary);
+        }
+        
+        /* ========================================
+           完成反馈页面
+           ======================================== */
+        
+        .completion-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.8);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: var(--z-modal);
+            animation: fadeIn 300ms ease-out;
+        }
+        
+        .completion-overlay.active {
+            display: flex;
+        }
+        
+        .completion-card {
+            background: white;
+            border-radius: var(--radius-xl);
+            padding: 3rem;
+            max-width: 600px;
+            width: 90%;
+            text-align: center;
+            box-shadow: var(--shadow-2xl);
+            animation: celebrationPop 600ms cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+        
+        @keyframes celebrationPop {
+            0% {
+                opacity: 0;
+                transform: scale(0.5) rotate(-10deg);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1) rotate(0deg);
+            }
+        }
+        
+        .celebration-icon {
+            font-size: 5rem;
+            margin-bottom: 1rem;
+            animation: bounce 1s infinite;
+        }
+        
+        @keyframes bounce {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-20px);
+            }
+        }
+        
+        .completion-title {
+            font-size: var(--font-size-3xl);
+            font-weight: var(--font-weight-bold);
+            color: var(--primary);
+            margin-bottom: 2rem;
+        }
+        
+        .score-display {
+            background: var(--background-tertiary);
+            padding: 2rem;
+            border-radius: var(--radius-lg);
+            margin-bottom: 2rem;
+        }
+        
+        .score-number {
+            font-size: 4rem;
+            font-weight: var(--font-weight-bold);
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+        
+        .score-stars {
+            color: var(--star-color);
+            font-size: 2rem;
+            letter-spacing: 0.5rem;
+        }
+        
+        .score-breakdown {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+        
+        .score-item {
+            text-align: center;
+        }
+        
+        .score-category {
+            font-size: var(--font-size-sm);
+            color: var(--muted-foreground);
+            margin-bottom: 0.5rem;
+        }
+        
+        .score-value {
+            font-size: var(--font-size-xl);
+            font-weight: var(--font-weight-bold);
+            color: var(--foreground);
+        }
+        
+        .teacher-comment {
+            background: var(--background);
+            padding: 1.5rem;
+            border-radius: var(--radius-lg);
+            text-align: left;
+            margin-bottom: 2rem;
+        }
+        
+        .comment-section {
+            margin-bottom: 1rem;
+        }
+        
+        .comment-title {
+            font-weight: var(--font-weight-semibold);
+            color: var(--foreground);
+            margin-bottom: 0.5rem;
+        }
+        
+        .comment-list {
+            list-style: none;
+            padding-left: 0;
+        }
+        
+        .comment-list li {
+            padding: 0.25rem 0;
+            color: var(--foreground);
+            font-size: var(--font-size-sm);
+        }
+        
+        .comment-list.positive li::before {
+            content: "✓";
+            color: var(--success);
+            margin-right: 0.5rem;
+            font-weight: bold;
+        }
+        
+        .comment-list.improvement li::before {
+            content: "•";
+            color: var(--warning);
+            margin-right: 0.5rem;
+            font-weight: bold;
+        }
+        
+        .reward-section {
+            background: var(--achievement);
+            padding: 1.5rem;
+            border-radius: var(--radius-lg);
+            margin-bottom: 2rem;
+        }
+        
+        .reward-title {
+            font-weight: var(--font-weight-semibold);
+            margin-bottom: 1rem;
+        }
+        
+        .reward-items {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+        }
+        
+        .reward-item {
+            text-align: center;
+        }
+        
+        .reward-icon {
+            font-size: 3rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .completion-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+        }
+        
+        .btn-large {
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: var(--radius);
+            font-size: var(--font-size-base);
+            font-weight: var(--font-weight-semibold);
+            cursor: pointer;
+            transition: all var(--transition-base);
+        }
+        
+        .btn-primary-large {
+            background: var(--gradient-primary);
+            color: var(--primary-foreground);
+            box-shadow: var(--shadow-primary);
+        }
+        
+        .btn-primary-large:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+        
+        .btn-outline-large {
+            background: white;
+            color: var(--primary);
+            border: 2px solid var(--primary);
+        }
+        
+        .btn-outline-large:hover {
+            background: var(--primary);
+            color: white;
+        }
+        
+        /* ========================================
+           响应式设计
+           ======================================== */
+        
+        @media (max-width: 768px) {
+            .writing-content {
+                flex-direction: column;
+            }
+            
+            .assistant-panel {
+                width: 100%;
+                border-left: none;
+                border-top: 1px solid var(--border);
+            }
+            
+            .action-cards {
+                grid-template-columns: 1fr;
+            }
+            
+            .mindmap-branches {
+                grid-template-columns: 1fr;
+            }
+            
+            .score-breakdown {
+                grid-template-columns: 1fr;
+            }
+            
+            .completion-card {
+                padding: 2rem 1.5rem;
+            }
+        }
+        
+        /* ========================================
+           工具提示
+           ======================================== */
+        
+        .tooltip {
+            position: relative;
+        }
+        
+        .tooltip::after {
+            content: attr(data-tooltip);
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 0.5rem 1rem;
+            background: var(--foreground);
+            color: white;
+            border-radius: var(--radius);
+            font-size: var(--font-size-sm);
+            white-space: nowrap;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity var(--transition-fast);
+            margin-bottom: 0.5rem;
+        }
+        
+        .tooltip:hover::after {
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <!-- ========================================
+             首页
+             ======================================== -->
+        <div class="page active" id="homePage">
+            <div class="home-page">
+                <div class="home-header">
+                    <h1 class="home-title">
+                        <span>✨</span>
+                        <span>小作家助手</span>
+                    </h1>
+                    <p class="home-greeting">👋 你好，小作家！今天想写什么？</p>
+                </div>
+                
+                <div class="action-cards">
+                    <div class="action-card" onclick="navigateTo('writingPage')">
+                        <div class="action-card-icon">📝</div>
+                        <div class="action-card-title">开始新作文</div>
+                        <div class="action-card-subtitle">从零开始创作</div>
+                    </div>
+                    
+                    <div class="action-card" onclick="navigateTo('writingPage')">
+                        <div class="action-card-icon">✏️</div>
+                        <div class="action-card-title">继续写作</div>
+                        <div class="action-card-subtitle">3篇草稿等待完成</div>
+                    </div>
+                </div>
+                
+                <div class="daily-topic">
+                    <div class="daily-topic-header">
+                        <span>💡</span>
+                        <span>今日写作话题</span>
+                    </div>
+                    <div class="daily-topic-content">
+                        🌸 春天来了，你发现了什么变化？可以写写公园里的花朵、天气的变化，或者你的心情。
+                    </div>
+                    <button class="daily-topic-btn" onclick="navigateTo('writingPage')">
+                        开始写作 →
+                    </button>
+                </div>
+                
+                <div class="achievement-summary">
+                    <div class="achievement-header">
+                        <span>🏆</span>
+                        <span>我的成就</span>
+                    </div>
+                    <div class="achievement-stats">
+                        <div class="stat-item">
+                            <span class="star-rating">⭐⭐⭐⭐⭐</span>
+                            <span class="stat-label">5/10</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-value">12</span>
+                            <span class="stat-label">已完成作文</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-value">7</span>
+                            <span class="stat-label">连续打卡天数</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- ========================================
+             写作页面
+             ======================================== -->
+        <div class="page" id="writingPage">
+            <div class="writing-page">
+                <div class="writing-header">
+                    <input type="text" class="writing-title-input" placeholder="给你的作文起个标题..." value="难忘的一天">
+                    <div class="writing-actions">
+                        <button class="icon-btn tooltip" data-tooltip="返回首页" onclick="navigateTo('homePage')">
+                            <i data-lucide="arrow-left"></i>
+                        </button>
+                        <button class="icon-btn tooltip" data-tooltip="保存">
+                            <i data-lucide="save"></i>
+                        </button>
+                        <button class="icon-btn tooltip" data-tooltip="设置">
+                            <i data-lucide="settings"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="writing-toolbar">
+                    <button class="tool-btn" onclick="openModal('mindmapModal')">
+                        <i data-lucide="git-branch"></i>
+                        <span>思路导航</span>
+                    </button>
+                    <button class="tool-btn" onclick="openModal('vocabModal')">
+                        <i data-lucide="sparkles"></i>
+                        <span>词汇魔法</span>
+                    </button>
+                    <button class="tool-btn">
+                        <i data-lucide="layout"></i>
+                        <span>结构检查</span>
+                    </button>
+                    <button class="tool-btn" onclick="navigateTo('materialPage')">
+                        <i data-lucide="book-open"></i>
+                        <span>素材库</span>
+                    </button>
+                    <button class="tool-btn active" onclick="toggleAssistant()">
+                        <i data-lucide="message-circle"></i>
+                        <span>智能助手</span>
+                    </button>
+                </div>
+                
+                <div class="writing-content">
+                    <div class="editor-area">
+                        <textarea class="editor-textarea" placeholder="开始写作吧...">那是一个阳光明媚的早晨，我和爸爸妈妈一起去公园玩。公园里的花都开了，非常漂亮。
+
+我们在公园里散步，看到了很多美丽的花朵。有红色的玫瑰，黄色的菊花，还有粉色的桃花。它们在阳光下显得格外鲜艳。
+
+</textarea>
+                    </div>
+                    
+                    <div class="assistant-panel active" id="assistantPanel">
+                        <div class="assistant-header">
+                            <i data-lucide="sparkles"></i>
+                            <span>写作提示</span>
+                        </div>
+                        
+                        <div class="suggestion-card">
+                            <div class="suggestion-title">
+                                <span>👍</span>
+                                <span>开头写得不错！</span>
+                            </div>
+                        </div>
+                        
+                        <div class="suggestion-card">
+                            <div class="suggestion-title">
+                                <span>🤔</span>
+                                <span>接下来可以写：</span>
+                            </div>
+                            <ul class="suggestion-list">
+                                <li>你在公园看到了什么有趣的事情？</li>
+                                <li>发生了什么让你难忘的经历？</li>
+                                <li>你当时的心情是怎样的？</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="suggestion-card">
+                            <div class="suggestion-title">
+                                <span>✨</span>
+                                <span>词汇建议</span>
+                            </div>
+                            <p style="font-size: 0.875rem; color: var(--foreground); line-height: 1.6;">
+                                "漂亮"可以换成：<strong>绚丽多彩</strong>、<strong>五彩缤纷</strong>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="writing-footer">
+                    <div class="writing-stats">
+                        <div class="stat-item-inline">
+                            <i data-lucide="type"></i>
+                            <span>字数：89</span>
+                        </div>
+                        <div class="stat-item-inline">
+                            <i data-lucide="clock"></i>
+                            <span>用时：5分钟</span>
+                        </div>
+                    </div>
+                    <div class="auto-save">
+                        <i data-lucide="check-circle"></i>
+                        <span>自动保存中...</span>
+                    </div>
+                    <button class="daily-topic-btn" onclick="showCompletion()">
+                        完成作文
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- ========================================
+             素材库页面
+             ======================================== -->
+        <div class="page" id="materialPage">
+            <div class="material-page">
+                <div class="search-bar">
+                    <div class="search-input-wrapper">
+                        <i data-lucide="search"></i>
+                        <input type="text" class="search-input" placeholder="搜索素材...">
+                    </div>
+                </div>
+                
+                <div class="category-tabs">
+                    <button class="category-tab active">全部</button>
+                    <button class="category-tab">亲情</button>
+                    <button class="category-tab">友情</button>
+                    <button class="category-tab">自然</button>
+                    <button class="category-tab">节日</button>
+                    <button class="category-tab">成长</button>
+                </div>
+                
+                <div class="material-section">
+                    <h3 class="section-title">
+                        <i data-lucide="book"></i>
+                        <span>好词好句</span>
+                    </h3>
+                    
+                    <div class="material-card">
+                        <div class="material-header">
+                            <div class="material-title">
+                                <span>🌸</span>
+                                <span>描写春天</span>
+                            </div>
+                        </div>
+                        <div class="material-content">
+                            "春风拂面，带来阵阵花香。柳树抽出了嫩绿的新芽，在微风中轻轻摇曳，像是在向人们招手。"
+                        </div>
+                        <div class="material-actions">
+                            <button class="btn-primary-small">使用</button>
+                            <button class="btn-secondary-small">收藏</button>
+                            <button class="btn-secondary-small">查看详情</button>
+                        </div>
+                    </div>
+                    
+                    <div class="material-card">
+                        <div class="material-header">
+                            <div class="material-title">
+                                <span>😊</span>
+                                <span>描写心情</span>
+                            </div>
+                        </div>
+                        <div class="material-content">
+                            "心里像吃了蜜一样甜，脸上不由自主地露出了笑容。那种快乐的感觉，就像春天的阳光一样温暖。"
+                        </div>
+                        <div class="material-actions">
+                            <button class="btn-primary-small">使用</button>
+                            <button class="btn-secondary-small">收藏</button>
+                            <button class="btn-secondary-small">查看详情</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="material-section">
+                    <h3 class="section-title">
+                        <i data-lucide="lightbulb"></i>
+                        <span>小故事片段</span>
+                    </h3>
+                    
+                    <div class="material-card">
+                        <div class="material-header">
+                            <div class="material-title">
+                                <span>🎈</span>
+                                <span>有趣的经历</span>
+                            </div>
+                        </div>
+                        <div class="material-content">
+                            "那次放风筝的经历让我明白了一个道理：做任何事情都要有耐心。虽然一开始风筝总是飞不起来，但经过多次尝试，它终于在天空中自由翱翔。"
+                        </div>
+                        <div class="material-actions">
+                            <button class="btn-primary-small">使用</button>
+                            <button class="btn-secondary-small">收藏</button>
+                            <button class="btn-secondary-small">查看详情</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="material-section">
+                    <h3 class="section-title">
+                        <i data-lucide="heart"></i>
+                        <span>我的收藏 (8条)</span>
+                    </h3>
+                    <p style="text-align: center; color: var(--muted-foreground); padding: 2rem;">
+                        点击素材卡片的"收藏"按钮，就可以在这里看到啦！
+                    </p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- ========================================
+             成长报告页面
+             ======================================== -->
+        <div class="page" id="growthPage">
+            <div class="growth-page">
+                <div class="growth-header">
+                    <h2 class="growth-title">🏆 本周成就</h2>
+                    <div class="achievement-badges">
+                        <div class="badge-large">⭐</div>
+                        <div class="badge-large">📝</div>
+                        <div class="badge-large">🔥</div>
+                    </div>
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-value">3</div>
+                            <div class="stat-label">完成作文</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value">15</div>
+                            <div class="stat-label">新学词汇</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value">7</div>
+                            <div class="stat-label">连续打卡</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="ability-analysis">
+                    <h3 class="section-title">
+                        <i data-lucide="trending-up"></i>
+                        <span>写作能力分析</span>
+                    </h3>
+                    
+                    <div class="ability-item">
+                        <div class="ability-label">
+                            <span>内容丰富度</span>
+                            <span>80%</span>
+                        </div>
+                        <div class="ability-bar">
+                            <div class="ability-fill" style="width: 80%"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="ability-item">
+                        <div class="ability-label">
+                            <span>结构完整度</span>
+                            <span>95%</span>
+                        </div>
+                        <div class="ability-bar">
+                            <div class="ability-fill" style="width: 95%"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="ability-item">
+                        <div class="ability-label">
+                            <span>词汇丰富度</span>
+                            <span>65%</span>
+                        </div>
+                        <div class="ability-bar">
+                            <div class="ability-fill" style="width: 65%"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="ability-item">
+                        <div class="ability-label">
+                            <span>独立完成度</span>
+                            <span>70%</span>
+                        </div>
+                        <div class="ability-bar">
+                            <div class="ability-fill" style="width: 70%"></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="teacher-advice">
+                    <div class="advice-icon">💡</div>
+                    <h3 class="section-title">小老师的建议</h3>
+                    <div class="advice-text">
+                        你的作文结构越来越好了！👍<br><br>
+                        <strong>建议：</strong>多积累一些形容词，让表达更生动哦～可以每天在素材库里学习3个新词汇。
+                    </div>
+                </div>
+                
+                <div class="essay-history">
+                    <h3 class="section-title">
+                        <i data-lucide="file-text"></i>
+                        <span>作文历史</span>
+                    </h3>
+                    
+                    <div class="essay-item">
+                        <div class="essay-info">
+                            <div class="essay-title-text">难忘的一天</div>
+                            <div class="essay-date">2024-01-15</div>
+                        </div>
+                        <div class="essay-score">85分</div>
+                    </div>
+                    
+                    <div class="essay-item">
+                        <div class="essay-info">
+                            <div class="essay-title-text">我的好朋友</div>
+                            <div class="essay-date">2024-01-12</div>
+                        </div>
+                        <div class="essay-score">90分</div>
+                    </div>
+                    
+                    <div class="essay-item">
+                        <div class="essay-info">
+                            <div class="essay-title-text">美丽的公园</div>
+                            <div class="essay-date">2024-01-10</div>
+                        </div>
+                        <div class="essay-score">78分</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- ========================================
+             底部导航
+             ======================================== -->
+        <div class="bottom-nav">
+            <a class="nav-item active" onclick="navigateTo('homePage')">
+                <i data-lucide="home"></i>
+                <span>首页</span>
+            </a>
+            <a class="nav-item" onclick="navigateTo('writingPage')">
+                <i data-lucide="pen-tool"></i>
+                <span>写作</span>
+            </a>
+            <a class="nav-item" onclick="navigateTo('materialPage')">
+                <i data-lucide="book-open"></i>
+                <span>素材</span>
+            </a>
+            <a class="nav-item" onclick="navigateTo('growthPage')">
+                <i data-lucide="bar-chart-2"></i>
+                <span>成长</span>
+            </a>
+        </div>
+    </div>
+    
+    <!-- ========================================
+         思维导图模态框
+         ======================================== -->
+    <div class="modal-overlay" id="mindmapModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 class="modal-title">🧭 思路导航仪</h3>
+                <button class="modal-close" onclick="closeModal('mindmapModal')">×</button>
+            </div>
+            <div class="modal-content">
+                <p style="color: var(--muted-foreground); margin-bottom: 1.5rem;">
+                    让我们一起理清思路吧！
+                </p>
+                
+                <div class="mindmap-container">
+                    <div class="mindmap-center">
+                        <div class="mindmap-topic">难忘的一天</div>
+                    </div>
+                    
+                    <div class="mindmap-branches">
+                        <div class="mindmap-branch">
+                            <div class="branch-question">⏰ 什么时候？</div>
+                            <input type="text" class="branch-input" placeholder="例如：周末的早晨" value="周末的早晨">
+                        </div>
+                        
+                        <div class="mindmap-branch">
+                            <div class="branch-question">📍 在哪里？</div>
+                            <input type="text" class="branch-input" placeholder="例如：公园" value="公园">
+                        </div>
+                        
+                        <div class="mindmap-branch">
+                            <div class="branch-question">👥 有谁？</div>
+                            <input type="text" class="branch-input" placeholder="例如：爸爸妈妈" value="爸爸妈妈">
+                        </div>
+                        
+                        <div class="mindmap-branch">
+                            <div class="branch-question">❓ 为什么难忘？</div>
+                            <input type="text" class="branch-input" placeholder="点击添加...">
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="next-steps">
+                    <h4 style="margin-bottom: 1rem; color: var(--primary);">💡 接下来可以写什么？</h4>
+                    
+                    <div class="next-step-card">
+                        <span class="step-number">1</span>
+                        <div style="flex: 1;">
+                            <div class="step-title">描述公园的景色</div>
+                            <div class="step-hint">提示：用上颜色、声音、气味...</div>
+                        </div>
+                    </div>
+                    
+                    <div class="next-step-card">
+                        <span class="step-number">2</span>
+                        <div style="flex: 1;">
+                            <div class="step-title">讲述发生的有趣事情</div>
+                            <div class="step-hint">提示：谁做了什么？结果怎样？</div>
+                        </div>
+                    </div>
+                    
+                    <div class="next-step-card">
+                        <span class="step-number">3</span>
+                        <div style="flex: 1;">
+                            <div class="step-title">表达你的感受和收获</div>
+                            <div class="step-hint">提示：这件事让你明白了什么？</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div style="display: flex; gap: 1rem; margin-top: 2rem;">
+                    <button class="btn-large btn-primary-large" onclick="closeModal('mindmapModal')">
+                        应用到作文
+                    </button>
+                    <button class="btn-large btn-outline-large">
+                        重新规划
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- ========================================
+         词汇魔法盒模态框
+         ======================================== -->
+    <div class="modal-overlay" id="vocabModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 class="modal-title">✨ 词汇魔法盒</h3>
+                <button class="modal-close" onclick="closeModal('vocabModal')">×</button>
+            </div>
+            <div class="modal-content">
+                <p style="color: var(--muted-foreground); margin-bottom: 1.5rem;">
+                    你选中了：<strong>「漂亮」</strong>
+                </p>
+                
+                <div class="vocab-card">
+                    <div class="vocab-suggestion">
+                        <span>美丽</span>
+                        <span class="vocab-level">⭐</span>
+                    </div>
+                    <div class="vocab-example">
+                        例句：公园里的花朵真美丽！
+                    </div>
+                    <div class="vocab-actions">
+                        <button class="btn-primary-small">替换</button>
+                        <button class="btn-secondary-small">收藏</button>
+                    </div>
+                </div>
+                
+                <div class="vocab-card">
+                    <div class="vocab-suggestion">
+                        <span>绚丽多彩</span>
+                        <span class="vocab-level">⭐⭐</span>
+                    </div>
+                    <div class="vocab-explanation">
+                        解释：形容色彩丰富，非常好看
+                    </div>
+                    <div class="vocab-example">
+                        例句：花坛里绚丽多彩的花朵在阳光下格外美丽。
+                    </div>
+                    <div class="vocab-actions">
+                        <button class="btn-primary-small">替换</button>
+                        <button class="btn-secondary-small">收藏</button>
+                    </div>
+                </div>
+                
+                <div class="vocab-card">
+                    <div class="vocab-suggestion">
+                        <span>五彩缤纷</span>
+                        <span class="vocab-level">⭐⭐⭐</span>
+                    </div>
+                    <div class="vocab-explanation">
+                        解释：形容颜色繁多，非常好看
+                    </div>
+                    <div class="vocab-example">
+                        例句：公园里五彩缤纷的花朵吸引了许多游客。
+                    </div>
+                    <div class="vocab-actions">
+                        <button class="btn-primary-small">替换</button>
+                        <button class="btn-secondary-small">收藏</button>
+                    </div>
+                </div>
+                
+                <p style="color: var(--primary); text-align: center; margin-top: 1.5rem; font-size: var(--font-size-sm);">
+                    💡 小贴士：选择最能表达你感受的词语！
+                </p>
+            </div>
+        </div>
+    </div>
+    
+    <!-- ========================================
+         完成反馈覆盖层
+         ======================================== -->
+    <div class="completion-overlay" id="completionOverlay">
+        <div class="completion-card">
+            <div class="celebration-icon">🎉</div>
+            <h2 class="completion-title">太棒了！</h2>
+            <p style="color: var(--muted-foreground); margin-bottom: 2rem;">
+                你完成了一篇作文！
+            </p>
+            
+            <div class="score-display">
+                <div class="score-number">85</div>
+                <div style="font-size: var(--font-size-sm); color: var(--muted-foreground); margin-bottom: 0.5rem;">分</div>
+                <div class="score-stars">⭐⭐⭐⭐</div>
+                
+                <div class="score-breakdown">
+                    <div class="score-item">
+                        <div class="score-category">内容丰富度</div>
+                        <div class="score-value">⭐⭐⭐⭐</div>
+                    </div>
+                    <div class="score-item">
+                        <div class="score-category">结构完整度</div>
+                        <div class="score-value">⭐⭐⭐⭐⭐</div>
+                    </div>
+                    <div class="score-item">
+                        <div class="score-category">语言表达</div>
+                        <div class="score-value">⭐⭐⭐</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="teacher-comment">
+                <div class="comment-section">
+                    <div class="comment-title">💬 小老师的话</div>
+                    <p style="color: var(--foreground); line-height: 1.6; margin-bottom: 1rem;">
+                        你的作文结构很清晰，开头、经过、结尾都写得很好！如果能多用一些形容词，作文会更生动哦～
+                    </p>
+                </div>
+                
+                <div class="comment-section">
+                    <div class="comment-title">特别棒的地方：</div>
+                    <ul class="comment-list positive">
+                        <li>"阳光明媚"用得很好</li>
+                        <li>事情的经过写得很详细</li>
+                    </ul>
+                </div>
+                
+                <div class="comment-section">
+                    <div class="comment-title">可以改进的地方：</div>
+                    <ul class="comment-list improvement">
+                        <li>试试用更多不同的词语</li>
+                        <li>可以加入更多感受的描写</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="reward-section">
+                <div class="reward-title">🎁 获得奖励</div>
+                <div class="reward-items">
+                    <div class="reward-item">
+                        <div class="reward-icon">🏅</div>
+                        <div>坚持写作者</div>
+                    </div>
+                    <div class="reward-item">
+                        <div class="reward-icon">⭐</div>
+                        <div>+10 小星星</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="completion-actions">
+                <button class="btn-large btn-outline-large" onclick="hideCompletion()">
+                    继续修改
+                </button>
+                <button class="btn-large btn-primary-large" onclick="hideCompletion(); navigateTo('homePage')">
+                    保存作文
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // 初始化 Lucide 图标
+        lucide.createIcons();
+        
+        // 页面导航
+        function navigateTo(pageId) {
+            // 隐藏所有页面
+            document.querySelectorAll('.page').forEach(page => {
+                page.classList.remove('active');
+            });
+            
+            // 显示目标页面
+            document.getElementById(pageId).classList.add('active');
+            
+            // 更新导航栏状态
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            
+            // 根据页面ID更新对应的导航项
+            const navMap = {
+                'homePage': 0,
+                'writingPage': 1,
+                'materialPage': 2,
+                'growthPage': 3
+            };
+            
+            const navIndex = navMap[pageId];
+            if (navIndex !== undefined) {
+                document.querySelectorAll('.nav-item')[navIndex].classList.add('active');
+            }
+            
+            // 重新初始化图标
+            setTimeout(() => lucide.createIcons(), 100);
+        }
+        
+        // 打开模态框
+        function openModal(modalId) {
+            document.getElementById(modalId).classList.add('active');
+        }
+        
+        // 关闭模态框
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.remove('active');
+        }
+        
+        // 切换助手面板
+        function toggleAssistant() {
+            const panel = document.getElementById('assistantPanel');
+            panel.classList.toggle('active');
+        }
+        
+        // 显示完成反馈
+        function showCompletion() {
+            document.getElementById('completionOverlay').classList.add('active');
+        }
+        
+        // 隐藏完成反馈
+        function hideCompletion() {
+            document.getElementById('completionOverlay').classList.remove('active');
+        }
+        
+        // 点击模态框外部关闭
+        document.querySelectorAll('.modal-overlay').forEach(overlay => {
+            overlay.addEventListener('click', function(e) {
+                if (e.target === this) {
+                    this.classList.remove('active');
+                }
+            });
+        });
+        
+        // 自动保存模拟
+        let wordCount = 89;
+        const textarea = document.querySelector('.editor-textarea');
+        if (textarea) {
+            textarea.addEventListener('input', function() {
+                wordCount = this.value.length;
+                document.querySelector('.writing-stats .stat-item-inline span').textContent = `字数：${wordCount}`;
+            });
+        }
+        
+        // 页面加载动画
+        window.addEventListener('load', () => {
+            document.body.style.opacity = '0';
+            setTimeout(() => {
+                document.body.style.transition = 'opacity 0.5s ease-out';
+                document.body.style.opacity = '1';
+            }, 100);
+        });
+    </script>
+</body>
+</html>

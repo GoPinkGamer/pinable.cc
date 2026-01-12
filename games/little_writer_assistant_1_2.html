@@ -1,0 +1,1483 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>小作家助手 - 中度手绘风格</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Kalam:wght@400;700&family=Patrick+Hand&family=Noto+Sans+SC:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        /* ========================================
+           Hand-Drawn Design System - Medium Version
+           中度手绘风格：完全采用Hand-Drawn色彩系统
+           ======================================== */
+        
+        :root {
+            /* Hand-Drawn 色彩系统 */
+            --background: #fdfbf7;
+            --foreground: #2d2d2d;
+            --muted: #e5e0d8;
+            --accent: #ff4d4d; /* 红色标记笔 */
+            --border: #2d2d2d;
+            --secondary: #2d5da1; /* 蓝色圆珠笔 */
+            --yellow: #fff9c4; /* 便利贴黄 */
+            
+            /* 手写字体 */
+            --font-heading: 'Kalam', 'Noto Sans SC', cursive;
+            --font-body: 'Patrick Hand', 'Noto Sans SC', cursive;
+            
+            /* 不规则圆角 */
+            --radius-wobbly: 255px 15px 225px 15px / 15px 225px 15px 255px;
+            --radius-wobbly-md: 185px 12px 165px 12px / 12px 165px 12px 185px;
+            --radius-wobbly-sm: 125px 10px 115px 10px / 10px 115px 10px 125px;
+            
+            /* 硬阴影 */
+            --shadow-hard: 4px 4px 0px 0px #2d2d2d;
+            --shadow-hard-sm: 2px 2px 0px 0px #2d2d2d;
+            --shadow-hard-lg: 8px 8px 0px 0px #2d2d2d;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: var(--font-body);
+            background: var(--background);
+            color: var(--foreground);
+            overflow-x: hidden;
+            /* 纸张纹理 */
+            background-image: radial-gradient(#e5e0d8 1.5px, transparent 1.5px);
+            background-size: 20px 20px;
+        }
+        
+        .app-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        /* ========================================
+           页面容器
+           ======================================== */
+        
+        .page {
+            display: none;
+            flex: 1;
+            overflow-y: auto;
+            animation: pageTransition 400ms ease-out;
+        }
+        
+        .page.active {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        @keyframes pageTransition {
+            from {
+                opacity: 0;
+                transform: scale(0.96) rotate(-1deg);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1) rotate(0deg);
+            }
+        }
+        
+        /* ========================================
+           底部导航栏
+           ======================================== */
+        
+        .bottom-nav {
+            background: white;
+            border-top: 3px solid var(--border);
+            display: flex;
+            justify-content: space-around;
+            padding: 0.75rem 0;
+            box-shadow: 0 -4px 0px 0px rgba(45, 45, 45, 0.1);
+            position: sticky;
+            bottom: 0;
+            z-index: 1020;
+        }
+        
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.25rem;
+            padding: 0.5rem 1rem;
+            cursor: pointer;
+            transition: all 150ms ease;
+            border-radius: var(--radius-wobbly-sm);
+            color: var(--muted);
+            text-decoration: none;
+            min-width: 60px;
+            font-size: 0.875rem;
+        }
+        
+        .nav-item:hover {
+            background: var(--yellow);
+            color: var(--foreground);
+            transform: rotate(-2deg) scale(1.05);
+        }
+        
+        .nav-item.active {
+            color: var(--accent);
+            font-weight: 700;
+            transform: rotate(1deg);
+            background: var(--yellow);
+        }
+        
+        .nav-item i {
+            font-size: 1.5rem;
+        }
+        
+        /* ========================================
+           首页样式
+           ======================================== */
+        
+        .home-page {
+            padding: 2rem 1.5rem;
+        }
+        
+        .home-header {
+            margin-bottom: 2rem;
+            position: relative;
+        }
+        
+        /* 手绘箭头装饰 */
+        .home-header::after {
+            content: '→';
+            position: absolute;
+            top: -20px;
+            right: 20px;
+            font-size: 3rem;
+            color: var(--accent);
+            transform: rotate(-15deg);
+            animation: bounce 2s infinite;
+        }
+        
+        @keyframes bounce {
+            0%, 100% {
+                transform: rotate(-15deg) translateY(0);
+            }
+            50% {
+                transform: rotate(-15deg) translateY(-10px);
+            }
+        }
+        
+        .home-title {
+            font-family: var(--font-heading);
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--foreground);
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transform: rotate(-2deg);
+            text-decoration: underline;
+            text-decoration-style: wavy;
+            text-decoration-color: var(--accent);
+        }
+        
+        .home-greeting {
+            font-size: 1.25rem;
+            color: var(--foreground);
+            margin-bottom: 1rem;
+            transform: rotate(1deg);
+            padding-left: 1rem;
+            border-left: 4px solid var(--accent);
+        }
+        
+        .action-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .action-card {
+            background: white;
+            border: 3px solid var(--border);
+            border-radius: var(--radius-wobbly);
+            padding: 2rem;
+            box-shadow: var(--shadow-hard);
+            cursor: pointer;
+            transition: all 150ms ease;
+            text-align: center;
+            transform: rotate(-1deg);
+            position: relative;
+        }
+        
+        /* 胶带装饰 */
+        .action-card::before {
+            content: '';
+            position: absolute;
+            top: -12px;
+            left: 50%;
+            transform: translateX(-50%) rotate(3deg);
+            width: 100px;
+            height: 25px;
+            background: rgba(200, 200, 200, 0.5);
+            border: 1px solid rgba(150, 150, 150, 0.3);
+            border-radius: 2px;
+        }
+        
+        .action-card:nth-child(2) {
+            transform: rotate(1deg);
+        }
+        
+        .action-card:hover {
+            transform: rotate(-2deg) translateY(-8px);
+            box-shadow: var(--shadow-hard-lg);
+            background: var(--yellow);
+        }
+        
+        .action-card:active {
+            transform: rotate(-2deg) translateY(-2px);
+            box-shadow: var(--shadow-hard-sm);
+        }
+        
+        .action-card-icon {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            filter: drop-shadow(2px 2px 0px rgba(45, 45, 45, 0.2));
+        }
+        
+        .action-card-title {
+            font-family: var(--font-heading);
+            font-size: 1.75rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+        
+        .action-card-subtitle {
+            font-size: 1rem;
+            opacity: 0.7;
+        }
+        
+        .daily-topic {
+            background: var(--yellow);
+            border: 3px solid var(--border);
+            border-radius: var(--radius-wobbly);
+            padding: 2rem;
+            box-shadow: var(--shadow-hard);
+            margin-bottom: 2rem;
+            transform: rotate(1deg);
+            position: relative;
+        }
+        
+        /* 图钉装饰 */
+        .daily-topic::before {
+            content: '';
+            position: absolute;
+            top: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 20px;
+            height: 20px;
+            background: var(--accent);
+            border: 3px solid var(--border);
+            border-radius: 50%;
+            box-shadow: var(--shadow-hard-sm);
+        }
+        
+        .daily-topic-header {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+            font-family: var(--font-heading);
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--foreground);
+        }
+        
+        .daily-topic-content {
+            font-size: 1.125rem;
+            color: var(--foreground);
+            line-height: 1.8;
+            margin-bottom: 1.5rem;
+        }
+        
+        .daily-topic-btn {
+            background: white;
+            color: var(--foreground);
+            border: 3px solid var(--border);
+            padding: 0.875rem 2rem;
+            border-radius: var(--radius-wobbly-sm);
+            font-family: var(--font-body);
+            font-size: 1.125rem;
+            font-weight: 400;
+            cursor: pointer;
+            transition: all 150ms ease;
+            box-shadow: var(--shadow-hard);
+        }
+        
+        .daily-topic-btn:hover {
+            background: var(--accent);
+            color: white;
+            transform: translateX(2px) translateY(2px);
+            box-shadow: var(--shadow-hard-sm);
+        }
+        
+        .daily-topic-btn:active {
+            transform: translateX(4px) translateY(4px);
+            box-shadow: none;
+        }
+        
+        .achievement-summary {
+            background: white;
+            border: 3px solid var(--border);
+            border-radius: var(--radius-wobbly);
+            padding: 2rem;
+            box-shadow: var(--shadow-hard);
+            transform: rotate(-1deg);
+            position: relative;
+        }
+        
+        /* 虚线圆圈装饰 */
+        .achievement-summary::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 90%;
+            height: 90%;
+            border: 3px dashed var(--accent);
+            border-radius: var(--radius-wobbly);
+            opacity: 0.3;
+            pointer-events: none;
+        }
+        
+        .achievement-header {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+            font-family: var(--font-heading);
+            font-size: 1.5rem;
+            font-weight: 700;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .achievement-stats {
+            display: flex;
+            justify-content: space-around;
+            gap: 1rem;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .stat-item {
+            text-align: center;
+            padding: 1rem;
+            background: var(--yellow);
+            border: 2px solid var(--border);
+            border-radius: var(--radius-wobbly-sm);
+            transform: rotate(-2deg);
+        }
+        
+        .stat-item:nth-child(2) {
+            transform: rotate(1deg);
+        }
+        
+        .stat-item:nth-child(3) {
+            transform: rotate(-1deg);
+        }
+        
+        .stat-value {
+            font-family: var(--font-heading);
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--accent);
+            display: block;
+        }
+        
+        .stat-label {
+            font-size: 0.875rem;
+            color: var(--foreground);
+            margin-top: 0.5rem;
+        }
+        
+        .star-rating {
+            color: #FFD700;
+            font-size: 1.5rem;
+            letter-spacing: 0.25rem;
+            filter: drop-shadow(2px 2px 0px rgba(45, 45, 45, 0.2));
+        }
+        
+        /* ========================================
+           写作页面样式
+           ======================================== */
+        
+        .writing-page {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+        
+        .writing-header {
+            background: white;
+            padding: 1rem 1.5rem;
+            border-bottom: 3px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: var(--shadow-hard-sm);
+        }
+        
+        .writing-title-input {
+            font-family: var(--font-heading);
+            font-size: 1.75rem;
+            font-weight: 700;
+            border: none;
+            outline: none;
+            flex: 1;
+            color: var(--foreground);
+            background: transparent;
+        }
+        
+        .writing-title-input::placeholder {
+            color: var(--muted);
+        }
+        
+        .writing-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+        
+        .icon-btn {
+            background: white;
+            border: 3px solid var(--border);
+            border-radius: var(--radius-wobbly-sm);
+            padding: 0.5rem;
+            cursor: pointer;
+            transition: all 150ms ease;
+            color: var(--foreground);
+            box-shadow: var(--shadow-hard-sm);
+        }
+        
+        .icon-btn:hover {
+            background: var(--accent);
+            color: white;
+            transform: rotate(-5deg);
+        }
+        
+        .writing-toolbar {
+            background: var(--muted);
+            padding: 1rem 1.5rem;
+            display: flex;
+            gap: 1rem;
+            overflow-x: auto;
+            border-bottom: 3px dashed var(--border);
+        }
+        
+        .tool-btn {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.625rem 1.25rem;
+            background: white;
+            border: 3px solid var(--border);
+            border-radius: var(--radius-wobbly-sm);
+            cursor: pointer;
+            transition: all 150ms ease;
+            white-space: nowrap;
+            font-size: 1rem;
+            font-weight: 400;
+            color: var(--foreground);
+            box-shadow: var(--shadow-hard-sm);
+            transform: rotate(-1deg);
+        }
+        
+        .tool-btn:nth-child(even) {
+            transform: rotate(1deg);
+        }
+        
+        .tool-btn:hover {
+            transform: rotate(-2deg) translateY(-4px);
+            box-shadow: var(--shadow-hard);
+            background: var(--yellow);
+        }
+        
+        .tool-btn.active {
+            background: var(--accent);
+            color: white;
+            transform: rotate(2deg);
+        }
+        
+        .writing-content {
+            display: flex;
+            flex: 1;
+            overflow: hidden;
+        }
+        
+        .editor-area {
+            flex: 1;
+            padding: 2rem;
+            overflow-y: auto;
+        }
+        
+        .editor-textarea {
+            width: 100%;
+            min-height: 500px;
+            border: 3px solid var(--border);
+            border-radius: var(--radius-wobbly);
+            outline: none;
+            font-family: var(--font-body);
+            font-size: 1.25rem;
+            line-height: 2;
+            color: var(--foreground);
+            background: white;
+            resize: none;
+            padding: 2rem;
+            box-shadow: var(--shadow-hard);
+            /* 横线纸效果 */
+            background-image: repeating-linear-gradient(
+                transparent,
+                transparent 39px,
+                var(--muted) 39px,
+                var(--muted) 40px
+            );
+            background-attachment: local;
+        }
+        
+        .editor-textarea:focus {
+            border-color: var(--secondary);
+            box-shadow: var(--shadow-hard-lg);
+        }
+        
+        .assistant-panel {
+            width: 400px;
+            background: white;
+            border-left: 3px solid var(--border);
+            padding: 1.5rem;
+            overflow-y: auto;
+            display: none;
+        }
+        
+        .assistant-panel.active {
+            display: block;
+        }
+        
+        .assistant-header {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+            font-family: var(--font-heading);
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--accent);
+            padding-bottom: 0.5rem;
+            border-bottom: 3px dashed var(--border);
+        }
+        
+        .suggestion-card {
+            background: var(--yellow);
+            padding: 1.25rem;
+            border: 3px solid var(--border);
+            border-radius: var(--radius-wobbly-sm);
+            margin-bottom: 1.5rem;
+            box-shadow: var(--shadow-hard-sm);
+            animation: slideInBounce 400ms ease-out;
+            transform: rotate(-1deg);
+            position: relative;
+        }
+        
+        .suggestion-card:nth-child(even) {
+            transform: rotate(1deg);
+        }
+        
+        /* 便利贴折角效果 */
+        .suggestion-card::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 0;
+            height: 0;
+            border-style: solid;
+            border-width: 0 0 20px 20px;
+            border-color: transparent transparent var(--muted) transparent;
+        }
+        
+        @keyframes slideInBounce {
+            from {
+                opacity: 0;
+                transform: translateX(30px) rotate(5deg);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0) rotate(-1deg);
+            }
+        }
+        
+        .suggestion-title {
+            font-family: var(--font-heading);
+            font-weight: 700;
+            font-size: 1.125rem;
+            margin-bottom: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .suggestion-list {
+            list-style: none;
+            padding-left: 0;
+        }
+        
+        .suggestion-list li {
+            padding: 0.5rem 0;
+            color: var(--foreground);
+            line-height: 1.8;
+            position: relative;
+            padding-left: 1.5rem;
+        }
+        
+        .suggestion-list li::before {
+            content: "✏️";
+            position: absolute;
+            left: 0;
+        }
+        
+        .writing-footer {
+            background: white;
+            padding: 1rem 1.5rem;
+            border-top: 3px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 -4px 0px 0px rgba(45, 45, 45, 0.1);
+        }
+        
+        .writing-stats {
+            display: flex;
+            gap: 2rem;
+            font-size: 1rem;
+            color: var(--foreground);
+        }
+        
+        .stat-item-inline {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .auto-save {
+            color: var(--secondary);
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        /* ========================================
+           模态框样式
+           ======================================== */
+        
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.6);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1040;
+            animation: fadeIn 200ms ease-out;
+        }
+        
+        .modal-overlay.active {
+            display: flex;
+        }
+        
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+        
+        .modal {
+            background: white;
+            border: 4px solid var(--border);
+            border-radius: var(--radius-wobbly);
+            padding: 2.5rem;
+            max-width: 600px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            box-shadow: var(--shadow-hard-lg);
+            animation: modalSlideUp 300ms ease-out;
+            transform: rotate(-1deg);
+        }
+        
+        @keyframes modalSlideUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px) rotate(3deg);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) rotate(-1deg);
+            }
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 3px dashed var(--border);
+        }
+        
+        .modal-title {
+            font-family: var(--font-heading);
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--accent);
+        }
+        
+        .modal-close {
+            background: white;
+            border: 3px solid var(--border);
+            border-radius: 50%;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--foreground);
+            padding: 0.25rem 0.5rem;
+            transition: all 150ms ease;
+            box-shadow: var(--shadow-hard-sm);
+        }
+        
+        .modal-close:hover {
+            background: var(--accent);
+            color: white;
+            transform: rotate(90deg);
+        }
+        
+        .modal-content {
+            margin-bottom: 1.5rem;
+        }
+        
+        /* ========================================
+           完成反馈页面
+           ======================================== */
+        
+        .completion-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.85);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1050;
+            animation: fadeIn 300ms ease-out;
+        }
+        
+        .completion-overlay.active {
+            display: flex;
+        }
+        
+        .completion-card {
+            background: white;
+            border: 5px solid var(--border);
+            border-radius: var(--radius-wobbly);
+            padding: 3rem;
+            max-width: 600px;
+            width: 90%;
+            text-align: center;
+            box-shadow: var(--shadow-hard-lg);
+            animation: celebrationPop 600ms ease-out;
+            transform: rotate(-2deg);
+            position: relative;
+        }
+        
+        /* 彩带装饰 */
+        .completion-card::before {
+            content: '🎊';
+            position: absolute;
+            top: -30px;
+            left: -30px;
+            font-size: 3rem;
+            animation: spin 3s linear infinite;
+        }
+        
+        .completion-card::after {
+            content: '🎉';
+            position: absolute;
+            top: -30px;
+            right: -30px;
+            font-size: 3rem;
+            animation: spin 3s linear infinite reverse;
+        }
+        
+        @keyframes spin {
+            from {
+                transform: rotate(0deg);
+            }
+            to {
+                transform: rotate(360deg);
+            }
+        }
+        
+        @keyframes celebrationPop {
+            0% {
+                opacity: 0;
+                transform: scale(0.5) rotate(-15deg);
+            }
+            50% {
+                transform: scale(1.05) rotate(-2deg);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1) rotate(-2deg);
+            }
+        }
+        
+        .celebration-icon {
+            font-size: 6rem;
+            margin-bottom: 1rem;
+            animation: bounce 1s infinite;
+        }
+        
+        @keyframes bounce {
+            0%, 100% {
+                transform: translateY(0) rotate(0deg);
+            }
+            50% {
+                transform: translateY(-30px) rotate(15deg);
+            }
+        }
+        
+        .completion-title {
+            font-family: var(--font-heading);
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--accent);
+            margin-bottom: 2rem;
+            text-decoration: underline;
+            text-decoration-style: wavy;
+        }
+        
+        .score-display {
+            background: var(--yellow);
+            padding: 2.5rem;
+            border: 4px solid var(--border);
+            border-radius: var(--radius-wobbly);
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow-hard);
+        }
+        
+        .score-number {
+            font-family: var(--font-heading);
+            font-size: 5rem;
+            font-weight: 700;
+            color: var(--accent);
+            margin-bottom: 0.5rem;
+            text-shadow: 3px 3px 0px rgba(45, 45, 45, 0.2);
+        }
+        
+        .score-stars {
+            color: #FFD700;
+            font-size: 2.5rem;
+            letter-spacing: 0.5rem;
+            filter: drop-shadow(2px 2px 0px rgba(45, 45, 45, 0.2));
+        }
+        
+        .score-breakdown {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+        
+        .score-item {
+            text-align: center;
+            background: white;
+            padding: 1rem;
+            border: 3px solid var(--border);
+            border-radius: var(--radius-wobbly-sm);
+            transform: rotate(-2deg);
+        }
+        
+        .score-item:nth-child(2) {
+            transform: rotate(1deg);
+        }
+        
+        .score-item:nth-child(3) {
+            transform: rotate(-1deg);
+        }
+        
+        .score-category {
+            font-size: 0.875rem;
+            color: var(--foreground);
+            margin-bottom: 0.5rem;
+        }
+        
+        .score-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--foreground);
+        }
+        
+        .teacher-comment {
+            background: white;
+            padding: 2rem;
+            border: 3px dashed var(--border);
+            border-radius: var(--radius-wobbly);
+            text-align: left;
+            margin-bottom: 2rem;
+        }
+        
+        .comment-section {
+            margin-bottom: 1.5rem;
+        }
+        
+        .comment-title {
+            font-family: var(--font-heading);
+            font-weight: 700;
+            font-size: 1.25rem;
+            color: var(--foreground);
+            margin-bottom: 0.75rem;
+        }
+        
+        .comment-list {
+            list-style: none;
+            padding-left: 0;
+        }
+        
+        .comment-list li {
+            padding: 0.5rem 0;
+            color: var(--foreground);
+            font-size: 1rem;
+            line-height: 1.6;
+        }
+        
+        .comment-list.positive li::before {
+            content: "✓";
+            color: var(--secondary);
+            margin-right: 0.75rem;
+            font-weight: bold;
+            font-size: 1.25rem;
+        }
+        
+        .comment-list.improvement li::before {
+            content: "→";
+            color: var(--accent);
+            margin-right: 0.75rem;
+            font-weight: bold;
+            font-size: 1.25rem;
+        }
+        
+        .reward-section {
+            background: var(--accent);
+            color: white;
+            padding: 2rem;
+            border: 4px solid var(--border);
+            border-radius: var(--radius-wobbly);
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow-hard);
+            transform: rotate(1deg);
+        }
+        
+        .reward-title {
+            font-family: var(--font-heading);
+            font-weight: 700;
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .reward-items {
+            display: flex;
+            justify-content: center;
+            gap: 3rem;
+        }
+        
+        .reward-item {
+            text-align: center;
+        }
+        
+        .reward-icon {
+            font-size: 4rem;
+            margin-bottom: 0.5rem;
+            filter: drop-shadow(2px 2px 0px rgba(0, 0, 0, 0.3));
+        }
+        
+        .completion-actions {
+            display: flex;
+            gap: 1.5rem;
+            justify-content: center;
+        }
+        
+        .btn-large {
+            padding: 1.25rem 2.5rem;
+            border: 4px solid var(--border);
+            border-radius: var(--radius-wobbly-sm);
+            font-family: var(--font-body);
+            font-size: 1.25rem;
+            font-weight: 400;
+            cursor: pointer;
+            transition: all 150ms ease;
+            box-shadow: var(--shadow-hard);
+        }
+        
+        .btn-primary-large {
+            background: var(--accent);
+            color: white;
+        }
+        
+        .btn-primary-large:hover {
+            transform: translateX(2px) translateY(2px);
+            box-shadow: 6px 6px 0px 0px var(--border);
+        }
+        
+        .btn-primary-large:active {
+            transform: translateX(4px) translateY(4px);
+            box-shadow: var(--shadow-hard-sm);
+        }
+        
+        .btn-outline-large {
+            background: white;
+            color: var(--foreground);
+        }
+        
+        .btn-outline-large:hover {
+            background: var(--secondary);
+            color: white;
+        }
+        
+        /* ========================================
+           响应式设计
+           ======================================== */
+        
+        @media (max-width: 768px) {
+            .home-title {
+                font-size: 2rem;
+            }
+            
+            .home-header::after {
+                display: none;
+            }
+            
+            .writing-content {
+                flex-direction: column;
+            }
+            
+            .assistant-panel {
+                width: 100%;
+                border-left: none;
+                border-top: 3px solid var(--border);
+            }
+            
+            .action-cards {
+                grid-template-columns: 1fr;
+            }
+            
+            .score-breakdown {
+                grid-template-columns: 1fr;
+            }
+            
+            .completion-card {
+                padding: 2rem 1.5rem;
+            }
+            
+            .completion-title {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <!-- 首页 -->
+        <div class="page active" id="homePage">
+            <div class="home-page">
+                <div class="home-header">
+                    <h1 class="home-title">
+                        <span>✨</span>
+                        <span>小作家助手</span>
+                    </h1>
+                    <p class="home-greeting">👋 你好，小作家！今天想写什么？</p>
+                </div>
+                
+                <div class="action-cards">
+                    <div class="action-card" onclick="navigateTo('writingPage')">
+                        <div class="action-card-icon">📝</div>
+                        <div class="action-card-title">开始新作文</div>
+                        <div class="action-card-subtitle">从零开始创作</div>
+                    </div>
+                    
+                    <div class="action-card" onclick="navigateTo('writingPage')">
+                        <div class="action-card-icon">✏️</div>
+                        <div class="action-card-title">继续写作</div>
+                        <div class="action-card-subtitle">3篇草稿等待完成</div>
+                    </div>
+                </div>
+                
+                <div class="daily-topic">
+                    <div class="daily-topic-header">
+                        <span>💡</span>
+                        <span>今日写作话题</span>
+                    </div>
+                    <div class="daily-topic-content">
+                        🌸 春天来了，你发现了什么变化？可以写写公园里的花朵、天气的变化，或者你的心情。
+                    </div>
+                    <button class="daily-topic-btn" onclick="navigateTo('writingPage')">
+                        开始写作 →
+                    </button>
+                </div>
+                
+                <div class="achievement-summary">
+                    <div class="achievement-header">
+                        <span>🏆</span>
+                        <span>我的成就</span>
+                    </div>
+                    <div class="achievement-stats">
+                        <div class="stat-item">
+                            <span class="star-rating">⭐⭐⭐⭐⭐</span>
+                            <span class="stat-label">5/10</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-value">12</span>
+                            <span class="stat-label">已完成作文</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-value">7</span>
+                            <span class="stat-label">连续打卡天数</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 写作页面 -->
+        <div class="page" id="writingPage">
+            <div class="writing-page">
+                <div class="writing-header">
+                    <input type="text" class="writing-title-input" placeholder="给你的作文起个标题..." value="难忘的一天">
+                    <div class="writing-actions">
+                        <button class="icon-btn" onclick="navigateTo('homePage')">
+                            <i data-lucide="arrow-left"></i>
+                        </button>
+                        <button class="icon-btn">
+                            <i data-lucide="save"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="writing-toolbar">
+                    <button class="tool-btn" onclick="openModal('mindmapModal')">
+                        <i data-lucide="git-branch"></i>
+                        <span>思路导航</span>
+                    </button>
+                    <button class="tool-btn">
+                        <i data-lucide="sparkles"></i>
+                        <span>词汇魔法</span>
+                    </button>
+                    <button class="tool-btn">
+                        <i data-lucide="layout"></i>
+                        <span>结构检查</span>
+                    </button>
+                    <button class="tool-btn active" onclick="toggleAssistant()">
+                        <i data-lucide="message-circle"></i>
+                        <span>智能助手</span>
+                    </button>
+                </div>
+                
+                <div class="writing-content">
+                    <div class="editor-area">
+                        <textarea class="editor-textarea" placeholder="开始写作吧...">那是一个阳光明媚的早晨，我和爸爸妈妈一起去公园玩。公园里的花都开了，非常漂亮。
+
+我们在公园里散步，看到了很多美丽的花朵。有红色的玫瑰，黄色的菊花，还有粉色的桃花。它们在阳光下显得格外鲜艳。
+
+</textarea>
+                    </div>
+                    
+                    <div class="assistant-panel active" id="assistantPanel">
+                        <div class="assistant-header">
+                            <i data-lucide="sparkles"></i>
+                            <span>写作提示</span>
+                        </div>
+                        
+                        <div class="suggestion-card">
+                            <div class="suggestion-title">
+                                <span>👍</span>
+                                <span>开头写得不错！</span>
+                            </div>
+                        </div>
+                        
+                        <div class="suggestion-card">
+                            <div class="suggestion-title">
+                                <span>🤔</span>
+                                <span>接下来可以写：</span>
+                            </div>
+                            <ul class="suggestion-list">
+                                <li>你在公园看到了什么有趣的事情？</li>
+                                <li>发生了什么让你难忘的经历？</li>
+                                <li>你当时的心情是怎样的？</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="writing-footer">
+                    <div class="writing-stats">
+                        <div class="stat-item-inline">
+                            <i data-lucide="type"></i>
+                            <span>字数：89</span>
+                        </div>
+                        <div class="stat-item-inline">
+                            <i data-lucide="clock"></i>
+                            <span>用时：5分钟</span>
+                        </div>
+                    </div>
+                    <div class="auto-save">
+                        <i data-lucide="check-circle"></i>
+                        <span>自动保存中...</span>
+                    </div>
+                    <button class="daily-topic-btn" onclick="showCompletion()">
+                        完成作文
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 底部导航 -->
+        <div class="bottom-nav">
+            <a class="nav-item active" onclick="navigateTo('homePage')">
+                <i data-lucide="home"></i>
+                <span>首页</span>
+            </a>
+            <a class="nav-item" onclick="navigateTo('writingPage')">
+                <i data-lucide="pen-tool"></i>
+                <span>写作</span>
+            </a>
+            <a class="nav-item">
+                <i data-lucide="book-open"></i>
+                <span>素材</span>
+            </a>
+            <a class="nav-item">
+                <i data-lucide="bar-chart-2"></i>
+                <span>成长</span>
+            </a>
+        </div>
+    </div>
+    
+    <!-- 思维导图模态框 -->
+    <div class="modal-overlay" id="mindmapModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 class="modal-title">🧭 思路导航仪</h3>
+                <button class="modal-close" onclick="closeModal('mindmapModal')">×</button>
+            </div>
+            <div class="modal-content">
+                <p style="color: var(--foreground); margin-bottom: 1.5rem; font-size: 1.125rem;">
+                    让我们一起理清思路吧！
+                </p>
+                <div style="background: var(--yellow); padding: 2rem; border: 3px solid var(--border); border-radius: var(--radius-wobbly); margin-bottom: 1.5rem;">
+                    <div style="text-align: center; margin-bottom: 2rem;">
+                        <div style="display: inline-block; background: var(--accent); color: white; padding: 1rem 2rem; border: 3px solid var(--border); border-radius: var(--radius-wobbly-sm); font-family: var(--font-heading); font-size: 1.5rem; font-weight: 700; box-shadow: var(--shadow-hard); transform: rotate(-1deg);">
+                            难忘的一天
+                        </div>
+                    </div>
+                    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem;">
+                        <div style="background: white; padding: 1rem; border: 3px solid var(--border); border-radius: var(--radius-wobbly-sm); text-align: center; transform: rotate(1deg);">
+                            <div style="font-weight: 700; color: var(--accent); margin-bottom: 0.5rem;">⏰ 什么时候？</div>
+                            <input type="text" placeholder="例如：周末的早晨" style="width: 100%; padding: 0.5rem; border: 2px solid var(--border); border-radius: var(--radius-wobbly-sm); font-family: var(--font-body);">
+                        </div>
+                        <div style="background: white; padding: 1rem; border: 3px solid var(--border); border-radius: var(--radius-wobbly-sm); text-align: center; transform: rotate(-1deg);">
+                            <div style="font-weight: 700; color: var(--accent); margin-bottom: 0.5rem;">📍 在哪里？</div>
+                            <input type="text" placeholder="例如：公园" style="width: 100%; padding: 0.5rem; border: 2px solid var(--border); border-radius: var(--radius-wobbly-sm); font-family: var(--font-body);">
+                        </div>
+                        <div style="background: white; padding: 1rem; border: 3px solid var(--border); border-radius: var(--radius-wobbly-sm); text-align: center; transform: rotate(-1deg);">
+                            <div style="font-weight: 700; color: var(--accent); margin-bottom: 0.5rem;">👥 有谁？</div>
+                            <input type="text" placeholder="例如：爸爸妈妈" style="width: 100%; padding: 0.5rem; border: 2px solid var(--border); border-radius: var(--radius-wobbly-sm); font-family: var(--font-body);">
+                        </div>
+                        <div style="background: white; padding: 1rem; border: 3px solid var(--border); border-radius: var(--radius-wobbly-sm); text-align: center; transform: rotate(1deg);">
+                            <div style="font-weight: 700; color: var(--accent); margin-bottom: 0.5rem;">❓ 为什么难忘？</div>
+                            <input type="text" placeholder="点击添加..." style="width: 100%; padding: 0.5rem; border: 2px solid var(--border); border-radius: var(--radius-wobbly-sm); font-family: var(--font-body);">
+                        </div>
+                    </div>
+                </div>
+                <div style="display: flex; gap: 1rem;">
+                    <button class="btn-large btn-primary-large" onclick="closeModal('mindmapModal')">
+                        应用到作文
+                    </button>
+                    <button class="btn-large btn-outline-large">
+                        重新规划
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 完成反馈覆盖层 -->
+    <div class="completion-overlay" id="completionOverlay">
+        <div class="completion-card">
+            <div class="celebration-icon">🎉</div>
+            <h2 class="completion-title">太棒了！</h2>
+            <p style="color: var(--foreground); margin-bottom: 2rem; font-size: 1.125rem;">
+                你完成了一篇作文！
+            </p>
+            
+            <div class="score-display">
+                <div class="score-number">85</div>
+                <div style="font-size: 1rem; color: var(--foreground); margin-bottom: 0.5rem;">分</div>
+                <div class="score-stars">⭐⭐⭐⭐</div>
+                
+                <div class="score-breakdown">
+                    <div class="score-item">
+                        <div class="score-category">内容丰富度</div>
+                        <div class="score-value">⭐⭐⭐⭐</div>
+                    </div>
+                    <div class="score-item">
+                        <div class="score-category">结构完整度</div>
+                        <div class="score-value">⭐⭐⭐⭐⭐</div>
+                    </div>
+                    <div class="score-item">
+                        <div class="score-category">语言表达</div>
+                        <div class="score-value">⭐⭐⭐</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="teacher-comment">
+                <div class="comment-section">
+                    <div class="comment-title">💬 小老师的话</div>
+                    <p style="color: var(--foreground); line-height: 1.8; margin-bottom: 1rem;">
+                        你的作文结构很清晰，开头、经过、结尾都写得很好！如果能多用一些形容词，作文会更生动哦～
+                    </p>
+                </div>
+                
+                <div class="comment-section">
+                    <div class="comment-title">特别棒的地方：</div>
+                    <ul class="comment-list positive">
+                        <li>"阳光明媚"用得很好</li>
+                        <li>事情的经过写得很详细</li>
+                    </ul>
+                </div>
+                
+                <div class="comment-section">
+                    <div class="comment-title">可以改进的地方：</div>
+                    <ul class="comment-list improvement">
+                        <li>试试用更多不同的词语</li>
+                        <li>可以加入更多感受的描写</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="reward-section">
+                <div class="reward-title">🎁 获得奖励</div>
+                <div class="reward-items">
+                    <div class="reward-item">
+                        <div class="reward-icon">🏅</div>
+                        <div>坚持写作者</div>
+                    </div>
+                    <div class="reward-item">
+                        <div class="reward-icon">⭐</div>
+                        <div>+10 小星星</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="completion-actions">
+                <button class="btn-large btn-outline-large" onclick="hideCompletion()">
+                    继续修改
+                </button>
+                <button class="btn-large btn-primary-large" onclick="hideCompletion(); navigateTo('homePage')">
+                    保存作文
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        lucide.createIcons();
+        
+        function navigateTo(pageId) {
+            document.querySelectorAll('.page').forEach(page => {
+                page.classList.remove('active');
+            });
+            
+            const targetPage = document.getElementById(pageId);
+            if (targetPage) {
+                targetPage.classList.add('active');
+            }
+            
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            
+            const navMap = {
+                'homePage': 0,
+                'writingPage': 1
+            };
+            
+            const navIndex = navMap[pageId];
+            if (navIndex !== undefined) {
+                document.querySelectorAll('.nav-item')[navIndex].classList.add('active');
+            }
+            
+            setTimeout(() => lucide.createIcons(), 100);
+        }
+        
+        function openModal(modalId) {
+            document.getElementById(modalId).classList.add('active');
+        }
+        
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.remove('active');
+        }
+        
+        function toggleAssistant() {
+            const panel = document.getElementById('assistantPanel');
+            panel.classList.toggle('active');
+        }
+        
+        function showCompletion() {
+            document.getElementById('completionOverlay').classList.add('active');
+        }
+        
+        function hideCompletion() {
+            document.getElementById('completionOverlay').classList.remove('active');
+        }
+        
+        document.querySelectorAll('.modal-overlay').forEach(overlay => {
+            overlay.addEventListener('click', function(e) {
+                if (e.target === this) {
+                    this.classList.remove('active');
+                }
+            });
+        });
+        
+        window.addEventListener('load', () => {
+            document.body.style.opacity = '0';
+            setTimeout(() => {
+                document.body.style.transition = 'opacity 0.5s ease-out';
+                document.body.style.opacity = '1';
+            }, 100);
+        });
+    </script>
+</body>
+</html>
