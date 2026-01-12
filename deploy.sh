@@ -97,7 +97,7 @@ for file in $html_files; do
     longDescription: '$description',
     tags: $tags,
     theme: '${filename%.html}_theme.css',
-    thumbnail: 'assets/images/game-thumbnails/${game_id}.png',
+    thumbnail: null, // 使用自动生成的占位图
     featured: true,
     difficulty: '$difficulty',
     players: '单人',
