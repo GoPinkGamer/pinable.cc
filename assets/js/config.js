@@ -17,7 +17,7 @@ const GAMES_CONFIG = [
     difficulty: 'easy',
     players: '单人',
     controls: '鼠标点击',
-    addedDate: '2026-01-12'
+    addedDate: '2026-01-14'
   }
 ,
   {
@@ -33,7 +33,7 @@ const GAMES_CONFIG = [
     difficulty: 'medium',
     players: '单人',
     controls: '键盘/触摸',
-    addedDate: '2026-01-12'
+    addedDate: '2026-01-14'
   }
 ,
   {
@@ -49,7 +49,7 @@ const GAMES_CONFIG = [
     difficulty: 'easy',
     players: '单人',
     controls: '鼠标/键盘',
-    addedDate: '2026-01-12'
+    addedDate: '2026-01-14'
   }
 ,
   {
@@ -65,7 +65,7 @@ const GAMES_CONFIG = [
     difficulty: 'easy',
     players: '单人',
     controls: '鼠标/键盘',
-    addedDate: '2026-01-12'
+    addedDate: '2026-01-14'
   }
 ,
   {
@@ -81,7 +81,7 @@ const GAMES_CONFIG = [
     difficulty: 'easy',
     players: '单人',
     controls: '鼠标/键盘',
-    addedDate: '2026-01-12'
+    addedDate: '2026-01-14'
   }
 ,
   {
@@ -97,7 +97,7 @@ const GAMES_CONFIG = [
     difficulty: 'easy',
     players: '单人',
     controls: '鼠标/键盘',
-    addedDate: '2026-01-12'
+    addedDate: '2026-01-14'
   }
 ,
   {
@@ -113,7 +113,7 @@ const GAMES_CONFIG = [
     difficulty: 'easy',
     players: '单人',
     controls: '鼠标/键盘',
-    addedDate: '2026-01-12'
+    addedDate: '2026-01-14'
   }
 ,
   {
@@ -129,7 +129,7 @@ const GAMES_CONFIG = [
     difficulty: 'easy',
     players: '单人',
     controls: '鼠标/键盘',
-    addedDate: '2026-01-12'
+    addedDate: '2026-01-14'
   }
 ,
   {
@@ -145,7 +145,7 @@ const GAMES_CONFIG = [
     difficulty: 'easy',
     players: '单人',
     controls: '鼠标/键盘',
-    addedDate: '2026-01-12'
+    addedDate: '2026-01-14'
   }
 ,
   {
@@ -161,7 +161,7 @@ const GAMES_CONFIG = [
     difficulty: 'easy',
     players: '单人',
     controls: '鼠标/键盘',
-    addedDate: '2026-01-12'
+    addedDate: '2026-01-14'
   }
 ,
   {
@@ -177,7 +177,23 @@ const GAMES_CONFIG = [
     difficulty: 'easy',
     players: '单人',
     controls: '鼠标/键盘',
-    addedDate: '2026-01-12'
+    addedDate: '2026-01-14'
+  }
+,
+  {
+    id: 'tetris-1',
+    filename: 'tetris_1.html',
+    title: '🎮 Tetris 1',
+    description: '有趣的游戏原型，快来体验吧！',
+    longDescription: '有趣的游戏原型，快来体验吧！',
+    tags: ['休闲', '益智'],
+    theme: 'tetris_1_theme.css',
+    thumbnail: null, // 使用自动生成的占位图
+    featured: true,
+    difficulty: 'easy',
+    players: '单人',
+    controls: '鼠标/键盘',
+    addedDate: '2026-01-14'
   }
 ,
   {
@@ -193,7 +209,7 @@ const GAMES_CONFIG = [
     difficulty: 'easy',
     players: '单人',
     controls: '鼠标/键盘',
-    addedDate: '2026-01-12'
+    addedDate: '2026-01-14'
   }
 ];
 
