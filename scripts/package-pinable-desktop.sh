@@ -8,13 +8,18 @@ DESKTOP_DIR="${WORKSPACE_DIR}/PinableAgents/pinable-desktop"
 OUTPUT_DIR="${SITE_DIR}/assets/downloads"
 BUILD_DIR="${DESKTOP_DIR}/build/bin"
 DO_PUSH=0
+DO_COMMIT=0
+AUTO_LFS=1
+LFS_THRESHOLD_BYTES=$((50 * 1024 * 1024))
 
 usage() {
   cat <<'EOF'
-用法: package-pinable-desktop.sh [--push]
+用法: package-pinable-desktop.sh [--commit] [--push] [--no-lfs]
 
 选项:
-  --push   打包完成后执行 git push -f origin main
+  --commit 打包完成后执行 git add / git commit / git log
+  --push   打包完成后执行 git push -f origin main（自动启用 --commit）
+  --no-lfs 不自动判断/启用 git lfs
 EOF
 }
 
@@ -22,11 +27,18 @@ for arg in "$@"; do
   case "${arg}" in
     --push)
       DO_PUSH=1
+      DO_COMMIT=1
+      ;;
+    --commit)
+      DO_COMMIT=1
+      ;;
+    --no-lfs)
+      AUTO_LFS=0
       ;;
     -h|--help)
       usage
       exit 0
-      ;;
+    ;;
     *)
       echo "未知参数: ${arg}"
       usage
@@ -94,6 +106,97 @@ else
 fi
 
 echo "==> 完成。输出目录: ${OUTPUT_DIR}"
+
+if [[ "${DO_COMMIT}" == "1" ]]; then
+  if ! command -v git >/dev/null 2>&1; then
+    echo "git 未安装或不在 PATH 中，无法执行提交。"
+    exit 1
+  fi
+
+  DMG_OUT="${OUTPUT_DIR}/PinableAgents-mac.dmg"
+  EXE_OUT="${OUTPUT_DIR}/PinableAgents-win.exe"
+
+  file_size_bytes() {
+    local path="$1"
+    if stat -f%z "${path}" >/dev/null 2>&1; then
+      stat -f%z "${path}"
+    else
+      stat -c%s "${path}"
+    fi
+  }
+
+  NEED_LFS=0
+  if [[ "${AUTO_LFS}" == "1" ]]; then
+    if [[ -f "${DMG_OUT}" ]]; then
+      DMG_SIZE="$(file_size_bytes "${DMG_OUT}")"
+      if [[ "${DMG_SIZE}" -ge "${LFS_THRESHOLD_BYTES}" ]]; then
+        NEED_LFS=1
+      fi
+    fi
+    if [[ -f "${EXE_OUT}" ]]; then
+      EXE_SIZE="$(file_size_bytes "${EXE_OUT}")"
+      if [[ "${EXE_SIZE}" -ge "${LFS_THRESHOLD_BYTES}" ]]; then
+        NEED_LFS=1
+      fi
+    fi
+  fi
+
+  if [[ "${AUTO_LFS}" == "1" && "${NEED_LFS}" == "1" ]]; then
+    if git lfs --version >/dev/null 2>&1; then
+      GIT_ATTR="${SITE_DIR}/.gitattributes"
+      TRACK_DMG=1
+      TRACK_EXE=1
+
+      if [[ -f "${GIT_ATTR}" ]]; then
+        if grep -E '^\*.dmg[[:space:]].*filter=lfs' "${GIT_ATTR}" >/dev/null 2>&1; then
+          TRACK_DMG=0
+        fi
+        if grep -E '^\*.exe[[:space:]].*filter=lfs' "${GIT_ATTR}" >/dev/null 2>&1; then
+          TRACK_EXE=0
+        fi
+      fi
+
+      if [[ "${TRACK_DMG}" == "1" || "${TRACK_EXE}" == "1" ]]; then
+        echo "==> 检测到大文件，启用 git lfs 跟踪"
+        (
+          cd "${SITE_DIR}"
+          git lfs install
+          if [[ "${TRACK_DMG}" == "1" ]]; then
+            git lfs track "*.dmg"
+          fi
+          if [[ "${TRACK_EXE}" == "1" ]]; then
+            git lfs track "*.exe"
+          fi
+        )
+      fi
+    else
+      echo "未安装 git lfs，跳过自动启用（可用 --no-lfs 关闭提示）。"
+    fi
+  fi
+
+  echo "==> 提交构建产物"
+  (
+    cd "${SITE_DIR}"
+    if [[ -f "${DMG_OUT}" ]]; then
+      git add "${DMG_OUT}"
+    fi
+    if [[ -f "${EXE_OUT}" ]]; then
+      git add "${EXE_OUT}"
+    fi
+    if [[ -f "${SITE_DIR}/.gitattributes" ]]; then
+      git add "${SITE_DIR}/.gitattributes"
+    fi
+
+    if git diff --cached --quiet; then
+      echo "没有可提交的变更。"
+      exit 0
+    fi
+
+    COMMIT_TIME="$(date +"%Y-%m-%d %H:%M:%S %z")"
+    git commit -m "build: update desktop artifacts ${COMMIT_TIME}"
+    git log -1 --stat
+  )
+fi
 
 if [[ "${DO_PUSH}" == "1" ]]; then
   if ! command -v git >/dev/null 2>&1; then
