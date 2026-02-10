@@ -408,6 +408,12 @@ body {
   border-radius: var(--radius-md);
   padding: 22px;
   box-shadow: 0 16px 30px rgba(15, 21, 20, 0.12);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.wiki-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 36px rgba(15, 21, 20, 0.16);
 }
 
 .wiki-card h4 {
@@ -442,4 +448,24 @@ body {
   margin-top: 24px;
   display: flex;
   justify-content: flex-start;
+}
+
+.wiki-detail {
+  margin-top: 32px;
+  padding: 24px;
+  border-radius: var(--radius-md);
+  background: rgba(253, 246, 236, 0.96);
+  border: 1px solid var(--border-soft);
+  box-shadow: 0 12px 24px rgba(15, 21, 20, 0.08);
+}
+
+.wiki-detail h3 {
+  font-size: 1.3rem;
+  margin-bottom: 12px;
+}
+
+.wiki-detail p {
+  color: var(--text-muted);
+  margin-bottom: 10px;
+  line-height: 1.7;
 }

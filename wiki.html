@@ -33,30 +33,74 @@
       <h2 class="section-title">Wiki 文档中心</h2>
       <p class="section-desc">这里集中整理 PinableAgents 的流程、配置与最佳实践，持续更新。</p>
       <div class="wiki-grid">
-        <article class="wiki-card">
+        <a class="wiki-card" href="#wiki-start">
           <span class="wiki-tag">起步</span>
           <h4>快速开始</h4>
           <p>桌面端安装、模块启用、首次运行 do 工作流。</p>
           <span class="wiki-meta">更新：2026-02-10</span>
-        </article>
-        <article class="wiki-card">
+        </a>
+        <a class="wiki-card" href="#wiki-workflows">
           <span class="wiki-tag">工作流</span>
           <h4>do / omo / bmad / sparv</h4>
           <p>不同流程的定位与选择指南。</p>
           <span class="wiki-meta">更新：2026-02-10</span>
-        </article>
-        <article class="wiki-card">
+        </a>
+        <a class="wiki-card" href="#wiki-config">
           <span class="wiki-tag">配置</span>
           <h4>config.json 说明</h4>
           <p>模块开关、冲突策略与推荐组合。</p>
           <span class="wiki-meta">更新：2026-02-10</span>
-        </article>
-        <article class="wiki-card">
+        </a>
+        <a class="wiki-card" href="#wiki-backends">
           <span class="wiki-tag">执行</span>
           <h4>多后端 CLI</h4>
           <p>Codex / Claude / Gemini 参数与会话恢复。</p>
           <span class="wiki-meta">更新：2026-02-10</span>
-        </article>
+        </a>
+      </div>
+
+      <div class="wiki-detail" id="wiki-start">
+        <h3>快速开始</h3>
+        <p>1. 下载并安装 PinableAgents 桌面端（macOS / Windows）。</p>
+        <p>2. 打开应用，在 Modules 页面启用 do、essentials 等基础模块。</p>
+        <p>3. 在 Workflows 页面选择 Codex / Claude / Gemini 后端，输入任务描述。</p>
+        <p>4. 首次运行建议使用 do 工作流，确保需求澄清与实施闭环。</p>
+      </div>
+
+      <div class="wiki-detail" id="wiki-workflows">
+        <h3>工作流对比</h3>
+        <p><strong>do（推荐）</strong>：7 阶段交付流程，适合大多数功能需求。</p>
+        <p><strong>omo</strong>：风险信号驱动路由，适合定位未知问题与复杂重构。</p>
+        <p><strong>bmad</strong>：企业级敏捷流程，适合多角色协作与大型项目。</p>
+        <p><strong>sparv</strong>：轻量 5 阶段流程，适合快速原型与小型任务。</p>
+      </div>
+
+      <div class="wiki-detail" id="wiki-config">
+        <h3>模块与配置</h3>
+        <p>模块开关统一由 <code>config.json</code> 控制，建议先启用 do + essentials。</p>
+        <p>冲突策略：overwrite（覆盖）、skip（跳过）、backup（备份后覆盖）。</p>
+        <p>典型组合：功能交付（do + essentials）、Bug 修复（omo + develop）。</p>
+      </div>
+
+      <div class="wiki-detail" id="wiki-backends">
+        <h3>多后端执行</h3>
+        <p>支持 Codex / Claude / Gemini。通过统一 CLI 参数保持一致体验。</p>
+        <p>会话恢复：执行失败后可通过 session id 继续任务。</p>
+        <p>建议：不同后端适配不同角色，例如 Claude 做规划，Codex 做实现。</p>
+      </div>
+
+      <div class="wiki-detail" id="wiki-desktop">
+        <h3>pinable-desktop 使用说明</h3>
+        <p>Modules：安装/卸载模块，支持批量选择与进度可视化。</p>
+        <p>Workflows：选择后端、输入任务描述、配置工作目录并实时查看输出。</p>
+        <p>Config：编辑 config.json，支持校验与回滚。</p>
+      </div>
+
+      <div class="wiki-detail" id="wiki-troubleshooting">
+        <h3>常见问题</h3>
+        <p>安装失败：检查是否有写入权限，或重新安装模块。</p>
+        <p>后端 CLI 缺失：确认 codex/claude/gemini 在 PATH 中。</p>
+        <p>权限提示：建议在团队策略允许的情况下配置自动审批。</p>
       </div>
       <div class="wiki-actions">
         <a class="btn btn-outline" href="/">返回首页</a>
