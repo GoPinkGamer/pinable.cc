@@ -7,6 +7,33 @@ WORKSPACE_DIR="$(cd "${SITE_DIR}/.." && pwd)"
 DESKTOP_DIR="${WORKSPACE_DIR}/PinableAgents/pinable-desktop"
 OUTPUT_DIR="${SITE_DIR}/assets/downloads"
 BUILD_DIR="${DESKTOP_DIR}/build/bin"
+DO_PUSH=0
+
+usage() {
+  cat <<'EOF'
+用法: package-pinable-desktop.sh [--push]
+
+选项:
+  --push   打包完成后执行 git push -f origin main
+EOF
+}
+
+for arg in "$@"; do
+  case "${arg}" in
+    --push)
+      DO_PUSH=1
+      ;;
+    -h|--help)
+      usage
+      exit 0
+      ;;
+    *)
+      echo "未知参数: ${arg}"
+      usage
+      exit 1
+      ;;
+  esac
+done
 
 if ! command -v wails >/dev/null 2>&1; then
   echo "wails CLI 未安装或不在 PATH 中。"
@@ -67,3 +94,16 @@ else
 fi
 
 echo "==> 完成。输出目录: ${OUTPUT_DIR}"
+
+if [[ "${DO_PUSH}" == "1" ]]; then
+  if ! command -v git >/dev/null 2>&1; then
+    echo "git 未安装或不在 PATH 中，无法执行 push。"
+    exit 1
+  fi
+  echo "==> 推送到 origin main"
+  (
+    cd "${SITE_DIR}"
+    GIT_SSH_COMMAND="ssh -i ~/.ssh/id_devops -o IdentitiesOnly=yes" \
+      git push -f origin main
+  )
+fi
