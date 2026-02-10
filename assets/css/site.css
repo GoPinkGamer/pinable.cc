@@ -394,3 +394,52 @@ body {
     scroll-behavior: auto !important;
   }
 }
+
+.wiki-grid {
+  margin-top: 32px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 20px;
+}
+
+.wiki-card {
+  background: rgba(253, 246, 236, 0.95);
+  border: 1px solid var(--border-soft);
+  border-radius: var(--radius-md);
+  padding: 22px;
+  box-shadow: 0 16px 30px rgba(15, 21, 20, 0.12);
+}
+
+.wiki-card h4 {
+  font-size: 1.05rem;
+  margin: 10px 0 8px;
+}
+
+.wiki-card p {
+  color: var(--text-muted);
+  font-size: 0.92rem;
+}
+
+.wiki-tag {
+  display: inline-flex;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  background: var(--bg-mist);
+  color: var(--accent-teal);
+}
+
+.wiki-meta {
+  display: inline-block;
+  margin-top: 12px;
+  font-size: 0.78rem;
+  color: rgba(27, 26, 23, 0.55);
+}
+
+.wiki-actions {
+  margin-top: 24px;
+  display: flex;
+  justify-content: flex-start;
+}
