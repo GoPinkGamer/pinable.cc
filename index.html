@@ -3,324 +3,217 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="PinableLab - AI 驱动的创意实验室。PinableVideo 自助导演视频创作，PinableGame 快速游戏原型设计。">
-  <meta name="keywords" content="AI创作,PinableVideo,PinableGame,视频制作,游戏原型,自助导演,HTML5游戏">
+  <meta name="description" content="PinableAgents - 多智能体开发工作流系统，统一编排与多后端执行，让复杂研发任务可控、可复用、可追踪。">
+  <meta name="keywords" content="PinableAgents,多智能体,AI开发,工作流,Claude Code,Codex,Gemini">
   <meta name="author" content="PinableLab">
   <meta name="robots" content="index, follow">
 
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://pinable.cc/">
-  <meta property="og:title" content="PinableLab - AI 创意实验室">
-  <meta property="og:description" content="PinableVideo 自助导演 | PinableGame 游戏原型设计">
-  <meta property="og:image" content="https://pinable.cc/assets/images/og-image.png">
+  <meta property="og:title" content="PinableAgents - 多智能体开发工作流系统">
+  <meta property="og:description" content="统一编排与多后端执行，让复杂研发任务可控、可复用、可追踪。">
+  <meta property="og:image" content="https://pinable.cc/assets/images/logo.svg">
 
   <meta property="twitter:card" content="summary_large_image">
   <meta property="twitter:url" content="https://pinable.cc/">
-  <meta property="twitter:title" content="PinableLab - AI 创意实验室">
-  <meta property="twitter:description" content="PinableVideo 自助导演 | PinableGame 游戏原型设计">
+  <meta property="twitter:title" content="PinableAgents - 多智能体开发工作流系统">
+  <meta property="twitter:description" content="统一编排与多后端执行，让复杂研发任务可控、可复用、可追踪。">
 
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%94%AC%3C/text%3E%3C/svg%3E">
-
-  <!-- Google AdSense 验证代码 -->
-  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3137049467355939"
-       crossorigin="anonymous"></script>
+  <link rel="icon" type="image/svg+xml" href="assets/images/logo.svg">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="preconnect" href="https://unpkg.com">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Noto+Sans+SC:wght@300;400;500;600;700&family=ZCOOL+XiaoWei&display=swap" rel="stylesheet">
 
-  <!-- Google Fonts - Flat Design 几何字体 -->
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-
-  <link rel="stylesheet" href="assets/css/variables.css">
   <link rel="stylesheet" href="assets/css/reset.css">
-  <link rel="stylesheet" href="assets/css/components.css">
-  <link rel="stylesheet" href="assets/css/layout.css">
-  <link rel="stylesheet" href="assets/css/animations.css">
+  <link rel="stylesheet" href="assets/css/site.css">
 
-  <title>PinableLab - AI 创意实验室 | 视频导演 | 游戏原型</title>
+  <title>PinableAgents - 多智能体开发工作流系统</title>
 
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
-    "@type": "Organization",
-    "name": "PinableLab",
-    "url": "https://pinable.cc",
-    "description": "AI 驱动的创意实验室，提供自助视频导演和游戏原型设计服务",
-    "logo": "https://pinable.cc/assets/logo.png"
+    "@type": "SoftwareApplication",
+    "name": "PinableAgents",
+    "operatingSystem": "macOS, Windows",
+    "applicationCategory": "DeveloperApplication",
+    "description": "多智能体开发工作流系统，统一编排与多后端执行。",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    }
   }
   </script>
 </head>
 <body>
-  <!-- 固定顶部导航 -->
-  <header class="site-header" id="site-header">
-    <div class="header-content">
-      <!-- Logo -->
-      <a href="/" class="logo" aria-label="PinableLab 首页">
-        <img src="assets/logo.png" alt="PinableLab Logo">
-        <span>PinableLab</span>
-      </a>
-
-      <!-- 产品切换导航 -->
-      <nav class="product-nav" role="navigation" aria-label="产品导航" data-i18n-aria="nav.aria">
-        <button class="nav-tab active" data-product="game" aria-selected="true">
-          <i data-lucide="gamepad-2"></i>
-          <span data-i18n="nav.game">PinableGame</span>
-        </button>
-        <button class="nav-tab" data-product="video" aria-selected="false">
-          <i data-lucide="video"></i>
-          <span data-i18n="nav.video">PinableVideo</span>
-        </button>
-      </nav>
-
-      <!-- 语言切换 -->
-      <div class="lang-switcher" id="lang-switcher">
-        <button class="lang-btn" id="lang-toggle" aria-label="切换语言" data-i18n-aria="lang.switch">
-          <i data-lucide="globe"></i>
-          <span id="current-lang-name">简体中文</span>
-          <i data-lucide="chevron-down" class="lang-arrow"></i>
-        </button>
-        <div class="lang-dropdown" id="lang-dropdown">
-          <button class="lang-option active" data-lang="zh-CN">
-            <span class="lang-flag">🇨🇳</span>
-            <span>简体中文</span>
-          </button>
-          <button class="lang-option" data-lang="en">
-            <span class="lang-flag">🇺🇸</span>
-            <span>English</span>
-          </button>
-        </div>
+  <header class="site-header">
+    <div class="container header-inner">
+      <div class="brand">
+        <img src="assets/images/logo.svg" alt="PinableAgents">
+        PinableAgents
       </div>
-
+      <nav class="nav" aria-label="主导航">
+        <a href="#overview">概览</a>
+        <a href="#points">功能要点</a>
+        <a href="#workflows">工作流</a>
+        <a href="#modules">模块与场景</a>
+        <a href="#architecture">核心架构</a>
+        <a href="#download">下载</a>
+      </nav>
     </div>
   </header>
 
-  <!-- Hero 区域 - 蓝色背景 -->
-  <section class="hero" id="hero-section">
-    <!-- 装饰几何图形 -->
-    <div class="hero-decoration" aria-hidden="true">
-      <div class="deco-circle deco-circle-1"></div>
-      <div class="deco-circle deco-circle-2"></div>
-      <div class="deco-square deco-square-1"></div>
-    </div>
-
-    <div class="hero-content">
-      <h1 class="hero-title">
-        <span class="hero-label">AI CREATIVE LAB</span>
-        <span class="hero-main" id="hero-main-title">PinableVideo</span>
-        <span class="hero-sub" id="hero-sub-title" data-i18n="hero.video.sub">自助导演，创意无限</span>
-      </h1>
-      <p class="hero-description" id="hero-description" data-i18n="hero.video.description">
-        用 AI 释放你的创意，几分钟内将想法变成精彩视频。
-        无需专业技能，人人都是导演。
-      </p>
-
-      <!-- 搜索框 -->
-      <div class="search-box">
-        <input
-          type="text"
-          id="search-input"
-          placeholder="搜索视频或游戏... (Ctrl+K)"
-          data-i18n-placeholder="search.placeholder"
-          autocomplete="off"
-          aria-label="搜索"
-          data-i18n-aria="search.aria"
-        >
+  <section class="hero" id="overview">
+    <div class="container hero-grid">
+      <div>
+        <h1>PinableAgents<br>多智能体开发工作流系统</h1>
+        <p class="subtitle">统一编排、多后端执行、可复用流程，让复杂研发任务更可控。适用于功能开发、排障、企业级协作与持续迭代。</p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="#download">立即下载</a>
+          <a class="btn btn-outline" href="#points">查看功能</a>
+        </div>
       </div>
-
-      <!-- 数据统计 -->
-      <div class="hero-stats">
-        <div class="stat-item">
-          <span class="stat-number stat-blue" id="stat-count">12</span>
-          <span class="stat-label" id="stat-label" data-i18n="stats.works">个作品</span>
-        </div>
-        <div class="stat-item">
-          <span class="stat-number stat-emerald" data-i18n="stats.ai">AI</span>
-          <span class="stat-label" data-i18n="stats.aiDriven">智能驱动</span>
-        </div>
-        <div class="stat-item">
-          <span class="stat-number stat-amber" data-i18n="stats.zero">0</span>
-          <span class="stat-label" data-i18n="stats.threshold">门槛</span>
+      <div class="hero-panel">
+        <div class="panel-title">系统速览</div>
+        <div class="panel-list">
+          <div class="panel-item">
+            <div class="panel-icon">7x</div>
+            <div>
+              <h3>do 工作流</h3>
+              <p>7 阶段功能交付流程，覆盖需求、设计、实现、评审与复盘。</p>
+            </div>
+          </div>
+          <div class="panel-item">
+            <div class="panel-icon">AI</div>
+            <div>
+              <h3>多后端执行</h3>
+              <p>兼容 Codex / Claude / Gemini，统一命令与参数体验。</p>
+            </div>
+          </div>
+          <div class="panel-item">
+            <div class="panel-icon">CLI</div>
+            <div>
+              <h3>桌面端管理</h3>
+              <p>pinable-desktop 一键安装模块、编辑配置、跟踪执行进度。</p>
+            </div>
+          </div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- 筛选标签区域 -->
-  <section class="filters" aria-label="筛选" data-i18n-aria="filters.aria">
-    <div class="filter-group" id="tag-filters" role="group" aria-label="按类型筛选">
-      <!-- 动态生成标签按钮 -->
-    </div>
-  </section>
-
-  <!-- 内容展示区域 -->
-  <main class="main-content">
-    <!-- 视频展示区域 -->
-    <section class="content-section video-section" id="video-section" aria-label="视频列表" data-i18n-aria="section.video.aria">
-      <div class="section-header">
-        <h2 class="section-title">
-          <span class="title-icon" style="background: var(--block-rose);">
-            <i data-lucide="video"></i>
-          </span>
-          <span data-i18n="section.video.title">视频作品</span>
-        </h2>
-        <p class="section-desc" data-i18n="section.video.desc">AI 自助导演，轻松创作专业视频</p>
-      </div>
-      <div class="content-grid" id="video-grid">
-        <div class="loading">
-          <div class="spinner" role="status" aria-label="加载中" data-i18n-aria="loading"></div>
+  <section class="section" id="points">
+    <div class="container">
+      <h2 class="section-title">功能要点</h2>
+      <p class="section-desc">从编排到执行、从配置到复盘，PinableAgents 把 AI 开发工作流整理成可落地的标准动作。</p>
+      <div class="points">
+        <div class="point">
+          <h4>统一编排：Claude Code + codeagent-wrapper</h4>
+          <p>编排者负责计划与上下文收集，执行层负责代码修改、测试执行与会话恢复。</p>
         </div>
-      </div>
-    </section>
-
-    <!-- 游戏展示区域 -->
-    <section class="content-section game-section active" id="game-section" aria-label="游戏列表" data-i18n-aria="section.game.aria">
-      <div class="section-header">
-        <h2 class="section-title">
-          <span class="title-icon" style="background: var(--block-purple);">
-            <i data-lucide="gamepad-2"></i>
-          </span>
-          <span data-i18n="section.game.title">游戏原型</span>
-        </h2>
-        <p class="section-desc" data-i18n="section.game.desc">快速验证创意，从想法到可玩只需几分钟</p>
-      </div>
-      <div class="content-grid" id="game-grid">
-        <div class="loading">
-          <div class="spinner" role="status" aria-label="加载中" data-i18n-aria="loading"></div>
+        <div class="point">
+          <h4>模块化工作流</h4>
+          <p>do、omo、bmad、sparv、requirements 等模块覆盖功能开发、排障与企业级协作。</p>
         </div>
-      </div>
-    </section>
-  </main>
-
-  <!-- 特性展示区域 - 翡翠绿背景 -->
-  <section class="features-section">
-    <div class="features-container">
-      <h2 class="features-title" data-i18n="features.title">为什么选择 PinableLab</h2>
-      <div class="features-grid">
-        <div class="feature-card">
-          <div class="feature-icon" style="background: var(--bg-white); color: var(--block-blue);">
-            <i data-lucide="zap"></i>
-          </div>
-          <h3 data-i18n="features.speed.title">极速创作</h3>
-          <p data-i18n="features.speed.desc">AI 辅助创作流程，几分钟完成从创意到成品</p>
+        <div class="point">
+          <h4>多后端 AI 支持</h4>
+          <p>兼容 Codex、Claude、Gemini，统一参数与输出格式。</p>
         </div>
-        <div class="feature-card">
-          <div class="feature-icon" style="background: var(--bg-white); color: var(--block-emerald);">
-            <i data-lucide="sparkles"></i>
-          </div>
-          <h3 data-i18n="features.ai.title">智能生成</h3>
-          <p data-i18n="features.ai.desc">描述你的想法，AI 自动生成专业内容</p>
-        </div>
-        <div class="feature-card">
-          <div class="feature-icon" style="background: var(--bg-white); color: var(--block-amber);">
-            <i data-lucide="share-2"></i>
-          </div>
-          <h3 data-i18n="features.publish.title">一键发布</h3>
-          <p data-i18n="features.publish.desc">即时预览、一键部署，作品即刻上线</p>
-        </div>
-        <div class="feature-card">
-          <div class="feature-icon" style="background: var(--bg-white); color: var(--block-rose);">
-            <i data-lucide="puzzle"></i>
-          </div>
-          <h3 data-i18n="features.integrate.title">无缝集成</h3>
-          <p data-i18n="features.integrate.desc">VSCode 插件直接使用，融入开发工作流</p>
+        <div class="point">
+          <h4>桌面端安装与管理</h4>
+          <p>pinable-desktop 提供模块安装、配置编辑、执行监控与日志入口。</p>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- CTA 区域 - 琥珀色背景 -->
-  <section class="cta-section">
-    <div class="cta-container">
-      <h2 class="cta-title" data-i18n="cta.title">准备好释放创意了吗？</h2>
-      <p class="cta-desc" data-i18n="cta.desc">立即下载 VSCode 插件，开启 AI 创作之旅</p>
-      <div class="cta-buttons">
-        <a href="https://marketplace.visualstudio.com/items?itemName=your-publisher.chatgame"
-           class="btn-cta btn-cta-primary"
-           target="_blank">
-          <i data-lucide="download"></i>
-          <span data-i18n="cta.download">免费下载</span>
-        </a>
-        <a href="#" class="btn-cta btn-cta-outline" target="_blank">
-          <i data-lucide="book-open"></i>
-          <span data-i18n="cta.guide">使用指南</span>
-        </a>
+  <section class="section" id="workflows">
+    <div class="container">
+      <h2 class="section-title">工作流家族</h2>
+      <p class="section-desc">不同场景调用不同工作流，形成可重复的协作节奏。</p>
+      <div class="cards">
+        <div class="card">
+          <h4>do（推荐）</h4>
+          <p>7 阶段功能开发，强制澄清 + 评审闭环，适合常规功能交付。</p>
+        </div>
+        <div class="card">
+          <h4>omo</h4>
+          <p>风险信号驱动路由，适合未知定位的 bug 或跨模块重构。</p>
+        </div>
+        <div class="card">
+          <h4>bmad</h4>
+          <p>企业级敏捷协作，包含产品、架构、开发、测试多角色。</p>
+        </div>
+        <div class="card">
+          <h4>sparv / requirements</h4>
+          <p>轻量化流程，适合快速原型与需求到代码的快速闭环。</p>
+        </div>
       </div>
     </div>
   </section>
 
-  <!-- 页脚 - 深色背景 -->
+  <section class="section" id="modules">
+    <div class="container">
+      <h2 class="section-title">模块与场景</h2>
+      <p class="section-desc">模块组合让你快速匹配业务场景，并保留团队的执行习惯。</p>
+      <div class="cards">
+        <div class="card">
+          <h4>功能交付</h4>
+          <p>do + essentials，适合日常需求开发、测试与文档。</p>
+        </div>
+        <div class="card">
+          <h4>Bug 修复</h4>
+          <p>omo + develop，先定位后修复，保证上下文完整。</p>
+        </div>
+        <div class="card">
+          <h4>企业协作</h4>
+          <p>bmad + sparv，适合大型项目的需求与架构审查。</p>
+        </div>
+        <div class="card">
+          <h4>内容生产</h4>
+          <p>webchat + memorys，适合内容团队的公众号文章流程。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="architecture">
+    <div class="container">
+      <h2 class="section-title">核心架构</h2>
+      <p class="section-desc">编排与执行分层，确保每一步都可追溯、可复用。</p>
+      <div class="arch-grid">
+        <div class="arch-block">
+          <h4>编排层：Claude Code</h4>
+          <p>负责规划、上下文收集、验证，输出结构化任务给执行层。</p>
+        </div>
+        <div class="arch-block">
+          <h4>执行层：codeagent-wrapper</h4>
+          <p>统一 CLI，连接 Codex/Claude/Gemini，支持会话恢复与并行。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="download">
+    <div class="container">
+      <div class="download">
+        <h3>下载 PinableAgents</h3>
+        <p>安装桌面端后即可选择模块、配置后端并执行工作流。</p>
+        <div class="download-actions">
+          <a class="btn btn-primary" href="assets/downloads/PinableAgents-mac.dmg" download>macOS 下载</a>
+          <a class="btn btn-outline" href="assets/downloads/PinableAgents-win.exe" download>Windows 下载</a>
+        </div>
+        <p>其他平台或企业版需求，请联系：contact@pinable.cc</p>
+      </div>
+    </div>
+  </section>
+
   <footer class="footer">
-    <div class="footer-content">
-      <div class="footer-section footer-brand">
-        <div class="footer-logo">
-          <img src="assets/logo.png" alt="PinableLab">
-          <span>PinableLab</span>
-        </div>
-        <p data-i18n="footer.brand.desc">AI 驱动的创意实验室，让每个人都能成为创作者。</p>
-        <!-- 社交媒体链接 - 品牌区 -->
-        <div class="social-section">
-          <h4 data-i18n="footer.followUs">关注我们</h4>
-          <div class="social-links">
-            <a href="https://x.com/pinablelab" target="_blank" rel="noopener noreferrer" class="social-link" aria-label="X (Twitter)">
-              <i data-lucide="twitter"></i>
-            </a>
-            <a href="https://facebook.com/pinablelab" target="_blank" rel="noopener noreferrer" class="social-link" aria-label="Facebook">
-              <i data-lucide="facebook"></i>
-            </a>
-            <a href="https://youtube.com/@pinablelab" target="_blank" rel="noopener noreferrer" class="social-link" aria-label="YouTube">
-              <i data-lucide="youtube"></i>
-            </a>
-            <a href="https://instagram.com/pinablelab" target="_blank" rel="noopener noreferrer" class="social-link" aria-label="Instagram">
-              <i data-lucide="instagram"></i>
-            </a>
-          </div>
-        </div>
-      </div>
-      <div class="footer-section">
-        <h3 data-i18n="footer.products">产品</h3>
-        <ul>
-          <li><a href="#" data-nav="video">PinableVideo</a></li>
-          <li><a href="#" data-nav="game">PinableGame</a></li>
-        </ul>
-      </div>
-      <div class="footer-section">
-        <h3 data-i18n="footer.resources">资源</h3>
-        <ul>
-          <li><a href="#" target="_blank" data-i18n="footer.guide">使用指南</a></li>
-          <li><a href="#" onclick="app?.showStatistics(); return false;" data-i18n="footer.stats">统计数据</a></li>
-        </ul>
-      </div>
-      <div class="footer-section">
-        <h3 data-i18n="footer.legal">法律信息</h3>
-        <ul>
-          <li><a href="/privacy.html" data-i18n="footer.privacy">隐私政策</a></li>
-          <li><a href="/about.html" data-i18n="footer.about">关于我们</a></li>
-          <li><a href="/contact.html" data-i18n="footer.contact">联系我们</a></li>
-        </ul>
-      </div>
-      <div class="footer-section">
-        <h3 data-i18n="footer.contentTypes">内容类型</h3>
-        <ul>
-          <li data-i18n="footer.videoTypes">视频 - 短片 / 教程 / 宣传</li>
-          <li data-i18n="footer.gameTypes">游戏 - 休闲 / 益智 / 动作</li>
-        </ul>
-      </div>
-    </div>
-    <div class="footer-bottom">
-      <p data-i18n="footer.copyright">&copy; 2026 PinableLab. All rights reserved.</p>
+    <div class="container">
+      <div>© 2026 PinableAgents · PinableLab</div>
+      <span>Workflows / Orchestration / Execution</span>
     </div>
   </footer>
-
-  <!-- 模态窗口容器（由 JavaScript 动态创建） -->
-  <div id="modal-container"></div>
-
-  <!-- Scripts -->
-  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
-  <script src="assets/js/i18n.js"></script>
-  <script src="assets/js/config.js"></script>
-  <script src="assets/js/game-loader.js"></script>
-  <script src="assets/js/search.js"></script>
-  <script src="assets/js/main.js"></script>
 </body>
 </html>

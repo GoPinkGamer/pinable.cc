@@ -3,200 +3,53 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="关于 PinableLab - AI 驱动的创意实验室，提供自助视频导演和游戏原型设计服务">
+  <meta name="description" content="关于 PinableAgents - 多智能体开发工作流系统。">
   <meta name="robots" content="index, follow">
-
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%94%AC%3C/text%3E%3C/svg%3E">
-
-  <!-- Google AdSense 验证代码 -->
-  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3137049467355939"
-       crossorigin="anonymous"></script>
-
+  <link rel="icon" type="image/svg+xml" href="assets/images/logo.svg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-
-  <link rel="stylesheet" href="assets/css/variables.css">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Noto+Sans+SC:wght@300;400;500;600;700&family=ZCOOL+XiaoWei&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="assets/css/reset.css">
-  <link rel="stylesheet" href="assets/css/components.css">
-  <link rel="stylesheet" href="assets/css/layout.css">
-
-  <title>关于我们 - PinableLab</title>
-
-  <style>
-    .legal-page {
-      max-width: 800px;
-      margin: 0 auto;
-      padding: 120px 24px 60px;
-    }
-    .legal-page h1 {
-      font-size: 2.5rem;
-      font-weight: 800;
-      margin-bottom: 1rem;
-      color: var(--text-primary);
-    }
-    .legal-page .tagline {
-      color: var(--block-blue);
-      font-size: 1.2rem;
-      font-weight: 600;
-      margin-bottom: 2rem;
-    }
-    .legal-page h2 {
-      font-size: 1.5rem;
-      font-weight: 700;
-      margin: 2rem 0 1rem;
-      color: var(--text-primary);
-    }
-    .legal-page p, .legal-page li {
-      color: var(--text-secondary);
-      line-height: 1.8;
-      margin-bottom: 1rem;
-    }
-    .legal-page ul {
-      padding-left: 1.5rem;
-      margin-bottom: 1rem;
-    }
-    .legal-page a {
-      color: var(--block-blue);
-      text-decoration: underline;
-    }
-    .back-link {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-      color: var(--block-blue);
-      text-decoration: none;
-      margin-bottom: 2rem;
-      font-weight: 500;
-    }
-    .back-link:hover {
-      text-decoration: underline;
-    }
-    .product-cards {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 1.5rem;
-      margin: 2rem 0;
-    }
-    .product-card {
-      background: var(--bg-white);
-      border-radius: 16px;
-      padding: 1.5rem;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.08);
-    }
-    .product-card h3 {
-      font-size: 1.25rem;
-      font-weight: 700;
-      margin-bottom: 0.5rem;
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-    }
-    .product-card p {
-      margin-bottom: 0;
-    }
-    .product-icon {
-      width: 32px;
-      height: 32px;
-      border-radius: 8px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: white;
-    }
-  </style>
+  <link rel="stylesheet" href="assets/css/site.css">
+  <title>关于 PinableAgents</title>
 </head>
 <body>
-  <!-- 固定顶部导航 -->
-  <header class="site-header" id="site-header">
-    <div class="header-content">
-      <a href="/" class="logo" aria-label="PinableLab 首页">
-        <img src="assets/logo.png" alt="PinableLab Logo">
-        <span>PinableLab</span>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="/">
+        <img src="assets/images/logo.svg" alt="PinableAgents">
+        PinableAgents
       </a>
+      <nav class="nav" aria-label="主导航">
+        <a href="/#overview">概览</a>
+        <a href="/#points">功能要点</a>
+        <a href="/#download">下载</a>
+      </nav>
     </div>
   </header>
 
-  <main class="legal-page">
-    <a href="/" class="back-link">
-      <i data-lucide="arrow-left"></i>
-      返回首页
-    </a>
-
-    <h1>关于 PinableLab</h1>
-    <p class="tagline">AI 驱动的创意实验室</p>
-
-    <p>PinableLab 是一个致力于降低创意门槛的 AI 创意平台。我们相信每个人都有独特的创意，只是缺少将想法变为现实的工具。通过 AI 技术的力量，我们帮助用户在几分钟内将创意转化为可分享的作品。</p>
-
-    <h2>我们的产品</h2>
-
-    <div class="product-cards">
-      <div class="product-card">
-        <h3>
-          <span class="product-icon" style="background: var(--block-rose);">
-            <i data-lucide="video"></i>
-          </span>
-          PinableVideo
-        </h3>
-        <p>自助导演视频创作工具。用自然语言描述你的创意，AI 帮你生成专业级视频内容。无需专业技能，人人都是导演。</p>
-      </div>
-      <div class="product-card">
-        <h3>
-          <span class="product-icon" style="background: var(--block-purple);">
-            <i data-lucide="gamepad-2"></i>
-          </span>
-          PinableGame
-        </h3>
-        <p>快速游戏原型设计工具。描述你的游戏想法，几分钟内获得可玩的 HTML5 游戏原型，快速验证创意。</p>
-      </div>
-    </div>
-
-    <h2>我们的愿景</h2>
-    <p>我们的愿景是让创意不再受限于技术门槛。无论你是想制作一个短视频、设计一个游戏原型，还是探索其他创意形式，PinableLab 都能帮助你快速实现。</p>
-
-    <h2>技术特点</h2>
-    <ul>
-      <li><strong>AI 智能生成</strong>：利用先进的 AI 技术，将自然语言描述转化为实际作品</li>
-      <li><strong>零门槛使用</strong>：无需编程知识或专业技能，任何人都能上手</li>
-      <li><strong>即时预览</strong>：实时查看生成结果，快速迭代优化</li>
-      <li><strong>一键部署</strong>：作品可即时在线分享，无需复杂的发布流程</li>
-      <li><strong>VSCode 集成</strong>：为开发者提供无缝的工作流集成</li>
-    </ul>
-
-    <h2>联系我们</h2>
-    <p>我们欢迎任何反馈、建议或合作机会。请通过以下方式联系我们：</p>
-    <ul>
-      <li>电子邮件：<a href="mailto:contact@pinable.cc">contact@pinable.cc</a></li>
-      <li>访问我们的 <a href="/contact.html">联系页面</a></li>
-      <li>关注我们的社交媒体获取最新动态</li>
-    </ul>
-  </main>
-
-  <!-- 页脚 -->
-  <footer class="footer">
-    <div class="footer-content">
-      <div class="footer-section footer-brand">
-        <div class="footer-logo">
-          <img src="assets/logo.png" alt="PinableLab">
-          <span>PinableLab</span>
+  <section class="section">
+    <div class="container">
+      <h2 class="section-title">关于 PinableAgents</h2>
+      <p class="section-desc">PinableAgents 是一套面向研发团队的多智能体工作流系统，强调统一编排、可追溯执行与可复用流程。</p>
+      <div class="points">
+        <div class="point">
+          <h4>目标</h4>
+          <p>把复杂研发拆解成可验证的阶段，降低跨角色协作成本。</p>
         </div>
-        <p>AI 驱动的创意实验室，让每个人都能成为创作者。</p>
-      </div>
-      <div class="footer-section">
-        <h3>法律信息</h3>
-        <ul>
-          <li><a href="/privacy.html">隐私政策</a></li>
-          <li><a href="/about.html">关于我们</a></li>
-          <li><a href="/contact.html">联系我们</a></li>
-        </ul>
+        <div class="point">
+          <h4>方法</h4>
+          <p>用标准化工作流 + 多后端执行，让团队拥有一致的交付节奏。</p>
+        </div>
       </div>
     </div>
-    <div class="footer-bottom">
-      <p>&copy; 2026 PinableLab. All rights reserved.</p>
+  </section>
+
+  <footer class="footer">
+    <div class="container">
+      <div>© 2026 PinableAgents · PinableLab</div>
+      <span>Workflows / Orchestration / Execution</span>
     </div>
   </footer>
-
-  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
-  <script>lucide.createIcons();</script>
 </body>
 </html>
