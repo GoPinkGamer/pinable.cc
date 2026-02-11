@@ -7,6 +7,10 @@ WORKSPACE_DIR="$(cd "${SITE_DIR}/.." && pwd)"
 DESKTOP_DIR="${WORKSPACE_DIR}/PinableAgents/pinable-desktop"
 OUTPUT_DIR="${SITE_DIR}/assets/downloads"
 BUILD_DIR="${DESKTOP_DIR}/build/bin"
+WRAPPER_SRC="${DESKTOP_DIR}/../codeagent-wrapper"
+WRAPPER_ASSETS_DIR="${DESKTOP_DIR}/internal/assets/wrapper/assets"
+PREPARE_MODULES_SCRIPT="${DESKTOP_DIR}/scripts/prepare-modules.sh"
+CLEANUP_MODULES_SCRIPT="${DESKTOP_DIR}/scripts/cleanup-modules.sh"
 DO_PUSH=0
 DO_COMMIT=0
 AUTO_LFS=1
@@ -22,7 +26,81 @@ usage() {
   --push   打包完成后执行 git push -f origin main（自动启用 --commit）
   --push-only 不编译，直接 push（不自动提交）
   --no-lfs 不自动判断/启用 git lfs
+环境变量:
+  SKIP_WINDOWS=1 跳过 Windows 构建
 EOF
+}
+
+build_wrapper() {
+  local os="$1"
+  local arch="$2"
+  local out="$3"
+  CGO_ENABLED=0 GOOS="$os" GOARCH="$arch" go build -o "$out" ./cmd/codeagent-wrapper
+}
+
+prepare_wrapper_assets() {
+  if [[ ! -d "${WRAPPER_SRC}" ]]; then
+    echo "codeagent-wrapper 源码不存在: ${WRAPPER_SRC}"
+    return 1
+  fi
+  if ! command -v go >/dev/null 2>&1; then
+    echo "未找到 Go，无法构建 codeagent-wrapper。"
+    return 1
+  fi
+  mkdir -p "${WRAPPER_ASSETS_DIR}"
+  (
+    cd "${WRAPPER_SRC}"
+    build_wrapper "darwin" "arm64" "${WRAPPER_ASSETS_DIR}/codeagent-wrapper_darwin_arm64"
+    build_wrapper "darwin" "amd64" "${WRAPPER_ASSETS_DIR}/codeagent-wrapper_darwin_amd64"
+    build_wrapper "windows" "amd64" "${WRAPPER_ASSETS_DIR}/codeagent-wrapper_windows_amd64.exe"
+  )
+}
+
+prepare_modules_assets() {
+  if [[ ! -x "${PREPARE_MODULES_SCRIPT}" ]]; then
+    echo "prepare-modules.sh 不存在或不可执行: ${PREPARE_MODULES_SCRIPT}"
+    return 1
+  fi
+  "${PREPARE_MODULES_SCRIPT}"
+}
+
+cleanup_modules_assets() {
+  if [[ ! -x "${CLEANUP_MODULES_SCRIPT}" ]]; then
+    echo "cleanup-modules.sh 不存在或不可执行: ${CLEANUP_MODULES_SCRIPT}"
+    return 1
+  fi
+  "${CLEANUP_MODULES_SCRIPT}"
+}
+
+prepare_windows_icon() {
+  local src="${DESKTOP_DIR}/build/appicon.png"
+  local dest="${DESKTOP_DIR}/build/windows/icon.ico"
+  if [[ -f "${src}" ]] && command -v convert >/dev/null 2>&1; then
+    convert "${src}" -define icon:auto-resize=256,128,64,48,32,16 "${dest}"
+  fi
+}
+
+build_mac() {
+  local arch="$1"
+  local name="$2"
+  local clean_flag="$3"
+  wails build -platform "darwin/${arch}" -o "${name}" ${clean_flag}
+}
+
+build_windows() {
+  local name="$1"
+  if command -v x86_64-w64-mingw32-gcc >/dev/null 2>&1; then
+    prepare_windows_icon
+    wails build -platform "windows/amd64" -o "${name}.exe"
+  else
+    echo "缺少 x86_64-w64-mingw32-gcc，无法在当前主机构建 Windows。"
+    echo "请在 Windows 上运行:"
+    echo "  wails build -platform windows/amd64 -o ${name}.exe"
+    if [[ "${SKIP_WINDOWS:-}" == "1" ]]; then
+      return 0
+    fi
+    return 2
+  fi
 }
 
 for arg in "$@"; do
@@ -67,47 +145,74 @@ if [[ "${SKIP_BUILD}" != "1" ]]; then
 
   mkdir -p "${OUTPUT_DIR}"
 
-  ARCH="$(uname -m)"
-  if [[ "${ARCH}" == "arm64" ]]; then
-    MAC_PLATFORM="darwin/arm64"
-  else
-    MAC_PLATFORM="darwin/amd64"
+  trap cleanup_modules_assets EXIT
+  if ! prepare_wrapper_assets; then
+    exit 1
   fi
-
-  echo "==> 构建 macOS (${MAC_PLATFORM})"
-  (
-    cd "${DESKTOP_DIR}"
-    wails build -platform "${MAC_PLATFORM}"
-  )
-
-  APP_PATH="$(find "${BUILD_DIR}" -maxdepth 1 -name "*.app" -print -quit)"
-  if [[ -z "${APP_PATH}" ]]; then
-    echo "未找到 .app 输出，请检查 wails build 日志。"
+  if ! prepare_modules_assets; then
     exit 1
   fi
 
-  if command -v hdiutil >/dev/null 2>&1; then
-    echo "==> 生成 DMG"
-    hdiutil create -volname "PinableAgents" -srcfolder "${APP_PATH}" -ov -format UDZO "${OUTPUT_DIR}/PinableAgents-mac.dmg"
+  HOST_OS="$(uname -s | tr '[:upper:]' '[:lower:]')"
+  ARCH="$(uname -m)"
+  APP_PATH=""
+
+  if [[ "${HOST_OS}" == "darwin" ]]; then
+    echo "==> 构建 macOS (darwin/arm64)"
+    (
+      cd "${DESKTOP_DIR}"
+      build_mac "arm64" "MmoAgents-mac-arm64" "-clean"
+    )
+
+    echo "==> 构建 macOS (darwin/amd64)"
+    (
+      cd "${DESKTOP_DIR}"
+      build_mac "amd64" "MmoAgents-mac-amd64" ""
+    )
+
+    if [[ "${ARCH}" == "arm64" && -d "${BUILD_DIR}/MmoAgents-mac-arm64.app" ]]; then
+      APP_PATH="${BUILD_DIR}/MmoAgents-mac-arm64.app"
+    elif [[ "${ARCH}" != "arm64" && -d "${BUILD_DIR}/MmoAgents-mac-amd64.app" ]]; then
+      APP_PATH="${BUILD_DIR}/MmoAgents-mac-amd64.app"
+    fi
   else
-    echo "hdiutil 不可用，无法生成 DMG。"
-    echo "请手动将 ${APP_PATH} 打包为 PinableAgents-mac.dmg"
+    echo "非 macOS 主机: ${HOST_OS}"
+    echo "macOS 构建需要在 macOS 上运行。"
+  fi
+
+  if [[ -z "${APP_PATH}" ]]; then
+    APP_PATH="$(find "${BUILD_DIR}" -maxdepth 1 -name "*.app" -print -quit)"
+  fi
+
+  if [[ -n "${APP_PATH}" ]]; then
+    if command -v hdiutil >/dev/null 2>&1; then
+      echo "==> 生成 DMG"
+      hdiutil create -volname "PinableAgents" -srcfolder "${APP_PATH}" -ov -format UDZO "${OUTPUT_DIR}/PinableAgents-mac.dmg"
+    else
+      echo "hdiutil 不可用，无法生成 DMG。"
+      echo "请手动将 ${APP_PATH} 打包为 PinableAgents-mac.dmg"
+    fi
+  else
+    echo "未找到 .app 输出，请检查 wails build 日志。"
   fi
 
   if [[ "${SKIP_WINDOWS:-}" != "1" ]]; then
     echo "==> 构建 Windows (windows/amd64)"
     (
       cd "${DESKTOP_DIR}"
-      wails build -platform windows/amd64
+      build_windows "MmoAgents-windows-amd64"
     )
 
-    EXE_PATH="$(find "${BUILD_DIR}" -maxdepth 1 -name "*.exe" -print -quit)"
-    if [[ -z "${EXE_PATH}" ]]; then
-      echo "未找到 .exe 输出，请检查 wails build 日志。"
-      exit 1
+    EXE_PATH="${BUILD_DIR}/MmoAgents-windows-amd64.exe"
+    if [[ ! -f "${EXE_PATH}" ]]; then
+      EXE_PATH="$(find "${BUILD_DIR}" -maxdepth 1 -name "*.exe" -print -quit)"
     fi
 
-    cp "${EXE_PATH}" "${OUTPUT_DIR}/PinableAgents-win.exe"
+    if [[ -n "${EXE_PATH}" ]]; then
+      cp "${EXE_PATH}" "${OUTPUT_DIR}/PinableAgents-win.exe"
+    else
+      echo "未找到 .exe 输出，请检查 wails build 日志。"
+    fi
   else
     echo "跳过 Windows 构建 (SKIP_WINDOWS=1)"
   fi
