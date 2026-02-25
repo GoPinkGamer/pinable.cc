@@ -165,19 +165,19 @@ if [[ "${SKIP_BUILD}" != "1" ]]; then
     echo "==> 构建 macOS (darwin/arm64)"
     (
       cd "${DESKTOP_DIR}"
-      build_mac "arm64" "MmoAgents-mac-arm64" "-clean"
+      build_mac "arm64" "PinableAgents-mac-arm64" "-clean"
     )
 
     echo "==> 构建 macOS (darwin/amd64)"
     (
       cd "${DESKTOP_DIR}"
-      build_mac "amd64" "MmoAgents-mac-amd64" ""
+      build_mac "amd64" "PinableAgents-mac-amd64" ""
     )
 
-    if [[ "${ARCH}" == "arm64" && -d "${BUILD_DIR}/MmoAgents-mac-arm64.app" ]]; then
-      APP_PATH="${BUILD_DIR}/MmoAgents-mac-arm64.app"
-    elif [[ "${ARCH}" != "arm64" && -d "${BUILD_DIR}/MmoAgents-mac-amd64.app" ]]; then
-      APP_PATH="${BUILD_DIR}/MmoAgents-mac-amd64.app"
+    if [[ "${ARCH}" == "arm64" && -d "${BUILD_DIR}/PinableAgents-mac-arm64.app" ]]; then
+      APP_PATH="${BUILD_DIR}/PinableAgents-mac-arm64.app"
+    elif [[ "${ARCH}" != "arm64" && -d "${BUILD_DIR}/PinableAgents-mac-amd64.app" ]]; then
+      APP_PATH="${BUILD_DIR}/PinableAgents-mac-amd64.app"
     fi
   else
     echo "非 macOS 主机: ${HOST_OS}"
@@ -204,10 +204,10 @@ if [[ "${SKIP_BUILD}" != "1" ]]; then
     echo "==> 构建 Windows (windows/amd64)"
     (
       cd "${DESKTOP_DIR}"
-      build_windows "MmoAgents-windows-amd64"
+      build_windows "PinableAgents-windows-amd64"
     )
 
-    EXE_PATH="${BUILD_DIR}/MmoAgents-windows-amd64.exe"
+    EXE_PATH="${BUILD_DIR}/PinableAgents-windows-amd64.exe"
     if [[ ! -f "${EXE_PATH}" ]]; then
       EXE_PATH="$(find "${BUILD_DIR}" -maxdepth 1 -name "*.exe" -print -quit)"
     fi
