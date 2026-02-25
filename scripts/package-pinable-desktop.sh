@@ -13,19 +13,20 @@ PREPARE_MODULES_SCRIPT="${DESKTOP_DIR}/scripts/prepare-modules.sh"
 CLEANUP_MODULES_SCRIPT="${DESKTOP_DIR}/scripts/cleanup-modules.sh"
 DO_PUSH=0
 DO_COMMIT=0
-AUTO_LFS=1
+AUTO_LFS=0
 LFS_THRESHOLD_BYTES=$((50 * 1024 * 1024))
 SKIP_BUILD=0
 
 usage() {
   cat <<'EOF'
-用法: package-pinable-desktop.sh [--commit] [--push] [--push-only] [--no-lfs]
+用法: package-pinable-desktop.sh [--commit] [--push] [--push-only] [--lfs] [--no-lfs]
 
 选项:
   --commit 打包完成后执行 git add / git commit / git log
   --push   打包完成后执行 git push -f origin main（自动启用 --commit）
   --push-only 不编译，直接 push（不自动提交）
-  --no-lfs 不自动判断/启用 git lfs
+  --lfs    自动判断/启用 git lfs（默认关闭）
+  --no-lfs 显式关闭自动 git lfs（兼容旧参数）
 环境变量:
   SKIP_WINDOWS=1 跳过 Windows 构建
 EOF
@@ -115,6 +116,9 @@ for arg in "$@"; do
       ;;
     --commit)
       DO_COMMIT=1
+      ;;
+    --lfs)
+      AUTO_LFS=1
       ;;
     --no-lfs)
       AUTO_LFS=0
