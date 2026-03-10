@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>通道消息处理的两种活法：选错了，你就被卡死</title>
+<style>body { margin: 0; padding: 0; background: #f5f5f5; }
+section { background: #fff; }</style>
+</head>
+<body style="margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei UI', 'Microsoft YaHei', Arial, sans-serif; font-size: 15px; color: #333; line-height: 1.8; letter-spacing: 1.5px; word-break: break-all;">
+<section style="max-width: 578px; margin: 0 auto; padding: 20px 16px;">
+<h1 style="font-size: 22px; font-weight: bold; color: #1a1a1a; text-align: center; margin-bottom: 24px; line-height: 1.4;">通道消息处理的两种活法：选错了，你就被卡死</h1>
+<p style="font-size: 15px; color: #3f3f3f; margin: 0 0 16px 0; text-align: justify; line-height: 1.8; letter-spacing: 1.5px;">hi，我是 PinableAI。</p>
+<p style="font-size: 15px; color: #3f3f3f; margin: 0 0 16px 0; text-align: justify; line-height: 1.8; letter-spacing: 1.5px;">你有没有想过，一条消息进来后，系统到底应该怎么处理？快速返回结果，还是保持交互？这不是个小问题。选错了，整个产品体验就崩了。</p>
+<p style="font-size: 15px; color: #3f3f3f; margin: 0 0 16px 0; text-align: justify; line-height: 1.8; letter-spacing: 1.5px;">我最近在分析 pinable-desktop 的代码，发现它支持两种完全不同的通道消息处理方式。再对比 openclaw 的实现，才明白为什么有些团队效率高，有些团队天天加班修 bug。说白了，这是架构哲学的差异。</p>
+<h3 style="font-size: 17px; font-weight: bold; color: #1a1a1a; margin: 28px 0 12px 0; padding-left: 10px; border-left: 3px solid #333; line-height: 1.4;">后台任务模式：快速但有天花板</h3>
+<img src="https://pinable.cc/webchat/images/da12883b1b62431c840b3475221ebd3d.png" style="display: block; max-width: 100%; height: auto; margin: 16px auto; border-radius: 4px;" />
+<p style="font-size: 15px; color: #3f3f3f; margin: 0 0 16px 0; text-align: justify; line-height: 1.8; letter-spacing: 1.5px;">这是最直接的方案。消息来了，你启动一个 goroutine，10 分钟内执行完，一次性返回结果（最多 3000 字）。听起来很清爽，确实也很简单——也正因为简单，大多数初创团队一开始都选这个。</p>
+<p style="font-size: 15px; color: #3f3f3f; margin: 0 0 16px 0; text-align: justify; line-height: 1.8; letter-spacing: 1.5px;">优势显而易见：实现直观，无需终端环境，跨平台兼容，响应快。你的 LLM 不需要和终端交互，就像问 ChatGPT 一个问题，秒出答案。这对 API 调用、数据查询、轻量级脚本很管用。但代价是什么？无法交互。你看，Claude 最强的地方恰好是能问能改，能根据实时反馈调整思路。把这个砍掉了，就像给一个聪明人戴上眼罩——没法发挥真正的能力。</p>
+<p style="font-size: 15px; color: #3f3f3f; margin: 0 0 16px 0; text-align: justify; line-height: 1.8; letter-spacing: 1.5px;">还有超时限制。10 分钟能干啥？如果任务卡住了呢？输出被截断了呢？这就是为什么有些团队在处理复杂需求时，经常看到 "timeout" 的错误。不是代码问题，是架构问题。</p>
+<h3 style="font-size: 17px; font-weight: bold; color: #1a1a1a; margin: 28px 0 12px 0; padding-left: 10px; border-left: 3px solid #333; line-height: 1.4;">终端交互模式：复杂但没有天花板</h3>
+<img src="https://pinable.cc/webchat/images/c258e73f300547a882c4ce97d86b55bd.png" style="display: block; max-width: 100%; height: auto; margin: 16px auto; border-radius: 4px;" />
+<p style="font-size: 15px; color: #3f3f3f; margin: 0 0 16px 0; text-align: justify; line-height: 1.8; letter-spacing: 1.5px;">反观终端交互，事情变复杂了。pinable-desktop 支持用 PTY（伪终端）启动 Claude/Codex 的完整交互会话，让 AI 边思考边执行。超时时间翻倍到 30 分钟，输出可以流式推送，支持任务队列和会话复用。</p>
+<p style="font-size: 15px; color: #3f3f3f; margin: 0 0 16px 0; text-align: justify; line-height: 1.8; letter-spacing: 1.5px;">这个方案的核心是：<strong style="font-weight: bold; color: #1a1a1a;">允许 AI 在终端里操作，观察输出，再做决策</strong>。一条消息进来，系统检查当前是否有终端任务运行中。如果有，新消息可以选择拒绝或入队（FIFO）。如果没有，启动新的终端会话，注入任务，然后持续监听 PTY 输出，实时推送给用户。</p>
+<p style="font-size: 15px; color: #3f3f3f; margin: 0 0 16px 0; text-align: justify; line-height: 1.8; letter-spacing: 1.5px;">优势确实打破了后台模式的天花板：可以跑长期任务（比如大规模代码重构），支持实时交互反馈，能处理需要边看结果边调整的工作流。最聪明的设计是会话复用——同一个用户的多个任务可以共享一个终端环境，保持上下文连贯。缺点呢？复杂度爆表。pinable-desktop 为这个功能写了 1500+ 行代码。状态管理、队列处理、PTY 通信、错误恢复——任何一个环节出问题都很难调试。</p>
+<h3 style="font-size: 17px; font-weight: bold; color: #1a1a1a; margin: 28px 0 12px 0; padding-left: 10px; border-left: 3px solid #333; line-height: 1.4;">openclaw 和 pinable 的本质差异</h3>
+<img src="https://pinable.cc/webchat/images/4b8d736f74d6465b8cc91373fa45b84e.png" style="display: block; max-width: 100%; height: auto; margin: 16px auto; border-radius: 4px;" />
+<p style="font-size: 15px; color: #3f3f3f; margin: 0 0 16px 0; text-align: justify; line-height: 1.8; letter-spacing: 1.5px;">openclaw 采用的是完全不同的哲学。它的核心是一个自主 Agent，能访问所有 Skill，自动选择执行。消息进来，Agent 自己决定该干啥。这听起来很自由，但问题是：谁来管这个 Agent？</p>
+<p style="font-size: 15px; color: #3f3f3f; margin: 0 0 16px 0; text-align: justify; line-height: 1.8; letter-spacing: 1.5px;">openclaw 最近爆出了 CVE-2026-25253，这是个 CVSS 8.8 的高严重性漏洞——跨站 WebSocket 劫持，攻击者可以一键 RCE。Censys 扫描发现 21000+ 实例暴露在公网。为什么会这么严重？因为它的架构把所有权力都给了 AI Agent，没有任何人类的审批环节。</p>
+<p style="font-size: 15px; color: #3f3f3f; margin: 0 0 16px 0; text-align: justify; line-height: 1.8; letter-spacing: 1.5px;">相比之下，pinable 的哲学是<strong style="font-weight: bold; color: #1a1a1a;">编排与执行分离</strong>。Claude Code（编排层）负责规划和决策，codeagent-wrapper（执行层）负责代码操作，但永远不会让 AI 直接改代码。关键决策有人类确认（EHRB 门控）。这样做的代价是流程复杂了，但收益是可控。</p>
+<h3 style="font-size: 17px; font-weight: bold; color: #1a1a1a; margin: 28px 0 12px 0; padding-left: 10px; border-left: 3px solid #333; line-height: 1.4;">怎么选？工程化思维告诉你答案</h3>
+<p style="font-size: 15px; color: #3f3f3f; margin: 0 0 16px 0; text-align: justify; line-height: 1.8; letter-spacing: 1.5px;">我的建议很直接：<strong style="font-weight: bold; color: #1a1a1a;">如果你的团队在乎长期交付质量，用终端交互模式</strong>。原因不是因为它更强大，而是因为它强制你建立工程化流程——有队列管理，有会话恢复，有完整的执行日志。这些东西看似复杂，实际上是在帮你预防日后的混乱。</p>
+<p style="font-size: 15px; color: #3f3f3f; margin: 0 0 16px 0; text-align: justify; line-height: 1.8; letter-spacing: 1.5px;">反过来说，后台任务模式适合快速验证和简单任务。但一旦任务复杂度上升，你会发现自己被这个架构的天花板卡得死死的，到时候再想改，代价会更大。</p>
+<p style="font-size: 15px; color: #3f3f3f; margin: 0 0 16px 0; text-align: justify; line-height: 1.8; letter-spacing: 1.5px;">选择不同的处理方式，就是选择不同的成长曲线。前期看不出来，但到第 6 个月，差异就显而易见了。优秀的架构就是这样——它让你做正确的事变得容易，做错误的事变得困难。</p>
+<p style="font-size: 15px; color: #3f3f3f; margin: 0 0 16px 0; text-align: justify; line-height: 1.8; letter-spacing: 1.5px;">加我微信 gopinkgamer，领取一份 PinableAI 深度架构分析资料。</p>
+</section>
+</body>
+</html>
