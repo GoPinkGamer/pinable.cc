@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>程序员还在手动切API Key?这个界面让你少打100次命令</title>
+<style>body { margin: 0; padding: 0; background: #f5f5f5; }
+section { background: #fff; }</style>
+</head>
+<body style="margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei UI', 'Microsoft YaHei', Arial, sans-serif; font-size: 15px; color: #333; line-height: 1.8; letter-spacing: 1.5px; word-break: break-all;">
+<section style="max-width: 578px; margin: 0 auto; padding: 20px 16px;">
+<h1 style="font-size: 22px; font-weight: bold; color: #1a1a1a; text-align: center; margin-bottom: 24px; line-height: 1.4;">程序员还在手动切API Key?这个界面让你少打100次命令</h1>
+<p style="font-size: 15px; color: #3f3f3f; margin: 0 0 16px 0; text-align: justify; line-height: 1.8; letter-spacing: 1.5px;">hi,我是PinableAI</p>
+<p style="font-size: 15px; color: #3f3f3f; margin: 0 0 16px 0; text-align: justify; line-height: 1.8; letter-spacing: 1.5px;">你有没有遇到过这种情况:上午用 Claude 写代码,下午想试试 Gemini,结果得翻半天文档找配置文件,改 API Key、Base URL,一顿操作猛如虎,最后发现改错了位置,程序直接报错。</p>
+<p style="font-size: 15px; color: #3f3f3f; margin: 0 0 16px 0; text-align: justify; line-height: 1.8; letter-spacing: 1.5px;">说白了,多 AI 提供商切换就是个纯纯的体力活。你看那些「高效程序员」,表面上光鲜亮丽,实际上每天有 20% 的时间在手动切配置、测连接、查版本。这不是技术问题,是工具链没跟上。</p>
+<h3 style="font-size: 17px; font-weight: bold; color: #1a1a1a; margin: 28px 0 12px 0; padding-left: 10px; border-left: 3px solid #333; line-height: 1.4;">痛点:多 AI 提供商管理就是个灾难</h3>
+<img src="https://pinable.cc/webchat/images/7daea28f6a3b47baa69ee0c6b300eea6.png" style="display: block; max-width: 100%; height: auto; margin: 16px auto; border-radius: 4px;" />
+<p style="font-size: 15px; color: #3f3f3f; margin: 0 0 16px 0; text-align: justify; line-height: 1.8; letter-spacing: 1.5px;">你想想,现在 AI 工具百花齐放——Claude API 适合长文本,Codex 写代码快,Gemini 便宜大碗。理论上你该「因地制宜」,哪个场景用哪个工具。但现实是什么?</p>
+<p style="font-size: 15px; color: #3f3f3f; margin: 0 0 16px 0; text-align: justify; line-height: 1.8; letter-spacing: 1.5px;">每切换一次提供商,你得:</p>
+<p style="font-size: 15px; color: #3f3f3f; margin: 0 0 16px 0; text-align: justify; line-height: 1.8; letter-spacing: 1.5px;">- 找到配置文件(settings.json 还是 .env?)</p>
+<p style="font-size: 15px; color: #3f3f3f; margin: 0 0 16px 0; text-align: justify; line-height: 1.8; letter-spacing: 1.5px;">- 改 API Key(哪个是哪个来着?)</p>
+<p style="font-size: 15px; color: #3f3f3f; margin: 0 0 16px 0; text-align: justify; line-height: 1.8; letter-spacing: 1.5px;">- 修改 Base URL(有的要带 /v1,有的不要)</p>
+<p style="font-size: 15px; color: #3f3f3f; margin: 0 0 16px 0; text-align: justify; line-height: 1.8; letter-spacing: 1.5px;">- 测试连接(curl 命令记不住?再查一遍)</p>
+<p style="font-size: 15px; color: #3f3f3f; margin: 0 0 16px 0; text-align: justify; line-height: 1.8; letter-spacing: 1.5px;">- 检查版本兼容性(万一 API 升级了呢?)</p>
+<p style="font-size: 15px; color: #3f3f3f; margin: 0 0 16px 0; text-align: justify; line-height: 1.8; letter-spacing: 1.5px;">这一套流程走下来,少说 10 分钟。一天切 5 次,就是 50 分钟没了。你说这是不是在浪费生命?</p>
+<p style="font-size: 15px; color: #3f3f3f; margin: 0 0 16px 0; text-align: justify; line-height: 1.8; letter-spacing: 1.5px;">更扯淡的是,你以为改完就完事了?错!下次忘了改回来,项目跑起来报错,你又得排查半天——「是 API Key 过期了?还是模型名写错了?」纯纯傻缺。</p>
+<h3 style="font-size: 17px; font-weight: bold; color: #1a1a1a; margin: 28px 0 12px 0; padding-left: 10px; border-left: 3px solid #333; line-height: 1.4;">解决方案:统一界面管理所有 AI 提供商</h3>
+<img src="https://pinable.cc/webchat/images/d3cb90aefc7d42e885bc6e5dc09d1ee3.png" style="display: block; max-width: 100%; height: auto; margin: 16px auto; border-radius: 4px;" />
+<p style="font-size: 15px; color: #3f3f3f; margin: 0 0 16px 0; text-align: justify; line-height: 1.8; letter-spacing: 1.5px;">pinable-desktop 的 Provider 页面做了个事:把所有 AI 提供商放在一个界面里,可视化管理。你不用再敲命令、改配置文件,直接点点鼠标就完事。</p>
+<p style="font-size: 15px; color: #3f3f3f; margin: 0 0 16px 0; text-align: justify; line-height: 1.8; letter-spacing: 1.5px;">核心功能就三个:</p>
+<p style="font-size: 15px; color: #3f3f3f; margin: 0 0 16px 0; text-align: justify; line-height: 1.8; letter-spacing: 1.5px;"><strong style="font-weight: bold; color: #1a1a1a;">1. Provider 状态一目了然</strong></p>
+<p style="font-size: 15px; color: #3f3f3f; margin: 0 0 16px 0; text-align: justify; line-height: 1.8; letter-spacing: 1.5px;">界面上直接显示 Claude、Codex、Gemini 的安装状态、版本号、是否已配置。哪个工具没装、哪个 API Key 没填、哪个版本过时了,扫一眼就知道。不用你去翻日志、查命令行输出。</p>
+<p style="font-size: 15px; color: #3f3f3f; margin: 0 0 16px 0; text-align: justify; line-height: 1.8; letter-spacing: 1.5px;"><strong style="font-weight: bold; color: #1a1a1a;">2. 配置可视化操作</strong></p>
+<p style="font-size: 15px; color: #3f3f3f; margin: 0 0 16px 0; text-align: justify; line-height: 1.8; letter-spacing: 1.5px;">填 API Key、改 Base URL、选 Model,全是表单输入,有提示、有校验。填完点「测试连接」,成功了就保存,失败了直接告诉你哪里错了。不像命令行,报个 401 错误你还得猜是 Key 错了还是网络问题。</p>
+<p style="font-size: 15px; color: #3f3f3f; margin: 0 0 16px 0; text-align: justify; line-height: 1.8; letter-spacing: 1.5px;"><strong style="font-weight: bold; color: #1a1a1a;">3. 工具依赖自动检测</strong></p>
+<p style="font-size: 15px; color: #3f3f3f; margin: 0 0 16px 0; text-align: justify; line-height: 1.8; letter-spacing: 1.5px;">codeagent-wrapper、git 这些依赖工具,界面会自动检测是否安装、版本是否匹配。没装的直接给你安装命令,点一下就搞定。不用你去 README 里找「Installation」章节。</p>
+<p style="font-size: 15px; color: #3f3f3f; margin: 0 0 16px 0; text-align: justify; line-height: 1.8; letter-spacing: 1.5px;">说白了,这就是把「手动运维」变成「可视化操作」。你以前得记一堆命令、改一堆配置,现在点几下鼠标就行。效率直接翻倍。</p>
+<h3 style="font-size: 17px; font-weight: bold; color: #1a1a1a; margin: 28px 0 12px 0; padding-left: 10px; border-left: 3px solid #333; line-height: 1.4;">底层逻辑:价值交换的本质是减少摩擦</h3>
+<img src="https://pinable.cc/webchat/images/9954be73c40d4c4ab2f41d10cea6d816.png" style="display: block; max-width: 100%; height: auto; margin: 16px auto; border-radius: 4px;" />
+<p style="font-size: 15px; color: #3f3f3f; margin: 0 0 16px 0; text-align: justify; line-height: 1.8; letter-spacing: 1.5px;">你看,为什么大家愿意用 GitHub Desktop 而不是纯命令行?为什么 Postman 能火?本质就一个:降低使用门槛,减少操作摩擦。</p>
+<p style="font-size: 15px; color: #3f3f3f; margin: 0 0 16px 0; text-align: justify; line-height: 1.8; letter-spacing: 1.5px;">AI 工具也一样。你用 Claude API 不是为了「学习如何配置 settings.json」,而是为了让 AI 帮你写代码、生成内容、解决问题。配置这个过程本身没价值,它只是个「通往价值的阻碍」。</p>
+<p style="font-size: 15px; color: #3f3f3f; margin: 0 0 16px 0; text-align: justify; line-height: 1.8; letter-spacing: 1.5px;">pinable-desktop 做的事就是把这个阻碍去掉。你不用再花时间学「怎么改配置」,直接上手就能用。这就是工具的价值——让你把时间花在创造上,而不是花在「准备工作」上。</p>
+<p style="font-size: 15px; color: #3f3f3f; margin: 0 0 16px 0; text-align: justify; line-height: 1.8; letter-spacing: 1.5px;">更进一步说,这个界面还支持「Provider Groups」——你可以给不同项目配置不同的 API Key 和模型。比如个人项目用免费 API,公司项目用付费高级模型,一键切换,互不干扰。这就是「价值闭环」:工具不仅解决了单点问题,还覆盖了全场景需求。</p>
+<h3 style="font-size: 17px; font-weight: bold; color: #1a1a1a; margin: 28px 0 12px 0; padding-left: 10px; border-left: 3px solid #333; line-height: 1.4;">行动建议:立即优化你的工具链</h3>
+<p style="font-size: 15px; color: #3f3f3f; margin: 0 0 16px 0; text-align: justify; line-height: 1.8; letter-spacing: 1.5px;">说到底,工具链优化这事,拖一天就是浪费一天效率。你现在手动切 API Key、改配置文件,一年下来浪费的时间够你多做好几个项目了。</p>
+<p style="font-size: 15px; color: #3f3f3f; margin: 0 0 16px 0; text-align: justify; line-height: 1.8; letter-spacing: 1.5px;">我的建议:</p>
+<p style="font-size: 15px; color: #3f3f3f; margin: 0 0 16px 0; text-align: justify; line-height: 1.8; letter-spacing: 1.5px;">1. <strong style="font-weight: bold; color: #1a1a1a;">盘点你常用的 AI 工具</strong>:列出 Claude、Codex、Gemini 等工具,看看哪些是高频使用的</p>
+<p style="font-size: 15px; color: #3f3f3f; margin: 0 0 16px 0; text-align: justify; line-height: 1.8; letter-spacing: 1.5px;">2. <strong style="font-weight: bold; color: #1a1a1a;">评估切换成本</strong>:算算你每次切换提供商要花多少时间,一个月累计多少</p>
+<p style="font-size: 15px; color: #3f3f3f; margin: 0 0 16px 0; text-align: justify; line-height: 1.8; letter-spacing: 1.5px;">3. <strong style="font-weight: bold; color: #1a1a1a;">选择统一管理方案</strong>:要么用 pinable-desktop 这种可视化工具,要么自己写脚本自动化配置</p>
+<p style="font-size: 15px; color: #3f3f3f; margin: 0 0 16px 0; text-align: justify; line-height: 1.8; letter-spacing: 1.5px;">4. <strong style="font-weight: bold; color: #1a1a1a;">立即执行</strong>:不要等「有时间再说」,今天就动手,30 分钟搞定配置,以后每天省 10 分钟</p>
+<p style="font-size: 15px; color: #3f3f3f; margin: 0 0 16px 0; text-align: justify; line-height: 1.8; letter-spacing: 1.5px;">记住:工具是为人服务的,不是人为工具服务。你的时间应该花在写代码、做产品、赚钱上,而不是花在「改配置文件」这种纯体力活上。</p>
+<p style="font-size: 15px; color: #3f3f3f; margin: 0 0 16px 0; text-align: justify; line-height: 1.8; letter-spacing: 1.5px;">心如帝王,则行有尊严;工具如刃,则效率倍增。</p>
+</section>
+</body>
+</html>
