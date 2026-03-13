@@ -1,0 +1,19 @@
+{
+  "new_title": "pinable-desktop 重磅更新：模型分组使用，让你的 AI 助手彻底自由",
+  "new_cover_img_prompt": "科技感界面，展示多个模型分组的可视化选择界面，色彩明亮，专业简洁",
+  "new_content": "### 打破全局限制，模型选择自由《图片1》\n\nhi,我是PinableAI。\n\n今天要聊一个很多开发者都在吐槽的问题：AI 工具的模型选择太不自由了。\n\n你有没有遇到过这种情况？正在写代码用的是 Claude 模型，结果另一个项目需要用 Codex，你得去设置里改全局配置。这一改不要紧，所有会话都跟着变了。最坑的是，有时候模型失效了，你必须跑到 Provider 页面去修改 active group，直接影响所有正在进行的任务。\n\n这就是所谓的「全局 active group」问题——一个设置绑死所有会话。\n\n### 分组架构：每个会话独立选择《图片2》\n\npinable-desktop 最新提交 d2a7b19 解决了这个痛点。核心思路很简单：把模型分组的定义和调用分离。\n\nProvider 页面依然负责管理分组定义（也就是数据源），但在 WorkflowsPage、GatewayPage、TerminalPage 启动时，你可以独立选择 Group + Model。每个会话都有自己的环境变量，互不干扰。\n\n后端架构也配合做了调整：\n\n- 新增 `BuildWrapperEnvForGroup()` 方法，支持 per-session env 注入，优先级高于宿主进程 env\n- Terminal Service 引入 Functional Options 模式，通过 `WithEnvOverrides()` 注入个性化环境变量\n- Gateway Service 在 handoff 时自动注入对应 group 的环境变量\n\n简单说就是：以前是一把钥匙开所有锁，现在每把锁都有自己独立的钥匙。\n\n### 实际体验：哪里需要就选哪里《图片3》\n\n具体使用场景是这样：\n\n1. **Workflows 工作流**：启动时三级联动——Backend → Group → Model，独立选择本次工作流使用的模型分组\n2. **Gateway 网关**：Defaults Group 独立配置，不同项目用不同的模型\n3. **Terminal 终端**：直接指定 providerID + groupID 启动，每个终端会话都可以用不同的模型\n\n模型失效了？不用再跑回 Provider 页面改全局配置，直接在当前会话切换分组就行。这就是真正的「按需选择」。\n\n### 写在最后\n\n这个功能看似小改动，实际意义很大。它把「模型选择权」从系统级别下沉到了会话级别。对于需要同时处理多个项目的开发者来说，这意味着你可以：\n\n- A 项目用 Claude 3.5\n- B 项目用 Codex\n- C 项目用 Gemini\n\n完全并行，互不影响。这才是真正的效率工具。\n\n加我微信 gopinkgamer，领取一份 PinableAI 资料。",
+  "new_img_prompt": [
+    "开发者工作场景，多个 AI 模型图标并排，显示选择自由的概念，专业科技风格",
+    "架构图展示前后端分层设计，模型分组在中间层，箭头指向不同终端，高清专业",
+    "实际应用界面截图风格，展示工作流和终端的模型选择下拉框，现代简洁"
+  ],
+  "image_urls": {
+    "cover": "https://pinable.cc/webchat/images/b1241babeedb4359b7d2d3ba0006adb1.png",
+    "content": [
+      "https://pinable.cc/webchat/images/a6dcf2ed76f0433bb130496f482063bf.png",
+      "https://pinable.cc/webchat/images/5dc80ed414444fe884b20467ac2926ae.png",
+      "https://pinable.cc/webchat/images/de741dbefd6041668414ff54c2b06b07.png"
+    ]
+  },
+  "final_content": "### 打破全局限制，模型选择自由\n\n<img src=\"https://pinable.cc/webchat/images/a6dcf2ed76f0433bb130496f482063bf.png\" style=\"display:block;max-width:100%;height:auto;margin:16px auto;border-radius:4px;\" />\n\n\n\nhi,我是PinableAI。\n\n今天要聊一个很多开发者都在吐槽的问题：AI 工具的模型选择太不自由了。\n\n你有没有遇到过这种情况？正在写代码用的是 Claude 模型，结果另一个项目需要用 Codex，你得去设置里改全局配置。这一改不要紧，所有会话都跟着变了。最坑的是，有时候模型失效了，你必须跑到 Provider 页面去修改 active group，直接影响所有正在进行的任务。\n\n这就是所谓的「全局 active group」问题——一个设置绑死所有会话。\n\n### 分组架构：每个会话独立选择\n\n<img src=\"https://pinable.cc/webchat/images/5dc80ed414444fe884b20467ac2926ae.png\" style=\"display:block;max-width:100%;height:auto;margin:16px auto;border-radius:4px;\" />\n\n\n\npinable-desktop 最新提交 d2a7b19 解决了这个痛点。核心思路很简单：把模型分组的定义和调用分离。\n\nProvider 页面依然负责管理分组定义（也就是数据源），但在 WorkflowsPage、GatewayPage、TerminalPage 启动时，你可以独立选择 Group + Model。每个会话都有自己的环境变量，互不干扰。\n\n后端架构也配合做了调整：\n\n- 新增 `BuildWrapperEnvForGroup()` 方法，支持 per-session env 注入，优先级高于宿主进程 env\n- Terminal Service 引入 Functional Options 模式，通过 `WithEnvOverrides()` 注入个性化环境变量\n- Gateway Service 在 handoff 时自动注入对应 group 的环境变量\n\n简单说就是：以前是一把钥匙开所有锁，现在每把锁都有自己独立的钥匙。\n\n### 实际体验：哪里需要就选哪里\n\n<img src=\"https://pinable.cc/webchat/images/de741dbefd6041668414ff54c2b06b07.png\" style=\"display:block;max-width:100%;height:auto;margin:16px auto;border-radius:4px;\" />\n\n\n\n具体使用场景是这样：\n\n1. **Workflows 工作流**：启动时三级联动——Backend → Group → Model，独立选择本次工作流使用的模型分组\n2. **Gateway 网关**：Defaults Group 独立配置，不同项目用不同的模型\n3. **Terminal 终端**：直接指定 providerID + groupID 启动，每个终端会话都可以用不同的模型\n\n模型失效了？不用再跑回 Provider 页面改全局配置，直接在当前会话切换分组就行。这就是真正的「按需选择」。\n\n### 写在最后\n\n这个功能看似小改动，实际意义很大。它把「模型选择权」从系统级别下沉到了会话级别。对于需要同时处理多个项目的开发者来说，这意味着你可以：\n\n- A 项目用 Claude 3.5\n- B 项目用 Codex\n- C 项目用 Gemini\n\n完全并行，互不影响。这才是真正的效率工具。\n\n加我微信 gopinkgamer，领取一份 PinableAI 资料。"
+}
