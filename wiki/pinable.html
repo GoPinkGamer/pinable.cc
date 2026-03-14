@@ -37,7 +37,7 @@
         <h1 class="article-title">pinable 执行引擎</h1>
         <div class="article-meta">
           <span>分类：核心</span>
-          <span>更新：2026-02-25</span>
+          <span>更新：2026-03-15</span>
         </div>
       </div>
 
@@ -47,7 +47,8 @@
           <li><a href="#architecture">整体架构概述</a></li>
           <li><a href="#cli-parser">CLI 解析层</a></li>
           <li><a href="#backend-adapter">后端适配器模式</a></li>
-          <li><a href="#session-manager">会话管理器</a></li>
+          <li><a href="#session-manager">会话状态机</a></li>
+          <li><a href="#files-changed">文件变更追踪</a></li>
           <li><a href="#output-formatter">输出格式化器</a></li>
           <li><a href="#error-handling">错误处理与重试逻辑</a></li>
           <li><a href="#build-from-source">从源码构建</a></li>
@@ -206,32 +207,28 @@ type Response struct {
         <p>目前支持三种后端适配器的实现。<strong>Codex 适配器</strong>通过 OpenAI API 调用 Codex 系列模型，支持函数调用和代码生成的专门优化。<strong>Claude 适配器</strong>对接 Anthropic API，利用 Claude 的长上下文窗口处理大型代码库分析任务。<strong>Gemini 适配器</strong>使用 Google AI API，在多模态处理（如截图分析）方面有独特优势。</p>
         <p>每个适配器在内部负责将通用的 <code>Request</code> 结构转化为后端特定的 API 请求格式，并将后端响应转化为通用的 <code>Response</code> 结构。这种转化过程包括参数映射（如 temperature、max_tokens 等参数在不同 API 中的名称差异）、系统提示注入、以及响应内容的规范化。</p>
 
-        <h2 id="session-manager">会话管理器</h2>
-        <p>会话管理器负责维护任务执行的状态和上下文，使得长时间运行的任务可以在中断后恢复。每个会话由一个唯一的 <code>SESSION_ID</code> 标识，会话状态以 JSON 格式持久化到本地文件系统。</p>
-        <p>会话的生命周期包括四个状态：<strong>created</strong>（已创建，尚未开始执行）、<strong>running</strong>（执行中）、<strong>paused</strong>（已暂停或中断，可恢复）、<strong>completed</strong>（已完成）。状态转换是单向的，除了 paused 可以回到 running 外，其他转换不可逆。</p>
-        <pre><code>// session.go - 会话状态结构
-type Session struct {
-    ID          string          `json:"id"`
-    Status      SessionStatus   `json:"status"`
-    Backend     string          `json:"backend"`
-    Task        string          `json:"task"`
-    TaskHash    string          `json:"task_hash"`
-    CreatedAt   time.Time       `json:"created_at"`
-    UpdatedAt   time.Time       `json:"updated_at"`
-    Checkpoints []Checkpoint    `json:"checkpoints"`
-    Context     SessionContext  `json:"context"`
-    Metadata    map[string]any  `json:"metadata"`
-}
+        <h2 id="session-manager">会话状态机</h2>
+        <p>会话状态机（AgentSession State Machine）是 pinable 核心架构中最关键的组成部分之一。它负责维护任务执行的完整生命周期，确保长时间运行的 AI 任务在面临网络中断、系统重启或人工干预时能够安全恢复。</p>
+        <p>每个会话由一个唯一的 <code>SESSION_ID</code> 标识，其状态机包含以下核心状态：</p>
+        <ul>
+          <li><strong>pending</strong>：任务已创建，等待调度执行。</li>
+          <li><strong>running</strong>：任务正在执行，AI 后端正在处理请求。</li>
+          <li><strong>waiting_input</strong>：任务执行中需要用户进一步输入或确认。</li>
+          <li><strong>done</strong>：任务成功完成，结果已持久化。</li>
+          <li><strong>failed</strong>：任务由于错误中断，记录了详细的错误上下文。</li>
+        </ul>
+        <p>与简单的 JSON 持久化不同，pinable 现在使用 <strong>SQLite</strong> 数据库来维护会话状态。这不仅提高了并发处理能力，还支持复杂的查询和历史回溯。系统支持通过 <code>--session-id</code> 参数直接传递来断点续接，极大地提升了在复杂任务场景下的可靠性。</p>
 
-// Checkpoint 记录执行过程中的检查点
-type Checkpoint struct {
-    Index       int             `json:"index"`
-    Timestamp   time.Time       `json:"timestamp"`
-    Phase       string          `json:"phase"`
-    State       json.RawMessage `json:"state"`
-    FilesChanged []string       `json:"files_changed"`
-}</code></pre>
-        <p>会话文件默认存储在 <code>~/.pinable-agents/sessions/</code> 目录下，文件名格式为 <code>{session_id}.json</code>。每次状态变更都会立即写入磁盘，确保崩溃恢复的数据完整性。</p>
+        <h2 id="files-changed">文件变更追踪</h2>
+        <p>为了解决 AI 代理执行过程中的"黑盒"问题，pinable 引入了智能文件变更追踪模块（FilesChanged Module）。该模块在任务执行完毕后，会自动解析 AI 后端的输出流，提取被修改、创建或更新的文件列表。</p>
+        <p>核心特性包括：</p>
+        <ul>
+          <li><strong>多格式支持</strong>：能够识别并解析超过 10 种常见的文件操作标记格式。</li>
+          <li><strong>细粒度追踪</strong>：区分 Modified、Created 和 Updated 等不同类型的变更。</li>
+          <li><strong>审计日志</strong>：所有变更都会记录在会话元数据中，支持后续的完整历史回放。</li>
+          <li><strong>结构化输出</strong>：变更列表可以以 JSON 格式输出，方便上层 UI（如 pinable-desktop）展示变更摘要。</li>
+        </ul>
+        <p>这种机制使得用户能清晰地看到「这个任务改了哪 5 个文件」，结合版本控制系统（如 Git），为 AI 代理的行为提供了完整的审计追踪能力。</p>
 
         <h2 id="output-formatter">输出格式化器</h2>
         <p>输出格式化器将后端响应转化为用户友好的展示格式。支持三种输出模式：<strong>text</strong>（纯文本，适合终端直接查看）、<strong>json</strong>（结构化数据，适合程序化处理）、<strong>markdown</strong>（格式化文档，适合保存为报告）。</p>

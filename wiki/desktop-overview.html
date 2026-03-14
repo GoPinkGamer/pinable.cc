@@ -37,7 +37,7 @@
         <h1 class="article-title">pinable-desktop 完全指南</h1>
         <div class="article-meta">
           <span>分类：桌面端</span>
-          <span>更新：2026-02-25</span>
+          <span>更新：2026-03-15</span>
         </div>
       </div>
 
@@ -137,13 +137,14 @@
         <p>页面底部提供"连接测试"按钮，点击后系统向后端发送一个轻量级请求以验证 API 密钥和网络连通性。测试结果以绿色（成功）或红色（失败）标记显示，失败时附带详细的错误信息。</p>
 
         <h2 id="page-workflows">Workflows 页面：工作流执行仪表盘</h2>
-        <p>Workflows 页面是日常操作的核心界面。左侧是工作流选择面板，列出所有可用的工作流（如 do、omo、bmad 等），每个工作流旁边显示其包含的阶段数量和预估执行时间。</p>
-        <p>选择工作流后，右侧主区域显示任务输入表单和执行控制台。任务输入支持富文本编辑，可以粘贴需求文档、代码片段和参考链接。点击"执行"后，页面切换为实时执行视图，以时间轴形式展示每个阶段的执行进度：</p>
+        <p>Workflows 页面是 PinableAgents 的核心枢纽，现已升级为支持复杂任务管理和自动化调度的综合仪表盘。它不仅提供工作流的实时执行监控，还集成了深度的状态追踪和文件审计功能。</p>
+        <p>选择工作流后，右侧主区域显示任务输入表单和执行控制台。核心功能包括：</p>
         <ul>
-          <li><strong>阶段指示器</strong>：每个阶段显示为一个圆形节点，颜色表示状态（灰色等待、蓝色执行中、绿色完成、红色失败）。</li>
-          <li><strong>实时日志</strong>：下方的日志面板实时流式输出当前阶段的智能体思考过程和操作记录。</li>
-          <li><strong>文件变更预览</strong>：右侧面板实时显示智能体修改的文件列表和 diff 预览。</li>
-          <li><strong>中断控制</strong>：随时可以暂停或终止正在执行的工作流。暂停后可以查看中间状态并决定是否继续。</li>
+          <li><strong>AgentSession 状态机追踪</strong>：每个任务都由一个完整的状态机（AgentSession）驱动。你可以实时看到任务在 <code>pending</code>（待执行）、<code>running</code>（运行中）、<code>waiting_input</code>（等待输入）、<code>done</code>（完成）或 <code>failed</code>（失败）各状态间的流转。所有状态均持久化至 SQLite，支持通过 SessionID 实现断点续接。</li>
+          <li><strong>Cron 任务调度系统</strong>：支持使用标准 Cron 表达式定义执行频率。你可以设置如「每天早上 9 点执行代码扫描」等定时任务，系统将自动处理重试逻辑、超时控制和并发冲突，实现真正的无人值守自动化。</li>
+          <li><strong>智能文件变更预览</strong>：集成 <strong>FilesChanged</strong> 模块，任务执行完毕后自动解析输出流，精确识别并列出所有 Modified（修改）、Created（创建）或 Updated（更新）的文件。支持超过 10 种文件操作标记的智能识别。</li>
+          <li><strong>完整历史回放与审计</strong>：不仅记录结果，还支持对执行过程的全量回放。结合文件变更追踪，你可以清晰地审计 AI 代理在每一步中的具体行为，确保操作的合规性与可追溯性。</li>
+          <li><strong>中断与手动干预</strong>：在 <code>waiting_input</code> 状态下，用户可以直接在控制台介入，提供 AI 缺少的上下文或修正执行方向，随后一键恢复任务流。</li>
         </ul>
 
         <h2 id="page-skills">Skills 页面：技能自动检测</h2>

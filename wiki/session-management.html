@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="PinableAgents 会话管理与恢复机制深度指南，涵盖 SESSION_ID 生命周期、状态持久化、检查点、崩溃恢复和 CLI 管理命令。">
+  <meta name="description" content="PinableAgents 会话管理与调度机制深度指南，涵盖 AgentSession 状态机、SQLite 持久化、Cron 任务调度、断点续传与审计追踪。">
   <meta name="robots" content="index, follow">
   <link rel="icon" type="image/svg+xml" href="../assets/images/logo.svg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -11,7 +11,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../assets/css/reset.css">
   <link rel="stylesheet" href="../assets/css/site.css">
-  <title>会话管理与恢复 - PinableAgents Wiki</title>
+  <title>会话管理与调度 - PinableAgents Wiki</title>
 </head>
 <body>
   <header class="site-header">
@@ -32,12 +32,12 @@
     <article class="article">
       <div class="article-header">
         <div class="article-breadcrumb">
-          <a href="/">首页</a> / <a href="/wiki.html">Wiki</a> / 会话管理与恢复
+          <a href="/">首页</a> / <a href="/wiki.html">Wiki</a> / 会话管理与调度
         </div>
-        <h1 class="article-title">会话管理与恢复</h1>
+        <h1 class="article-title">会话管理与调度</h1>
         <div class="article-meta">
           <span>分类：核心</span>
-          <span>更新：2026-02-25</span>
+          <span>更新：2026-03-15</span>
         </div>
       </div>
 
@@ -46,8 +46,9 @@
         <ul>
           <li><a href="#overview">会话机制概述</a></li>
           <li><a href="#session-id">SESSION_ID 生成与格式</a></li>
-          <li><a href="#lifecycle">会话生命周期</a></li>
-          <li><a href="#state-persistence">状态持久化机制</a></li>
+          <li><a href="#lifecycle">会话生命周期（状态机）</a></li>
+          <li><a href="#scheduling">Cron 任务调度系统</a></li>
+          <li><a href="#state-persistence">SQLite 持久化机制</a></li>
           <li><a href="#checkpoints">检查点创建与恢复</a></li>
           <li><a href="#metadata">会话元数据</a></li>
           <li><a href="#cross-session">跨会话上下文共享</a></li>
@@ -60,18 +61,16 @@
 
       <div class="article-body">
         <h2 id="overview">会话机制概述</h2>
-        <p>PinableAgents 的会话管理系统是保障长时间任务可靠执行的核心基础设施。每当用户启动一个任务时，系统会创建一个唯一标识的会话（Session），该会话贯穿任务的整个生命周期，记录执行状态、中间结果和上下文信息。当任务因网络中断、系统重启或其他意外原因被中断时，用户可以通过会话 ID 从中断点恢复执行，而无需从零开始。</p>
-        <p>会话管理系统解决了 AI 辅助开发中的一个关键痛点：AI 后端的调用通常需要较长时间（数秒到数分钟），且涉及大量上下文信息。如果中途中断，重新传递上下文不仅浪费时间和 API 成本，还可能导致结果不一致。通过会话持久化，PinableAgents 确保了任务执行的连续性和幂等性。</p>
-        <p>会话系统的设计遵循三个核心原则：<strong>持久性</strong>（所有状态变更立即写入磁盘）、<strong>原子性</strong>（状态更新要么完全成功要么完全不变）、<strong>可观察性</strong>（会话状态可以随时查询和监控）。这三个原则确保了即使在最恶劣的条件下（如进程被杀、磁盘写满），会话数据也不会处于不一致的状态。</p>
+        <p>PinableAgents 的会话管理系统是保障长时间任务可靠执行的核心基础设施。在最新的架构中，会话系统已升级为基于 <strong>AgentSession 状态机</strong> 的高度可靠框架。它不仅记录执行状态和中间结果，还集成了 <strong>Cron 任务调度系统</strong>，支持复杂的自动化任务流。</p>
+        <p>会话系统的设计遵循三个核心原则：<strong>持久性</strong>（所有状态变更立即写入 SQLite 数据库）、<strong>原子性</strong>（状态转换遵循严格的状态机规则）、<strong>可调度性</strong>（支持基于时间的自动化执行）。这确保了任务在面临网络中断、系统重启或人工干预时能够安全恢复，且能根据预设频率自动运行。</p>
 
         <blockquote>
-          <p>会话不仅是容灾机制，更是开发工作流的重要组成部分。通过会话历史，你可以回顾和审计 AI 智能体的每一步决策，理解它为什么做出特定的代码变更。</p>
+          <p>会话不再仅仅是容灾机制，更是任务的生命周期管理器。通过 AgentSession 状态机，你可以清晰地审计 AI 代理的每一步行为；通过 Cron 调度，你可以实现代码扫描、自动化运维等高频任务的无人值守。</p>
         </blockquote>
 
         <h2 id="session-id">SESSION_ID 生成与格式</h2>
-        <p>每个会话由一个全局唯一的 SESSION_ID 标识。SESSION_ID 的格式为 <code>sess_{timestamp}_{random}</code>，其中 <code>timestamp</code> 是 Unix 时间戳（秒级），<code>random</code> 是一个 8 字符的随机十六进制字符串。例如 <code>sess_1740480000_a3f7b2c1</code>。</p>
-        <p>这种格式的设计考量是：时间戳前缀使得会话文件按创建时间自然排序，便于管理和清理；随机后缀确保即使在同一秒内创建多个会话也不会冲突。SESSION_ID 在会话创建时生成，之后在整个生命周期中保持不变。</p>
-        <p>用户也可以通过 <code>--session-id</code> 参数显式指定一个 SESSION_ID。当指定的 ID 已存在时，系统会尝试恢复该会话而不是创建新会话。当指定的 ID 不存在时，系统会以该 ID 创建新会话。自定义 SESSION_ID 在需要跨工具链传递会话引用时特别有用。</p>
+        <p>每个会话由一个全局唯一的 SESSION_ID 标识。SESSION_ID 的格式为 <code>sess_{timestamp}_{random}</code>，例如 <code>sess_1740480000_a3f7b2c1</code>。这种格式确保了会话按创建时间自然排序，且在全球范围内唯一。</p>
+        <p>系统现在支持通过 <strong>SessionID 直接传递</strong> 来实现断点续接。这意味着你可以在任何设备上通过同步后的 SQLite 数据库，使用同一个 SessionID 恢复并继续之前的未竟任务。</p>
         <pre><code># 自动生成 SESSION_ID
 pinable --backend claude --task "重构用户模块"
 # 输出: Session created: sess_1740480000_a3f7b2c1
@@ -79,90 +78,54 @@ pinable --backend claude --task "重构用户模块"
 # 显式指定 SESSION_ID
 pinable --session-id my-refactor-2026 --backend claude --task "重构用户模块"
 
-# 恢复已有会话
+# 恢复已有会话 (支持 SessionID 直接传递)
 pinable --session-id sess_1740480000_a3f7b2c1 --task "继续执行"</code></pre>
 
-        <h2 id="lifecycle">会话生命周期</h2>
-        <p>会话的生命周期由四个状态组成，状态之间的转换遵循严格的规则：</p>
-        <p><strong>created（已创建）</strong>：会话刚刚创建，尚未开始执行任何任务。这个状态的持续时间通常很短，只存在于初始化到首次执行之间的间隙。</p>
-        <p><strong>running（执行中）</strong>：会话正在活跃地执行任务。在此状态下，会话管理器会周期性地创建检查点以记录执行进度。</p>
-        <p><strong>paused（已暂停）</strong>：会话因用户主动暂停、网络中断或系统异常而进入暂停状态。暂停状态的会话保留了完整的执行上下文，可以随时恢复到 running 状态继续执行。</p>
-        <p><strong>completed（已完成）</strong>：会话的所有任务已执行完毕。已完成的会话保留用于审计和历史查询，但不能恢复执行。</p>
-        <pre><code>会话状态转换图:
+        <h2 id="lifecycle">会话生命周期（状态机）</h2>
+        <p>AgentSession 状态机包含以下核心状态，状态间的转换受严格控制：</p>
+        <ul>
+          <li><strong>pending（待执行）</strong>：任务已创建并进入队列，等待调度执行。</li>
+          <li><strong>running（运行中）</strong>：任务正在活跃执行，AI 后端正在处理请求并产生输出。</li>
+          <li><strong>waiting_input（等待输入）</strong>：任务执行中遇到了需要人工介入的情况（如权限确认、歧义消除），等待用户反馈。</li>
+          <li><strong>done（完成）</strong>：任务的所有阶段均已成功执行，结果已最终持久化。</li>
+          <li><strong>failed（失败）</strong>：任务由于不可恢复的错误中断，保存了完整的错误上下文以供排查。</li>
+        </ul>
+        <pre><code>状态转换矩阵:
+  [pending] -> [running]
+  [running] -> [waiting_input] | [done] | [failed]
+  [waiting_input] -> [running]
+  [done] -> (终态，不可更改)
+  [failed] -> [pending] (重试)</code></pre>
 
-  created -------> running -------> completed
-                     |   ^
-                     |   |
-                     v   |
-                   paused
-
-合法的状态转换:
-  created  -> running    (开始执行)
-  running  -> paused     (中断/暂停)
-  running  -> completed  (正常完成)
-  paused   -> running    (恢复执行)
-
-非法的状态转换:
-  completed -> 任何状态   (已完成的会话不可更改)
-  paused    -> completed  (必须先恢复再完成)
-  created   -> completed  (不能跳过执行)</code></pre>
-
-        <h2 id="state-persistence">状态持久化机制</h2>
-        <p>会话状态以 JSON 格式持久化到本地文件系统。默认的存储目录为 <code>~/.pinable-agents/sessions/</code>，每个会话对应一个 JSON 文件，文件名为 <code>{session_id}.json</code>。以下是一个完整的会话状态文件示例：</p>
-        <pre><code>{
-  "id": "sess_1740480000_a3f7b2c1",
-  "status": "paused",
-  "backend": "claude",
-  "model": "claude-opus-4-6",
-  "task": "将用户模块从单体架构重构为微服务架构",
-  "task_hash": "sha256:e3b0c44298fc1c149afbf4c8996fb924",
-  "files": [
-    "src/user/service.go",
-    "src/user/repository.go",
-    "src/user/handler.go",
-    "src/user/model.go"
-  ],
-  "created_at": "2026-02-25T10:00:00Z",
-  "updated_at": "2026-02-25T10:05:32Z",
-  "workflow": "do",
-  "current_phase": "implementation",
-  "phases_completed": ["analysis"],
-  "checkpoints": [
+        <h2 id="scheduling">Cron 任务调度系统</h2>
+        <p>新引入的调度系统允许用户使用标准 Cron 表达式定义任务执行频率。调度引擎作为守护进程运行，负责监控所有计划任务：</p>
+        <ul>
+          <li><strong>表达式支持</strong>：支持 <code>"0 9 * * *"</code>（每天上午 9 点）等标准格式。</li>
+          <li><strong>并发控制</strong>：支持 <code>ConcurrencyPolicy</code>，可选择 Allow（允许并行）、Forbid（禁止并行，跳过新任务）或 Replace（取消旧任务，启动新任务）。</li>
+          <li><strong>重试策略</strong>：可配置 <code>MaxRetries</code> 和指数退避间隔。</li>
+          <li><strong>超时管理</strong>：为自动化任务设置强制超时时间，防止僵尸进程占用资源。</li>
+        </ul>
+        <pre><code># 调度配置示例 (config.json)
+{
+  "schedules": [
     {
-      "index": 0,
-      "timestamp": "2026-02-25T10:01:15Z",
-      "phase": "analysis",
-      "description": "完成代码分析，识别出 4 个需要修改的文件",
-      "files_changed": [],
-      "tokens_used": { "input": 12500, "output": 3200 }
-    },
-    {
-      "index": 1,
-      "timestamp": "2026-02-25T10:03:45Z",
-      "phase": "implementation",
-      "description": "完成 service.go 的重构",
-      "files_changed": ["src/user/service.go"],
-      "tokens_used": { "input": 18300, "output": 5100 }
+      "id": "daily-scan",
+      "cron": "0 9 * * *",
+      "task": "执行全量代码安全扫描",
+      "concurrency_policy": "Forbid",
+      "max_retries": 3
     }
-  ],
-  "context": {
-    "conversation_history": [...],
-    "accumulated_changes": [...],
-    "working_branch": "refactor/user-microservice"
-  },
-  "cost": {
-    "total_tokens": 39100,
-    "estimated_cost_usd": 0.58
-  },
-  "metadata": {
-    "git_branch": "main",
-    "git_commit": "a7e37ab",
-    "working_dir": "/Users/dev/my-project",
-    "os": "darwin",
-    "wrapper_version": "1.3.0"
-  }
+  ]
 }</code></pre>
-        <p>状态文件的写入采用"写入临时文件然后原子重命名"的策略，确保即使在写入过程中发生崩溃，原有的状态文件也不会被损坏。具体实现是：先将新状态写入 <code>{session_id}.json.tmp</code>，确认写入完成后通过 <code>os.Rename()</code> 原子性地替换原文件。</p>
+
+        <h2 id="state-persistence">SQLite 持久化机制</h2>
+        <p>为了应对大规模并行任务和复杂查询需求，PinableAgents 已从 JSON 文件持久化迁移至 <strong>SQLite</strong> 数据库。数据库默认存储在 <code>~/.pinable-agents/data/sessions.db</code>。</p>
+        <p>迁移后的优势包括：</p>
+        <ul>
+          <li><strong>高并发安全</strong>：利用 SQLite 的 WAL 模式，支持多个智能体实例同时读写。</li>
+          <li><strong>历史回溯性能</strong>：通过索引快速检索历史会话，支持秒级完成万级数据的全文搜索。</li>
+          <li><strong>事务保障</strong>：状态转换和文件变更记录被包裹在同一事务中，确保数据强一致性。</li>
+        </ul>
 
         <h2 id="checkpoints">检查点创建与恢复</h2>
         <p>检查点（Checkpoint）是会话恢复的核心机制。每当任务执行完成一个有意义的阶段时，系统会自动创建一个检查点，记录当前的执行状态和已产生的结果。恢复执行时，系统从最近的检查点开始，而不是从头开始。</p>
@@ -184,7 +147,7 @@ pinable --session-id sess_1740480000_a3f7b2c1 \
         </blockquote>
 
         <h2 id="metadata">会话元数据</h2>
-        <p>会话元数据记录了与任务执行环境相关的非业务信息，用于审计、调试和报告。元数据在会话创建时自动采集，不会在执行过程中更新。关键的元数据字段包括：</p>
+        <p>会话元数据记录了与任务执行环境相关的非业务信息，用于审计、调试和报告。元数据在会话创建时自动采集，关键的元数据字段包括：</p>
 
         <table>
           <thead>
@@ -272,20 +235,15 @@ pinable-agents session chain status my-refactor
         <h2 id="crash-recovery">崩溃恢复策略</h2>
         <p>当任务执行过程中发生意外中断（进程被杀、网络断开、系统重启），会话管理器提供了完善的恢复机制。恢复策略基于最后一个成功的检查点，具体步骤如下：</p>
         <h3>状态检测</h3>
-        <p>系统启动时会扫描 sessions 目录，找出所有状态为 <code>running</code> 的会话。由于正常结束的会话状态会更新为 <code>completed</code>，处于 <code>running</code> 状态的会话意味着非正常退出。</p>
+        <p>系统启动时会扫描 SQLite 数据库，找出所有状态为 <code>running</code> 的会话。处于 <code>running</code> 状态的会话意味着非正常退出。</p>
         <h3>完整性检查</h3>
-        <p>对找到的异常会话进行完整性验证。检查会话文件是否完整（JSON 可解析）、检查点链是否连续（没有缺失的检查点）、引用的文件是否仍然存在。</p>
+        <p>对找到的异常会话进行完整性验证。检查检查点链是否连续、引用的文件是否仍然存在。</p>
         <h3>状态修复</h3>
-        <p>将异常会话的状态更新为 <code>paused</code>，使其可以被正常恢复。如果会话文件损坏，尝试从 <code>.tmp</code> 临时文件恢复。如果两者都不可用，标记会话为 <code>corrupted</code> 并生成诊断报告。</p>
+        <p>将异常会话的状态更新为 <code>failed</code> 或 <code>paused</code>，使其可以被正常恢复。如果数据库记录损坏，尝试从数据库备份恢复。</p>
         <h3>恢复执行</h3>
         <p>用户使用 <code>--session-id</code> 参数恢复会话。系统加载最后一个完整的检查点，重建执行上下文，然后从中断点继续执行。</p>
         <pre><code># 自动检测并列出可恢复的会话
 pinable-agents session recover --scan
-
-# 输出示例:
-# Found 2 recoverable sessions:
-#   sess_1740480000_a3f7b2c1  paused  "重构用户模块"     checkpoint 2/4
-#   sess_1740490000_d2e8f1a0  paused  "添加搜索功能"     checkpoint 1/3
 
 # 恢复指定会话
 pinable-agents session recover sess_1740480000_a3f7b2c1
@@ -294,20 +252,15 @@ pinable-agents session recover sess_1740480000_a3f7b2c1
 pinable-agents session recover --all</code></pre>
 
         <blockquote>
-          <p>崩溃恢复不是完美无缝的。如果中断发生在 AI 后端返回响应之后、但文件修改应用之前，恢复后可能会重复执行一次已完成的操作。pinable 通过检查文件的内容哈希值来检测这种情况，避免重复修改。</p>
+          <p>崩溃恢复基于文件内容哈希值来检测潜在的重复操作，确保恢复后的执行是幂等的。由于使用了 SQLite 事务，恢复过程中的数据一致性得到了极大的提升。</p>
         </blockquote>
 
         <h2 id="cleanup">会话清理与归档</h2>
-        <p>随着时间的推移，sessions 目录中会积累大量的历史会话文件。PinableAgents 提供自动和手动两种清理机制：</p>
+        <p>PinableAgents 提供自动和手动两种清理机制：</p>
         <p><strong>自动清理</strong>：通过配置 <code>session.auto_cleanup_days</code> 参数，系统会在每次启动时自动删除超过指定天数的已完成会话。默认值为 30 天。</p>
-        <p><strong>手动清理</strong>：用户可以通过 CLI 命令手动删除、归档或导出会话数据。归档功能会将会话文件压缩存储到归档目录，释放磁盘空间的同时保留历史记录。</p>
-        <pre><code># 查看会话占用的磁盘空间
+        <p><strong>手动清理</strong>：用户可以通过 CLI 命令手动删除、归档或导出会话数据。</p>
+        <pre><code># 查看会话占用的磁盘空间 (SQLite 数据库大小)
 pinable-agents session stats
-# 输出:
-# Total sessions: 156
-# Active: 2, Paused: 3, Completed: 148, Corrupted: 3
-# Disk usage: 23.4 MB
-# Oldest session: 2026-01-15
 
 # 清理 30 天前的已完成会话
 pinable-agents session cleanup --older-than 30d
@@ -316,10 +269,7 @@ pinable-agents session cleanup --older-than 30d
 pinable-agents session archive --older-than 14d --output ./session-archive/
 
 # 删除指定会话
-pinable-agents session delete sess_1740480000_a3f7b2c1
-
-# 批量删除已完成的会话
-pinable-agents session cleanup --status completed --older-than 7d</code></pre>
+pinable-agents session delete sess_1740480000_a3f7b2c1</code></pre>
 
         <h2 id="cli-commands">CLI 会话管理命令</h2>
         <p>PinableAgents 提供了一套完整的 CLI 命令用于会话管理。以下是所有可用命令的概览：</p>
@@ -354,9 +304,9 @@ pinable-agents session cleanup --status completed --older-than 7d</code></pre>
               <td><code>pinable-agents session recover {id}</code></td>
             </tr>
             <tr>
-              <td><code>session pause</code></td>
-              <td>暂停正在执行的会话</td>
-              <td><code>pinable-agents session pause {id}</code></td>
+              <td><code>session schedule</code></td>
+              <td>管理 Cron 计划任务</td>
+              <td><code>pinable-agents session schedule list</code></td>
             </tr>
             <tr>
               <td><code>session delete</code></td>
@@ -370,7 +320,7 @@ pinable-agents session cleanup --status completed --older-than 7d</code></pre>
             </tr>
             <tr>
               <td><code>session archive</code></td>
-              <td>归档会话到压缩文件</td>
+              <td>归档会话到备份文件</td>
               <td><code>pinable-agents session archive --output ./</code></td>
             </tr>
             <tr>
@@ -386,18 +336,14 @@ pinable-agents session cleanup --status completed --older-than 7d</code></pre>
           </tbody>
         </table>
 
-        <pre><code># 列出会话（支持过滤和排序）
-pinable-agents session list --status paused --sort created_at
-pinable-agents session list --backend claude --limit 10
+        <pre><code># 列出会话
+pinable-agents session list --status failed --sort created_at
 
-# 查看会话详情（包含检查点和元数据）
-pinable-agents session inspect sess_1740480000_a3f7b2c1 --verbose
+# 查看 Cron 调度列表
+pinable-agents session schedule list
 
 # 导出会话为 Markdown 报告
-pinable-agents session export sess_1740480000_a3f7b2c1 --format markdown > report.md
-
-# 导出会话为 JSON（供程序化处理）
-pinable-agents session export sess_1740480000_a3f7b2c1 --format json | jq '.checkpoints'</code></pre>
+pinable-agents session export sess_1740480000_a3f7b2c1 --format markdown > report.md</code></pre>
 
         <h2 id="example">实战示例：恢复多文件重构</h2>
         <p>以下是一个完整的实战场景，展示如何在网络故障后恢复一个涉及多个文件的重构任务：</p>
@@ -415,54 +361,26 @@ Session created: sess_1740480000_a3f7b2c1
 [Checkpoint 1] Saved user module changes
 [Phase: implementation] Refactoring src/order/db.go...
 CONNECTION ERROR: network timeout after 30s
-Session paused: sess_1740480000_a3f7b2c1 (checkpoint 1)
+Session failed: sess_1740480000_a3f7b2c1 (checkpoint 1)
 
 # --- 网络中断，进程退出 ---
 
 # 步骤 2: 网络恢复后，查看可恢复的会话
 $ pinable-agents session recover --scan
 Found 1 recoverable session:
-  sess_1740480000_a3f7b2c1  paused  "重构为 Repository 模式"  checkpoint 1/3
+  sess_1740480000_a3f7b2c1  failed  "重构为 Repository 模式"  checkpoint 1/3
 
-# 步骤 3: 查看会话详情，确认恢复点
-$ pinable-agents session inspect sess_1740480000_a3f7b2c1
-ID:       sess_1740480000_a3f7b2c1
-Status:   paused
-Backend:  claude (claude-opus-4-6)
-Task:     将用户、订单、支付三个模块的数据库访问从直接 SQL 重构为 Repository 模式
-Created:  2026-02-25 10:00:00
-Paused:   2026-02-25 10:05:32
-
-Checkpoints:
-  [0] 10:01:15  analysis        "完成代码分析，识别出 15 个函数"
-  [1] 10:03:45  implementation  "完成 user 模块重构"
-
-Files changed so far:
-  + src/user/repository.go  (new)
-  ~ src/user/db.go          (modified)
-
-Remaining work:
-  - src/order/db.go    (not started)
-  - src/payment/db.go  (not started)
-
-# 步骤 4: 从检查点 1 恢复执行
+# 步骤 3: 从 SessionID 恢复执行
 $ pinable --session-id sess_1740480000_a3f7b2c1
 
 Resuming from checkpoint 1 (user module completed)
 [Phase: implementation] Refactoring src/order/db.go...
 [Phase: implementation] DONE - Created src/order/repository.go
 [Checkpoint 2] Saved order module changes
-[Phase: implementation] Refactoring src/payment/db.go...
-[Phase: implementation] DONE - Created src/payment/repository.go
-[Checkpoint 3] Saved payment module changes
-[Phase: review] Running code review...
-[Phase: review] DONE - No critical issues found
-
+...
 Session completed: sess_1740480000_a3f7b2c1
-Total time: 12m 34s (excluding 2h pause)
-Total cost: $0.87
 Files created: 3, Files modified: 3</code></pre>
-        <p>在这个示例中，虽然网络中断导致任务在第二个文件的处理过程中被中断，但由于 checkpoint 1 已经保存了第一个文件的完整重构结果，恢复后系统直接从第二个文件开始，完全避免了重复工作。这种能力在处理大型重构任务时尤为重要，因为这类任务通常需要十几分钟甚至更长时间，中断的概率较高。</p>
+        <p>在这个示例中，虽然网络中断导致任务在第二个文件的处理过程中失败，但由于 SQLite 中保存了 checkpoint 1 的完整重构结果，恢复后系统直接从第二个文件开始，完全避免了重复工作。</p>
       </div>
 
       <div class="article-nav">
